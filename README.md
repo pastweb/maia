@@ -1,1 +1,3 @@
-# maia
+# MAIA project
+
+
