@@ -1,0 +1,13 @@
+dist
+.idea
+.vscode
+node_modules
+coverage
+packages/*/dist
+.DS_Store
+
+yarn.lock
+yarn-error.log
+tsconfig.tsbuildinfo
+package-lock.json
+lerna-debug.log
