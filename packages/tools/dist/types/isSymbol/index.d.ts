@@ -1,0 +1,1 @@
+export { isSymbol } from './isSymbol';
