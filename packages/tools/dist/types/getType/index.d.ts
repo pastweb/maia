@@ -1,1 +1,0 @@
-export { getType } from './getType';
