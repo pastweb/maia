@@ -1,0 +1,29 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+packages=()
+
+for line in `git diff --name-only --cached`
+do
+  if [[ $line == *"packages/"* ]]
+  then
+    packagePath=$( echo $line | cut -d'/' -f-2 )
+
+    if [[ ! " ${packages[*]} " =~ " ${packagePath} " ]]; then
+      packages+=($packagePath)
+    fi
+  fi
+done
+
+npx lint-staged
+currentDir=$PWD
+
+for package in "${packages[@]}"
+do
+  packageAbsolutePath=$currentDir'/'$package
+	cd $packageAbsolutePath
+  echo '----- '$package' -----> building...'
+  yarn build
+  git add $packageAbsolutePath'/dist'
+  cd $currentDir
+done
