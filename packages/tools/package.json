@@ -7,7 +7,8 @@
   "typings": "dist/types/maia-tools.d.ts",
   "scripts": {
     "build": "rimraf dist && rimraf doc && rollup -c",
-    "dev": "rollup -c -w"
+    "dev": "rollup -c -w",
+    "lint": "eslint ./src/**/*.{js,ts} --fix"
   },
   "repository": {
     "type": "git",
@@ -31,7 +32,11 @@
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
     "babel-register": "^6.26.0",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^8.3.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.56.3",
     "rollup-plugin-sourcemaps": "^0.6.3",

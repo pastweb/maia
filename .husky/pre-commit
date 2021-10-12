@@ -15,13 +15,14 @@ do
   fi
 done
 
-npx lint-staged
 currentDir=$PWD
 
 for package in "${packages[@]}"
 do
   packageAbsolutePath=$currentDir'/'$package
 	cd $packageAbsolutePath
+  echo '----- '$package' -----> lint checking...'
+  yarn lint
   echo '----- '$package' -----> building...'
   yarn build
   git add $packageAbsolutePath'/dist'

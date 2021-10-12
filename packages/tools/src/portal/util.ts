@@ -45,8 +45,8 @@ export function open(
   portal.appendChild(appElement);
 
   const {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     AppClass = class {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       mount() {}
     },
     options = {},
