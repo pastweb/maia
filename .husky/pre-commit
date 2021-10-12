@@ -25,7 +25,7 @@ do
   yarn lint
   echo '----- '$package' -----> building...'
   yarn build
+  git add .
+  cd $rootDir
 done
 
-cd $rootDir
-git add .
