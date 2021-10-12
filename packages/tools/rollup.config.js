@@ -12,7 +12,8 @@ const sourcemap = true;
 
 const external = [...Object.keys(peerDependencies || {})];
 
-const camelize = (s) => s.replace(/-./g, (x) => x.toUpperCase()[1]);
+const camelize = s => s.replace(/@/g, '').replace(/(-|\/)./g, (x) => x.toUpperCase()[1]);
+console.log(camelize(name))
 
 export default {
   input: `src/index.ts`,
