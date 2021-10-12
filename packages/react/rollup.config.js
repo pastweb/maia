@@ -6,18 +6,16 @@ import json from '@rollup/plugin-json';
 import { terser } from 'rollup-plugin-terser';
 import visualizer from 'rollup-plugin-visualizer';
 
-const { name, main, module, peerDependencies } = require('./package.json');
+const { main, module, peerDependencies } = require('./package.json');
 
 const sourcemap = true;
 
 const external = [...Object.keys(peerDependencies || {})];
 
-const camelize = s => s.replace(/@/g, '').replace(/(-|\/)./g, (x) => x.toUpperCase()[1]);
-
 export default {
   input: `src/index.ts`,
   output: [
-    { file: main, name: camelize(name), format: 'umd', sourcemap },
+    { file: main, format: 'cjs', sourcemap },
     { file: module, format: 'es', sourcemap }
   ],
   external,

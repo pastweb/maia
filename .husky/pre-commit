@@ -15,16 +15,17 @@ do
   fi
 done
 
-currentDir=$PWD
+rootDir=$PWD
 
 for package in "${packages[@]}"
 do
-  packageAbsolutePath=$currentDir'/'$package
+  packageAbsolutePath=$rootDir'/'$package
 	cd $packageAbsolutePath
   echo '----- '$package' -----> lint checking...'
   yarn lint
   echo '----- '$package' -----> building...'
   yarn build
-  git add $packageAbsolutePath'/dist'
-  cd $currentDir
 done
+
+cd $rootDir
+git add .
