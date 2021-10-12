@@ -6,28 +6,23 @@ import json from '@rollup/plugin-json';
 import { terser } from 'rollup-plugin-terser';
 import visualizer from 'rollup-plugin-visualizer';
 
-const {
-  name,
-  main,
-  module,
-  peerDependencies,
-} = require('./package.json');
+const { name, main, module, peerDependencies } = require('./package.json');
 
 const sourcemap = true;
 
 const external = [...Object.keys(peerDependencies || {})];
 
-const camelize = s => s.replace(/-./g, x=>x.toUpperCase()[1])
+const camelize = (s) => s.replace(/-./g, (x) => x.toUpperCase()[1]);
 
 export default {
   input: `src/index.ts`,
   output: [
     { file: main, name: camelize(name), format: 'umd', sourcemap },
-    { file: module, format: 'es', sourcemap },
+    { file: module, format: 'es', sourcemap }
   ],
   external,
   watch: {
-    include: 'src/**',
+    include: 'src/**'
   },
   plugins: [
     // Allow json resolution
@@ -43,6 +38,6 @@ export default {
     // Resolve source maps to the original source
     sourceMaps(),
     terser(),
-    visualizer({ filename: './doc/bundle-stats.html', sourcemap }),
-  ],
-}
+    visualizer({ filename: './doc/bundle-stats.html', sourcemap })
+  ]
+};

@@ -1,7 +1,6 @@
 import { getObjectValue, ObjectValue } from './';
 import { isObject } from '../isObject';
 
-
 const testObj: ObjectValue = {
   first: {
     second: {
@@ -45,7 +44,7 @@ describe('getObjectValue', () => {
   it('"first.second.notPresent" should returns null as value', () => {
     expect(getObjectValue(testObj, 'first.second.notPresent')).toBe(null);
   });
-  
+
   it('"first.second.other.notPresent" should returns null as value', () => {
     expect(getObjectValue(testObj, 'first.second.other.notPresent')).toBe(null);
   });

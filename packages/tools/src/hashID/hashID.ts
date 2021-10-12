@@ -5,7 +5,8 @@
  * Also the following letters are not present, to prevent any
  * expletives: cfhistu
  */
-const ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const ALPHABET =
+  '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 const ALPHABET_LENGTH = ALPHABET.length;
 
@@ -34,10 +35,12 @@ function generate(prefix?: string, idLength?: number): string {
   const lengthId = idLength || ID_LENGTH;
   let key = prefix || '';
   for (let i = 0; i < lengthId; i++) {
-    key = `${key}${ALPHABET.charAt(Math.floor(Math.random() * ALPHABET_LENGTH))}`;
+    key = `${key}${ALPHABET.charAt(
+      Math.floor(Math.random() * ALPHABET_LENGTH)
+    )}`;
   }
   return key;
-};
+}
 
 /**
  * Tries to generate a unique ID that is not defined in the
@@ -45,7 +48,12 @@ function generate(prefix?: string, idLength?: number): string {
  * @param  {Array} cache The list of previous ids to avoid.
  * @return {String} A unique ID, or `null` if one could not be generated.
  */
-function generateUnique(cache: string[], prefix?: string, idLength?: number, retries?: number): string {
+function generateUnique(
+  cache: string[],
+  prefix?: string,
+  idLength?: number,
+  retries?: number
+): string {
   const cacheSet = new Set(cache) || new Set();
   let id = '';
   const uniqueReties = retries || UNIQUE_RETRIES;
@@ -55,7 +63,7 @@ function generateUnique(cache: string[], prefix?: string, idLength?: number, ret
 
   for (let _retries = 0; _retries < uniqueReties; _retries++) {
     id = generate(prefix, idLength);
-    
+
     if (!cacheSet.has(id)) break;
 
     if (_retries === uniqueReties) {
@@ -64,9 +72,9 @@ function generateUnique(cache: string[], prefix?: string, idLength?: number, ret
   }
 
   return id;
-};
+}
 
 export const hashID = {
   generate,
-  generateUnique,
+  generateUnique
 };

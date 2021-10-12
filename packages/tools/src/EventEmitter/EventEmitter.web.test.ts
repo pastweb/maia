@@ -3,19 +3,22 @@ import { isObject } from '../isObject';
 
 const functions: { [key: string]: any } = {
   first: jest.fn(),
-  second: jest.fn(),
+  second: jest.fn()
 };
 
 const events: { [key: string]: string } = {
   first: 'FIRST_EVENT',
-  second: 'SECOND_EVENT',
+  second: 'SECOND_EVENT'
 };
 
 function getEmitter(funcName = 'first') {
   const emitter = new EventEmitter();
-  const subscription: EmitterSubscribeObject = emitter.on(events[funcName], functions[funcName]);
+  const subscription: EmitterSubscribeObject = emitter.on(
+    events[funcName],
+    functions[funcName]
+  );
   const spy = jest.spyOn(functions, 'first');
-  
+
   return { emitter, subscription, spy };
 }
 
@@ -51,7 +54,7 @@ describe('EventEmitter', () => {
   it('the first function should receive the arguments present on the emit call.', () => {
     const { emitter, spy } = getEmitter();
     let functionArgs: any[] = [];
-    
+
     spy.mockImplementation((...args) => {
       functionArgs = args;
     });
@@ -83,13 +86,21 @@ describe('EventEmitter', () => {
 
   it('registering the same function the EventCallbackKey should be different', () => {
     const { emitter, subscription } = getEmitter();
-    const subscription_2: EmitterSubscribeObject = emitter.on(events.first, functions.first);
-    expect(subscription_2.eventCallbackKey !== subscription.eventCallbackKey).toBe(true);
+    const subscription_2: EmitterSubscribeObject = emitter.on(
+      events.first,
+      functions.first
+    );
+    expect(
+      subscription_2.eventCallbackKey !== subscription.eventCallbackKey
+    ).toBe(true);
   });
 
   it('the function should called 4 times after the second reference has been removed.', () => {
     const { emitter, spy } = getEmitter();
-    const subscription_2: EmitterSubscribeObject = emitter.on(events.first, functions.first);
+    const subscription_2: EmitterSubscribeObject = emitter.on(
+      events.first,
+      functions.first
+    );
     subscription_2.removeListener();
     emitter.emit(events.first);
 
@@ -98,7 +109,7 @@ describe('EventEmitter', () => {
 
   it('on register the second event, the emitter should call the second function.', () => {
     const { emitter, spy } = getEmitter();
-    
+
     emitter.on(events.second, functions.second);
     const spy2 = jest.spyOn(functions, 'second');
 

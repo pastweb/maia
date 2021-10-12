@@ -20,6 +20,8 @@ export function getFromBreakPoints(breaks: BreakPointsConfig): boolean | any {
     .map((_break: string) => parseFloat(_break))
     .sort((a, b) => a - b);
 
-  const _break: number = sorted.find((_break: number) => _break >= window.innerWidth) || sorted[sorted.length - 1 ];
+  const _break: number =
+    sorted.find((_break: number) => _break >= window.innerWidth) ||
+    sorted[sorted.length - 1];
   return breaks[_break];
 }

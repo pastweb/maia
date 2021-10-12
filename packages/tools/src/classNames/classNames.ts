@@ -5,14 +5,14 @@ const types: { [key: string]: any } = {
   Number: (arg: number): string => `${arg}`,
   String: (arg: string): string => `${arg}`,
   Object: (arg: { [key: string]: any }): string => fromObject(arg),
-  Array: (arg: any[]): string => fromArray(arg),
+  Array: (arg: any[]): string => fromArray(arg)
 };
 
-function addSpace (i: number): string {
+function addSpace(i: number): string {
   return i > 0 ? ' ' : '';
 }
 
-function fromObject (obj: { [key: string]: any }): string {
+function fromObject(obj: { [key: string]: any }): string {
   return Object.keys(obj).reduce((classes, className, i) => {
     if (!obj[className]) return classes;
 
@@ -20,7 +20,7 @@ function fromObject (obj: { [key: string]: any }): string {
   }, '');
 }
 
-function fromArray (arr: any[]): string {
+function fromArray(arr: any[]): string {
   let classString = null;
 
   return arr.reduce((classes, el, i) => {
@@ -34,6 +34,6 @@ function fromArray (arr: any[]): string {
   }, '');
 }
 
-export function classNames (...args: any[]): string {
+export function classNames(...args: any[]): string {
   return fromArray(args);
 }

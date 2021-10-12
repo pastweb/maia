@@ -15,7 +15,7 @@ function calcScrollbarWidth() {
   const width = box.offsetWidth - box.clientWidth;
   body.removeChild(box);
   return width;
-};
+}
 
 const DEFAULT_OPTIONS = {
   autoHide: true,
@@ -29,7 +29,7 @@ const DEFAULT_OPTIONS = {
 };
 
 export class ScrollbarsHandler {
-  constructor (elements, options) {
+  constructor(elements, options) {
     this.setOptions = this.setOptions.bind(this);
     this.init = this.init.bind(this);
     this.initListeners = this.initListeners.bind(this);
@@ -93,12 +93,12 @@ export class ScrollbarsHandler {
     this.init();
   }
 
-  setOptions (options) {
+  setOptions(options) {
     this.options = Object.assign(this.options, options);
     this.recalculate();
   }
 
-  init () {
+  init() {
     // We stop here on server-side
     if (window) {
       // Calculate content size
@@ -109,7 +109,7 @@ export class ScrollbarsHandler {
     }
   }
 
-  initListeners () {
+  initListeners() {
     // Event listeners
     if (this.options.autoHide) {
       this.el.addEventListener('mouseenter', this.onMouseEnter);
@@ -126,13 +126,17 @@ export class ScrollbarsHandler {
   }
 
   /**
-     * Recalculate scrollbar
-     */
-  recalculate () { this.render(); }
+   * Recalculate scrollbar
+   */
+  recalculate() {
+    this.render();
+  }
 
-  render () {
+  render() {
     this.contentSizeX = this.contentEl[this.scrollSizeAttr.x];
-    this.contentSizeY = this.contentEl[this.scrollSizeAttr.y] - (this.scrollbarWidth || this.offsetSize);
+    this.contentSizeY =
+      this.contentEl[this.scrollSizeAttr.y] -
+      (this.scrollbarWidth || this.offsetSize);
     this.trackXSize = this.trackX[this.sizeAttr.x];
     this.trackYSize = this.trackY[this.sizeAttr.y];
 
@@ -151,9 +155,9 @@ export class ScrollbarsHandler {
   }
 
   /**
-     * Resize scrollbar
-     */
-  resizeScrollbar (axis = 'y') {
+   * Resize scrollbar
+   */
+  resizeScrollbar(axis = 'y') {
     let scrollbar;
     let contentSize;
     let trackSize;
@@ -175,7 +179,7 @@ export class ScrollbarsHandler {
 
     // Calculate new height/position of drag handle.
     this.handleSize[axis] = Math.max(
-      (scrollbarRatio * trackSize),
+      scrollbarRatio * trackSize,
       this.options.scrollbarMinSize
     );
 
@@ -193,7 +197,7 @@ export class ScrollbarsHandler {
     }
   }
 
-  positionScrollbar (axis = 'y') {
+  positionScrollbar(axis = 'y') {
     let scrollbar;
     let scrollOffset;
     let contentSize;
@@ -213,7 +217,7 @@ export class ScrollbarsHandler {
     }
 
     const scrollPourcent = scrollOffset / (contentSize - trackSize);
-    const handleOffset = ((trackSize - this.handleSize[axis]) * scrollPourcent);
+    const handleOffset = (trackSize - this.handleSize[axis]) * scrollPourcent;
 
     if (this.isEnabled[axis] || this.options.forceVisible) {
       if (axis === 'x') {
@@ -224,7 +228,7 @@ export class ScrollbarsHandler {
     }
   }
 
-  toggleTrackVisibility (axis = 'y') {
+  toggleTrackVisibility(axis = 'y') {
     const track = axis === 'y' ? this.trackY : this.trackX;
     const scrollbar = axis === 'y' ? this.scrollbarY : this.scrollbarX;
 
@@ -244,58 +248,66 @@ export class ScrollbarsHandler {
     }
   }
 
-  hideNativeScrollbar () {
+  hideNativeScrollbar() {
     // Recalculate scrollbarWidth in case it's a zoom
     this.scrollbarWidth = calcScrollbarWidth();
 
-    this.scrollContentEl.style[this.isRtl ? 'paddingLeft' : 'paddingRight'] = `${this.scrollbarWidth || this.offsetSize}px`;
-    this.scrollContentEl.style.marginBottom = `-${this.scrollbarWidth * 2 || this.offsetSize}px`;
+    this.scrollContentEl.style[
+      this.isRtl ? 'paddingLeft' : 'paddingRight'
+    ] = `${this.scrollbarWidth || this.offsetSize}px`;
+    this.scrollContentEl.style.marginBottom = `-${
+      this.scrollbarWidth * 2 || this.offsetSize
+    }px`;
     // this.contentEl.style.paddingBottom = `${this.scrollbarWidth || this.offsetSize}px`
 
     if (this.scrollbarWidth !== 0) {
-      this.contentEl.style[this.isRtl ? 'marginLeft' : 'marginRight'] = `-${this.scrollbarWidth}px`;
+      this.contentEl.style[
+        this.isRtl ? 'marginLeft' : 'marginRight'
+      ] = `-${this.scrollbarWidth}px`;
     }
   }
 
   /**
-     * On scroll event handling
-     */
-  onScrollX () {
+   * On scroll event handling
+   */
+  onScrollX() {
     if (!this.scrollXTicking) {
       window.requestAnimationFrame(this.scrollX);
       this.scrollXTicking = true;
     }
   }
 
-  onScrollY () {
+  onScrollY() {
     if (!this.scrollYTicking) {
       window.requestAnimationFrame(this.scrollY);
       this.scrollYTicking = true;
     }
   }
 
-  scrollX () {
+  scrollX() {
     this.showScrollbar('x');
     this.positionScrollbar('x');
     this.scrollXTicking = false;
   }
 
-  scrollY () {
+  scrollY() {
     this.showScrollbar('y');
     this.positionScrollbar('y');
     this.scrollYTicking = false;
   }
 
-  onMouseEnter () {
+  onMouseEnter() {
     this.showScrollbar('x');
     this.showScrollbar('y');
   }
 
-  onMouseMove (e) {
+  onMouseMove(e) {
     if (
-      (this.contentEl.clientWidth !== this.contentElWidth) ||
-        (this.contentEl.clientHeight !== this.contentElHeight)
-    ) { this.recalculate(); }
+      this.contentEl.clientWidth !== this.contentElWidth ||
+      this.contentEl.clientHeight !== this.contentElHeight
+    ) {
+      this.recalculate();
+    }
     const bboxY = this.trackY.getBoundingClientRect();
     const bboxX = this.trackX.getBoundingClientRect();
 
@@ -312,17 +324,19 @@ export class ScrollbarsHandler {
   }
 
   /**
-     * Show scrollbar
-     */
-  showScrollbar (axis = 'y') {
+   * Show scrollbar
+   */
+  showScrollbar(axis = 'y') {
     let scrollbar;
     const { show } = this.options;
     // Scrollbar already visible
     if (this.isVisible[axis]) return;
 
-    if (show && (show !== 'none')) {
-      if ((axis === 'x') && ((show === 'both') || (show === 'x'))) scrollbar = this.scrollbarX;
-      else if ((axis === 'y') && ((show === 'both') || (show === 'y'))) scrollbar = this.scrollbarY;
+    if (show && show !== 'none') {
+      if (axis === 'x' && (show === 'both' || show === 'x'))
+        scrollbar = this.scrollbarX;
+      else if (axis === 'y' && (show === 'both' || show === 'y'))
+        scrollbar = this.scrollbarY;
     }
 
     if (this.isEnabled[axis] && scrollbar) {
@@ -333,13 +347,16 @@ export class ScrollbarsHandler {
     if (!this.options.autoHide) return;
 
     window.clearInterval(this.flashTimeout);
-    this.flashTimeout = window.setInterval(this.hideScrollbars, this.options.timeout);
+    this.flashTimeout = window.setInterval(
+      this.hideScrollbars,
+      this.options.timeout
+    );
   }
 
   /**
-     * Hide Scrollbar
-     */
-  hideScrollbars () {
+   * Hide Scrollbar
+   */
+  hideScrollbars() {
     const bboxY = this.trackY.getBoundingClientRect();
     const bboxX = this.trackX.getBoundingClientRect();
 
@@ -354,7 +371,7 @@ export class ScrollbarsHandler {
     }
   }
 
-  onMouseDown (e) {
+  onMouseDown(e) {
     const bboxY = this.scrollbarY.getBoundingClientRect();
     const bboxX = this.scrollbarX.getBoundingClientRect();
 
@@ -370,9 +387,9 @@ export class ScrollbarsHandler {
   }
 
   /**
-     * on scrollbar handle drag
-     */
-  onDrag (e, axis = 'y') {
+   * on scrollbar handle drag
+   */
+  onDrag(e, axis = 'y') {
     // Preventing the event's default action stops text being
     // selectable during the drag.
     e.preventDefault();
@@ -383,7 +400,7 @@ export class ScrollbarsHandler {
     const eventOffset = axis === 'y' ? e.pageY : e.pageX;
 
     this.dragOffset[axis] =
-        eventOffset - scrollbar.getBoundingClientRect()[this.offsetAttr[axis]];
+      eventOffset - scrollbar.getBoundingClientRect()[this.offsetAttr[axis]];
     this.currentAxis = axis;
 
     this.el.addEventListener('mousemove', this.drag);
@@ -391,9 +408,9 @@ export class ScrollbarsHandler {
   }
 
   /**
-     * Drag scrollbar handle
-     */
-  drag (e) {
+   * Drag scrollbar handle
+   */
+  drag(e) {
     let eventOffset, track, scrollEl;
 
     e.preventDefault();
@@ -410,31 +427,37 @@ export class ScrollbarsHandler {
 
     // Calculate how far the user's mouse is from the top/left of the scrollbar (minus the dragOffset).
     const dragPos =
-        eventOffset -
-        track.getBoundingClientRect()[this.offsetAttr[this.currentAxis]] -
-        this.dragOffset[this.currentAxis];
+      eventOffset -
+      track.getBoundingClientRect()[this.offsetAttr[this.currentAxis]] -
+      this.dragOffset[this.currentAxis];
 
     // Convert the mouse position into a percentage of the scrollbar height/width.
     const dragPerc = dragPos / track[this.sizeAttr[this.currentAxis]];
 
     // Scroll the content by the same percentage.
-    const scrollPos = dragPerc * this.contentEl[this.scrollSizeAttr[this.currentAxis]];
+    const scrollPos =
+      dragPerc * this.contentEl[this.scrollSizeAttr[this.currentAxis]];
 
     scrollEl[this.scrollOffsetAttr[this.currentAxis]] = scrollPos;
   }
 
   /**
-     * End scroll handle drag
-     */
-  onEndDrag () {
+   * End scroll handle drag
+   */
+  onEndDrag() {
     this.el.removeEventListener('mousemove', this.drag);
     this.el.removeEventListener('mouseup', this.onEndDrag);
   }
 
   /**
-     * Check if mouse is within bounds
-     */
-  isWithinBounds (bbox) {
-    return this.mouseX >= bbox.left && this.mouseX <= bbox.left + bbox.width && this.mouseY >= bbox.top && this.mouseY <= bbox.top + bbox.height;
+   * Check if mouse is within bounds
+   */
+  isWithinBounds(bbox) {
+    return (
+      this.mouseX >= bbox.left &&
+      this.mouseX <= bbox.left + bbox.width &&
+      this.mouseY >= bbox.top &&
+      this.mouseY <= bbox.top + bbox.height
+    );
   }
 }

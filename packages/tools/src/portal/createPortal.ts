@@ -1,10 +1,16 @@
 import { portal } from './portal';
 import { CreatedPortal, CreatePortalConfig, HTMLElementAttrs } from './types';
 
-export function createPortal ({ portalId, tagName, tagAttrs, app = {} }: CreatePortalConfig): CreatedPortal {
+export function createPortal({
+  portalId,
+  tagName,
+  tagAttrs,
+  app = {}
+}: CreatePortalConfig): CreatedPortal {
   app.options = app.options || {};
   return {
-    open: (component: any, initData?: { [key: string]: any }): string | false => portal.open({
+    open: (component: any, initData?: { [key: string]: any }): string | false =>
+      portal.open({
         portalId,
         tagName,
         tagAttrs,
@@ -14,13 +20,17 @@ export function createPortal ({ portalId, tagName, tagAttrs, app = {} }: CreateP
             ...app.options,
             portal,
             component,
-            initData,
-          },
+            initData
+          }
         }
-    }),
-    update: (appId: string, appData?: any, tagAttrs?: HTMLElementAttrs): boolean => {
+      }),
+    update: (
+      appId: string,
+      appData?: any,
+      tagAttrs?: HTMLElementAttrs
+    ): boolean => {
       return portal.update({ portalId, appId, appData, tagAttrs });
     },
-    close: (appId: string): boolean => portal.close({ portalId, appId }),
+    close: (appId: string): boolean => portal.close({ portalId, appId })
   };
 }

@@ -17,23 +17,27 @@
     "prettier"
   ],
   "ignorePatterns": [
-    "/dist",
-    "/doc",
+    "**/dist",
+    "**/doc",
     "jest.config.js",
-    "rollup.config.js"
+    "rollup.config.js",
+    "**/*.test.js",
+    "**/*.test.jsx",
+    "**/*.test.ts",
+    "**/*.test.tsx"
   ],
   "rules": {
     // disable the rule for all files
     "no-prototype-builtins": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off"
+    "@typescript-eslint/explicit-module-boundary-types": 0
   },
   "overrides": [
     {
       // enable the rule specifically for TypeScript files
       "files": ["*.ts", "*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-module-boundary-types": ["e"]
+        "@typescript-eslint/explicit-module-boundary-types": [0]
       }
     }
   ]

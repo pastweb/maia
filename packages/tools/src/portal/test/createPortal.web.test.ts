@@ -7,7 +7,7 @@ describe('createPortal', () => {
   const portalId = 'rootPortal';
   rootPortal.id = portalId;
   document.body.appendChild(rootPortal);
-  
+
   const portalConfig = { portalId, app: { AppClass: FirstApp } };
   const portal = createPortal(portalConfig);
 

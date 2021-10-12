@@ -7,7 +7,7 @@ const types = [
   { type: 'Object', value: new MyClass() },
   { type: 'Array', value: [] },
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  { type: 'Function', value: function() {} },
+  { type: 'Function', value: function () {} },
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   { type: 'Function', value: () => {} },
   { type: 'Function', value: class {} },
@@ -16,7 +16,7 @@ const types = [
   { type: 'Symbol', value: Symbol() },
   { type: 'String', value: '' },
   { type: 'Number', value: 0 },
-  { type: 'Boolean', value: false },
+  { type: 'Boolean', value: false }
 ];
 
 describe('getType', () => {

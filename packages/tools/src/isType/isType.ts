@@ -6,6 +6,6 @@ import { getType } from '../getType';
  * @returns {boolean}
  */
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function isType (type: string, target: any): boolean {
+export function isType(type: string, target: any): boolean {
   return target !== undefined && target !== null && getType(target) === type;
 }

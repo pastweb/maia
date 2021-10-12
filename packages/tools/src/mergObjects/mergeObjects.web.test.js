@@ -3,14 +3,14 @@ import { mergeObjects } from './';
 
 const targetObj = {
   original: 1,
-  array: [],
+  array: []
 };
 
 const source1 = {
   level1: {
     level2: []
   },
-  array: [10],
+  array: [10]
 };
 
 const source2 = {
@@ -18,9 +18,9 @@ const source2 = {
   second: 'two',
   original: 10,
   level1: {
-    level2: [20],
+    level2: [20]
   },
-  array: [1,2],
+  array: [1, 2]
 };
 
 describe('mergeObjects', () => {

@@ -5,7 +5,7 @@ const keys = Symbol();
 const unsubscribe = Symbol();
 
 export class EventEmitter {
-  constructor () {
+  constructor() {
     (this as any)[events] = {};
     (this as any)[keys] = {};
     (this as any)[unsubscribe] = this[unsubscribe].bind(this);
@@ -14,20 +14,22 @@ export class EventEmitter {
     this.removeListener = this.removeListener.bind(this);
   }
 
-  emit (eventName: string, ...args: any[]): void {
-    if ((this as any )[events][eventName]) {
+  emit(eventName: string, ...args: any[]): void {
+    if ((this as any)[events][eventName]) {
       const callBackCache = new Set();
-      
-      (this as any)[events][eventName].forEach((eventCallback: EventCallback) => {
-        if (!callBackCache.has(eventCallback)) {
-          callBackCache.add(eventCallback);
-          eventCallback(...args);
+
+      (this as any)[events][eventName].forEach(
+        (eventCallback: EventCallback) => {
+          if (!callBackCache.has(eventCallback)) {
+            callBackCache.add(eventCallback);
+            eventCallback(...args);
+          }
         }
-      });
+      );
     }
   }
 
-  on (eventName: string, eventCallback: EventCallback): EmitterSubscribeObject {
+  on(eventName: string, eventCallback: EventCallback): EmitterSubscribeObject {
     if (!(this as any)[events][eventName]) {
       (this as any)[events][eventName] = new Map();
     }
@@ -38,18 +40,18 @@ export class EventEmitter {
 
     return {
       eventCallbackKey,
-      removeListener: () => this[unsubscribe](eventName, eventCallbackKey),
+      removeListener: () => this[unsubscribe](eventName, eventCallbackKey)
     };
   }
 
-  removeListener (eventCallbackKey: symbol): void {
+  removeListener(eventCallbackKey: symbol): void {
     const event = (this as any)[keys][eventCallbackKey];
     if (event) {
       this[unsubscribe](event, eventCallbackKey);
     }
   }
 
-  [unsubscribe] (eventName: string, eventCallbackKey: symbol): void {
+  [unsubscribe](eventName: string, eventCallbackKey: symbol): void {
     (this as any)[events][eventName].delete(eventCallbackKey);
     delete (this as any)[keys][eventCallbackKey];
   }

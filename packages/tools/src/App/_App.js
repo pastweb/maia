@@ -5,7 +5,7 @@ const emitter = Symbol();
 const keys = Symbol();
 
 export class App {
-  constructor (options = {}, domElement, privateKeys = {}) {
+  constructor(options = {}, domElement, privateKeys = {}) {
     const { optionsKey, domElementKey } = privateKeys;
 
     if (domElementKey) {
@@ -19,7 +19,7 @@ export class App {
     } else {
       this.options = options;
     }
-    
+
     this[keys] = privateKeys;
     this[emitter] = new EventEmitter();
     this.on = this[emitter].on;
@@ -47,7 +47,7 @@ export class App {
     }
   }
 
-  setDomElement (domElement, domElementKey) {
+  setDomElement(domElement, domElementKey) {
     if (domElementKey) {
       this[domElementKey] = domElement;
     } else if (this[keys].domElementKey) {
@@ -56,8 +56,8 @@ export class App {
       this.domElement = domElement;
     }
   }
-  
-  setOptions (options, optionsKey) {
+
+  setOptions(options, optionsKey) {
     if (optionsKey) {
       this[optionsKey] = options;
     } else if (this[keys].optionsKey) {

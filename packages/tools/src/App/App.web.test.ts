@@ -4,7 +4,7 @@ import { AppOptions } from './types';
 const INITIAL_VALUE = 'this is the initial value';
 
 const functions = {
-  update: jest.fn(),
+  update: jest.fn()
 };
 
 class MyApp extends App {
@@ -132,7 +132,7 @@ describe('App', () => {
     secondApp.unmount();
     const node = document.querySelector('.secondApp');
 
-    it('the div element with the class "secondApp" should not exists', () => {   
+    it('the div element with the class "secondApp" should not exists', () => {
       expect(node).toBe(null);
     });
   });

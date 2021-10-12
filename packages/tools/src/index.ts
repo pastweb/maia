@@ -9,7 +9,7 @@ export { getType } from './getType';
 export { hashID } from './hashID';
 export { isSSR } from './isSSR';
 export { isMap } from './isMap';
-export { isMobile } from './isMobile';
+export { isDevice } from './isDevice';
 export { isObject } from './isObject';
 export { isSet } from './isSet';
 export { isSymbol } from './isSymbol';

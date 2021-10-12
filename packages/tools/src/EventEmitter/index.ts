@@ -1,5 +1,2 @@
 export { EventEmitter } from './EventEmitter';
-export type {
-  EventCallback,
-  EmitterSubscribeObject
-} from './types';
+export type { EventCallback, EmitterSubscribeObject } from './types';

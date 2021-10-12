@@ -3,7 +3,7 @@ const keys = Symbol();
 const unsubscribe = Symbol();
 
 export class EventEmitter {
-  constructor () {
+  constructor() {
     this[events] = {};
     this[keys] = {};
     this[unsubscribe] = this[unsubscribe].bind(this);
@@ -12,11 +12,11 @@ export class EventEmitter {
     this.removeListener = this.removeListener.bind(this);
   }
 
-  emit (eventName, ...args) {
+  emit(eventName, ...args) {
     if (this[events][eventName]) {
       const callBackCache = new Set();
-      
-      this[events][eventName].forEach(eventCallback => {
+
+      this[events][eventName].forEach((eventCallback) => {
         if (!callBackCache.has(eventCallback)) {
           callBackCache.add(eventCallback);
           eventCallback(...args);
@@ -25,7 +25,7 @@ export class EventEmitter {
     }
   }
 
-  on (eventName, eventCallback) {
+  on(eventName, eventCallback) {
     if (!this[events][eventName]) {
       this[events][eventName] = new Map();
     }
@@ -36,18 +36,18 @@ export class EventEmitter {
 
     return {
       eventCallbackKey,
-      removeListener: () => this[unsubscribe](eventName, eventCallbackKey),
+      removeListener: () => this[unsubscribe](eventName, eventCallbackKey)
     };
   }
 
-  removeListener (eventCallbackKey) {
+  removeListener(eventCallbackKey) {
     const event = this[keys][eventCallbackKey];
     if (event) {
       this[unsubscribe](event, eventCallbackKey);
     }
   }
 
-  [unsubscribe] (eventName, eventCallbackKey) {
+  [unsubscribe](eventName, eventCallbackKey) {
     this[events][eventName].delete(eventCallbackKey);
     delete this[keys][eventCallbackKey];
   }

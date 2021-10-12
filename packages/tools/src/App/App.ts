@@ -12,7 +12,11 @@ export class App {
   emit: (eventName: string, ...args: any[]) => void;
   removeListener: (eventCallbackKey: symbol) => void;
 
-  constructor (options: AppOptions = {}, domElement?: HTMLElement, privateKeys: PrivateKeys = {}) {
+  constructor(
+    options: AppOptions = {},
+    domElement?: HTMLElement,
+    privateKeys: PrivateKeys = {}
+  ) {
     const { optionsKey, domElementKey } = privateKeys;
     (this as any)[keys] = privateKeys;
     (this as any)[emitter] = new EventEmitter();
@@ -28,7 +32,7 @@ export class App {
     } else {
       this.options = options;
     }
-    
+
     this.on = (this as any)[emitter].on;
     this.emit = (this as any)[emitter].emit;
     this.removeListener = (this as any)[emitter].removeListener;
@@ -52,7 +56,7 @@ export class App {
     }
   }
 
-  public setDomElement (domElement: HTMLElement, domElementKey?: symbol): void {
+  public setDomElement(domElement: HTMLElement, domElementKey?: symbol): void {
     if (domElementKey) {
       (this as any)[domElementKey] = domElement;
     } else if ((this as any)[keys].domElementKey) {
@@ -61,8 +65,8 @@ export class App {
       this.domElement = domElement;
     }
   }
-  
-  public setOptions (options: AppOptions, optionsKey?: symbol): void {
+
+  public setOptions(options: AppOptions, optionsKey?: symbol): void {
     if (optionsKey) {
       (this as any)[optionsKey] = options;
     } else if ((this as any)[keys].optionsKey) {

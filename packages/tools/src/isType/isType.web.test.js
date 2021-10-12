@@ -3,7 +3,7 @@ import { isType } from './';
 const types = {
   Object: {},
   Array: [],
-  Function: function() {},
+  Function: function () {},
   Function: () => {},
   Function: class {},
   Set: new Set(),
@@ -11,7 +11,7 @@ const types = {
   Symbol: Symbol(),
   String: '',
   Number: 0,
-  Boolean: false,
+  Boolean: false
 };
 
 const testFunc = isType;

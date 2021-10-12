@@ -4,7 +4,7 @@ import { windowResize } from '../../../../test/util';
 const breaks: BreakPointsConfig = {
   450: 'tablet',
   320: 'phone',
-  1025: 'desktop',
+  1025: 'desktop'
 };
 
 const expectations: BreakPointsConfig = {
@@ -22,7 +22,7 @@ const expectations: BreakPointsConfig = {
   1024: 'desktop',
   1025: 'desktop',
   1026: 'desktop',
-  2000: 'desktop',
+  2000: 'desktop'
 };
 
 afterAll(() => {

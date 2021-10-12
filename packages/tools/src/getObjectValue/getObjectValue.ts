@@ -2,7 +2,11 @@
 import { isObject } from '../isObject';
 import { ObjectValue, DefaultValue } from './types';
 
-export function getObjectValue (target: ObjectValue, path: string | string[], defaultValue: DefaultValue = null): any {
+export function getObjectValue(
+  target: ObjectValue,
+  path: string | string[],
+  defaultValue: DefaultValue = null
+): any {
   if (!isObject(target)) {
     return defaultValue;
   }
@@ -16,9 +20,9 @@ export function getObjectValue (target: ObjectValue, path: string | string[], de
   if (!Array.isArray(path)) {
     let newKey = '';
     let currChar = '';
-    for(let i=path.length -1; i>=0; i--) {
+    for (let i = path.length - 1; i >= 0; i--) {
       currChar = path.charAt(i);
-      
+
       if (currChar !== '.') {
         newKey = `${currChar}${newKey}`;
         if (i === 0) pathArray.push(newKey);
