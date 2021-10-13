@@ -21,6 +21,9 @@
     "url": "https://github.com/pastweb/maia/issues"
   },
   "homepage": "https://github.com/pastweb/maia#readme",
+  "dependencies": {
+    "@maia/tools": "^1.0.0"
+  },
   "peerDependencies": {
     "react": "17.0.2"
   },

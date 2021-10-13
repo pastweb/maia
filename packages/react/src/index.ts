@@ -1,3 +1,4 @@
+export { AppAdapter } from './AppAdapter';
 export { useDidMount } from './useDidMount';
 export { useForceUpdate } from './useForceUpdate';
 export { useMergeState } from './useMergeState';

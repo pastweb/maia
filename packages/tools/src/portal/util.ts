@@ -5,7 +5,7 @@ import {
   UpdatePortalConfig,
   ClosePortalConfig,
   HTMLElementAttrs,
-  StyleConfig
+  StyleConfig,
 } from './types';
 import { App } from '../App';
 
@@ -105,7 +105,7 @@ export function close(
 
   if (appId === '*') {
     Object.keys(portals[portalId]).forEach((appId) =>
-      portals[portalId][appId].emit('mustUnmount')
+      portals[portalId][appId].emit('unmount')
     );
   }
 

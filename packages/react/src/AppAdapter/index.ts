@@ -1,0 +1,1 @@
+export { AppAdapter } from './AppAdapter';

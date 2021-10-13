@@ -1,4 +1,5 @@
 import { EventEmitter, EventCallback } from '../EventEmitter';
+import { mergeObjects } from '..';
 import { noop } from '../noop';
 import { AppOptions, PrivateKeys } from './types';
 
@@ -49,11 +50,19 @@ export class App {
       (this as any).unmount = noop;
     }
 
+    this.on('unmount', () => {
+      (this as any).unmount();
+    });
+
     if ((this as any).update && typeof (this as any).update === 'function') {
       (this as any).update = (this as any).update.bind(this);
     } else {
       (this as any).update = noop;
     }
+
+    this.on('update', (...args: any[]) => {
+      (this as any).update(...args);
+    });
   }
 
   public setDomElement(domElement: HTMLElement, domElementKey?: symbol): void {
@@ -73,6 +82,17 @@ export class App {
       (this as any)[(this as any)[keys].optionsKey] = options;
     } else {
       this.options = options;
+    }
+  }
+
+  public mergeOptions(newOptions: AppOptions): void {
+    if ((this as any)[keys].optionsKey) {
+      (this as any)[(this as any)[keys].optionsKey] = mergeObjects(
+        (this as any)[(this as any)[keys].optionsKey],
+        newOptions
+      );
+    } else {
+      this.options = mergeObjects((this as any).options, newOptions);
     }
   }
 }
