@@ -59,10 +59,6 @@ export class App {
     } else {
       (this as any).update = noop;
     }
-
-    this.on('update', (...args: any[]) => {
-      (this as any).update(...args);
-    });
   }
 
   public setDomElement(domElement: HTMLElement, domElementKey?: symbol): void {
