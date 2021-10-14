@@ -63,7 +63,6 @@ class MyApp2 extends App {
   update(value: any) {
     if (this.node) {
       this.node.innerHTML = value;
-      this.emit('update', functions.update);
     }
   }
 }
@@ -100,12 +99,13 @@ describe('App', () => {
   });
 
   describe('update', () => {
-    const spy = jest.spyOn(functions, 'update');
+    const spyEvent = jest.spyOn(functions, 'update');
+    const spyMethod = jest.spyOn(secondApp, 'update');
     secondApp.on('update', functions.update);
 
     secondApp.mount();
     const node = document.querySelector('.secondApp') as HTMLElement;
-    secondApp.update('newValue');
+    secondApp.emit('update', 'newValue');
 
     it('the html node should be not null', () => {
       expect(node !== null).toBe(true);
@@ -124,7 +124,11 @@ describe('App', () => {
     });
 
     it('the function update should be called', () => {
-      expect(spy).toBeCalled();
+      expect(spyEvent).toBeCalled();
+    });
+
+    it('the method update should be called', () => {
+      expect(spyMethod).toBeCalled();
     });
   });
 
