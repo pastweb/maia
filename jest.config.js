@@ -12,7 +12,6 @@ const packages = readdirSync(packagesPath).filter(name =>
 
 const common = {
     verbose: true,
-    setupFiles: ['<rootDir>/jest.setup.js'],
     testPathIgnorePatterns: ['<rootDir>/node_modules/'],
     transform: { '^.+\\.(j|t)s(x)?$': 'ts-jest' },
     coveragePathIgnorePatterns: [ 'node_modules', WEB_REGEX, NODE_REGEX ],
