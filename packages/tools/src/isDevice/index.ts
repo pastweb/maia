@@ -4,5 +4,4 @@ export type {
   DeviceConfig,
   MediaQueryCallback,
   IsDevicesResult,
-  IsDeviceCallbackEvent
 } from './types';

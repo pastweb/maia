@@ -8,7 +8,7 @@
   "scripts": {
     "build": "rimraf dist && rimraf doc && rollup -c",
     "dev": "rollup -c -w",
-    "lint": "eslint ./src/**/*.{js,ts} --fix"
+    "lint": "eslint ./src/**/*.ts --fix"
   },
   "repository": {
     "type": "git",

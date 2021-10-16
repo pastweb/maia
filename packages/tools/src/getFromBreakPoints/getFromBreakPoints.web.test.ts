@@ -1,5 +1,5 @@
 import { getFromBreakPoints, BreakPointsConfig } from './';
-import { windowResize } from '../../../../test/util';
+import { windowResize } from '@maia/test';
 
 const breaks: BreakPointsConfig = {
   450: 'tablet',

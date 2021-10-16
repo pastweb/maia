@@ -10,8 +10,8 @@ if (typeof window !== 'undefined') {
 
 export function windowResize (width?: number, height?: number): void {
   if (typeof window !== 'undefined') {
-    (window as any).innerWidth = !width ? storedWidth : width;
-    (window as any).innerHeight = !height ? storedHeight : height;
+    (window as any).innerWidth = typeof width === 'undefined' ? storedWidth : width;
+    (window as any).innerHeight = typeof height === 'undefined' ? storedHeight : height;
     fireWindowEvent('resize');
   }
 }

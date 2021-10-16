@@ -1,6 +1,6 @@
 import { defaultUaRegExp, isDevice } from './isDevice';
 import { DevicesConfig, IsDevicesResult } from './types';
-import { setUserAgent, MatchMedia, MediaQueryListener } from '@maia/test';
+import { setUserAgent, MatchMedia } from '@maia/test';
 
 let matchMedia: MatchMedia;
 
