@@ -11,9 +11,7 @@ export class MatchMedia {
   private currentMediaQuery: string | undefined;
 
   constructor(mediaQuery?: string) {
-    if (mediaQuery) {
-      this.currentMediaQuery = mediaQuery;
-    }
+    this.currentMediaQuery = mediaQuery;
 
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
