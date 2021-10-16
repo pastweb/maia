@@ -1,5 +1,5 @@
 import { defaultUaRegExp, isDevice } from './isDevice';
-import { IsDeviceCallbackEvent, DevicesConfig } from './types';
+import { DevicesConfig, IsDevicesResult } from './types';
 import { setUserAgent, MatchMedia, MediaQueryListener } from '@maia/test';
 
 let matchMedia: MatchMedia;
@@ -14,34 +14,12 @@ const testUA = [
   'Windows Phone'
 ];
 
-const events: { [device: string]: any } = {};
-
 const devicesConfig: DevicesConfig = {
   mobile: { uaRegExp: true },
-  phone: {
-    mediaQueryString: '(max-width: 320px)',
-    onMediaQueryChange: jest.fn().mockImplementation((e: MediaQueryListener) => {
-      events.phone = e;
-    }),
-  },
-  tablet: {
-    mediaQueryString: '(max-width: 600px)',
-    onMediaQueryChange: jest.fn().mockImplementation((e: MediaQueryListener) => {
-      events.tablet = e;
-    }),
-  },
-  desktop: {
-    mediaQueryString: '(max-width: 1024px)',
-    onMediaQueryChange: jest.fn().mockImplementation((e: MediaQueryListener) => {
-      events.desktop = e;
-    }),
-  },
-  tv: {
-    mediaQueryString: '(min-width: 1025px)',
-    onMediaQueryChange: jest.fn().mockImplementation((e: MediaQueryListener) => {
-      events.tv = e;
-    }),
-  },
+  phone: { mediaQueryString: '(max-width: 320px)' },
+  tablet: { mediaQueryString: '(max-width: 600px)' },
+  desktop: { mediaQueryString: '(max-width: 1024px)' },
+  tv: { mediaQueryString: '(min-width: 1025px)' },
   iPad: { uaRegExp: /iPad/, },
   iPhone: { uaRegExp: /iPhone/ },
   iPod: { uaRegExp: /iPod/ },
@@ -83,21 +61,26 @@ describe('isDevice', () => {
           expect(devices[isDeviceName]).toBe(true);
         });
       } else if (config.mediaQueryString && !config.uaRegExp) {
-        const { mediaQueryString, onMediaQueryChange } = (devicesConfig[device] as any);
+        const { mediaQueryString } = (devicesConfig[device] as any);
         it(`for the device "${device}" the mediaQuery should match so "${isDeviceName}" should be true`, () => {
           matchMedia = new MatchMedia(mediaQueryString);
           const devices = isDevice(devicesConfig);
           expect(devices[isDeviceName]).toBe(true);
         });
 
-        it(`for the device "${device}" the mediaQuery listener should be called so "${isDeviceName}" true should be inside the event object.`, () => {
-          const devices = isDevice(devicesConfig);
-          matchMedia.useMediaQuery(mediaQueryString);
+        // it(`for the device "${device}" the mediaQuery listener should be called so "${isDeviceName}" true should be inside the result object.`, () => {
+        //   let devicesResult: IsDevicesResult | null = null;
+        //   const onMediaQueryChange = jest.fn().mockImplementation((devices: IsDevicesResult) => {
+        //     devicesResult = devices;
+        //   })
+          
+        //   const devices = isDevice(devicesConfig, onMediaQueryChange);
+        //   matchMedia.useMediaQuery(mediaQueryString);
 
-          console.log(device, devices)
-          // expect(devices[isDeviceName]).toBe(false);
-          // expect(onMediaQueryChange).toBeCalledTimes(1);
-        });
+        //   // console.log(device, devices)
+        //   expect(devices[isDeviceName]).toBe(false);
+        //   // expect(onMediaQueryChange).toBeCalledTimes(1);
+        // });
       }
     });
   });
