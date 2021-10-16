@@ -1,0 +1,1 @@
+export { windowResize } from './windowResize';

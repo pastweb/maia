@@ -1,0 +1,1 @@
+export { fireWindowEvent } from './fireWindowEvent';
