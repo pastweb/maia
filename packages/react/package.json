@@ -4,7 +4,7 @@
   "description": "Set of tools for react web application development",
   "main": "dist/maia-react.cjs.js",
   "module": "dist/maia-react.es.js",
-  "typings": "dist/types/maia-react.d.ts",
+  "typings": "dist/types/index.d.ts",
   "scripts": {
     "build": "rimraf dist && rimraf doc && rollup -c",
     "dev": "rollup -c -w",

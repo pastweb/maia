@@ -1,16 +1,15 @@
-export type IsDeviceCallbackEvent = {
-  [eventProp: string]: any;
-};
+export type MatchMedias = {
+  [mediaQuery: string]: MediaQueryList;
+}
 
 export type MediaQueryCallback = (
-  isDeviceCallbackEvent: IsDeviceCallbackEvent
+  isDevicesResult: IsDevicesResult
 ) => void;
 
 export type DeviceConfig = {
   forceTrue?: true | undefined;
   uaRegExp?: RegExp | true;
   mediaQueryString?: string;
-  onMediaQueryChange?: MediaQueryCallback;
 };
 
 export type DevicesConfig = {
