@@ -119,6 +119,7 @@ export class MatchMedia {
    * @public
    */
   public clear(): void {
+    this.currentMediaQuery = undefined;
     this.mediaQueries = {};
   }
 

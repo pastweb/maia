@@ -9,7 +9,7 @@ if (typeof window !== 'undefined') {
   }))(window.navigator['userAgent']));
 }
 
-export function setUserAgent (newUserAgent: string) {
+export function setUserAgent (newUserAgent?: string) {
   if (typeof window !== 'undefined') {
     (window.navigator as any).userAgent = newUserAgent || storedUserAgent;
   }
