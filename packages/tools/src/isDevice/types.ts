@@ -1,5 +1,5 @@
-export type MatchMedias = {
-  [mediaQuery: string]: MediaQueryList;
+export type MatchMediasListeners = {
+  [mediaQuery: string]: Set<MediaQueryCallback>;
 }
 
 export type MediaQueryCallback = (

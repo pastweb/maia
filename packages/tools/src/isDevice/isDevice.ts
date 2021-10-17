@@ -1,6 +1,6 @@
 import { isSSR } from '../isSSR';
 import {
-  MatchMedias,
+  MatchMediasListeners,
   DevicesConfig,
   DeviceConfig,
   IsDevicesResult,
@@ -10,9 +10,13 @@ import {
 export const defaultUaRegExp =
   /iP(hone|ad|od)|blackberry|Android|(W|w)indows (P|p)hone/g;
 
-const matchMedias: MatchMedias = {}; 
+let matchMediasList: MatchMediasListeners = {};
 
-function checkWithMediaQuery(
+export function resetMediaQueryCache(): void {
+  matchMediasList = {};
+}
+
+export function checkWithMediaQuery(
   mql: MediaQueryListEvent | MediaQueryList,
   uaRegex: RegExp
 ): boolean {
@@ -20,7 +24,10 @@ function checkWithMediaQuery(
   return uaRegex.test(window.navigator.userAgent) || matches ? true : false;
 }
 
-export function isDevice(config: DevicesConfig = {}, onMediaQueryChange?: MediaQueryCallback): IsDevicesResult {
+export function isDevice(
+  config: DevicesConfig = {},
+  onMediaQueryChange?: MediaQueryCallback
+): IsDevicesResult {
   const devices: IsDevicesResult = {};
 
   Object.entries(config).forEach(
@@ -43,13 +50,18 @@ export function isDevice(config: DevicesConfig = {}, onMediaQueryChange?: MediaQ
         if (mediaQueryString) {
           const mql: MediaQueryList = window.matchMedia(mediaQueryString);
           
-          if (onMediaQueryChange && !matchMedias[mediaQueryString]) {
-            matchMedias[mediaQueryString] = mql;
-            const _onMediaQueryChange = (): void => {
-              onMediaQueryChange(isDevice(config, onMediaQueryChange));
-            };
-  
-            mql.addEventListener('change', _onMediaQueryChange);
+          if (onMediaQueryChange) {
+            if (!matchMediasList[mediaQueryString]) {
+              matchMediasList[mediaQueryString] = new Set();
+            }
+
+            if (!matchMediasList[mediaQueryString].has(onMediaQueryChange)) {
+              const _onMediaQueryChange = (): void => {
+                onMediaQueryChange(isDevice(config, onMediaQueryChange));
+              };
+              matchMediasList[mediaQueryString].add(onMediaQueryChange);
+              mql.addEventListener('change', _onMediaQueryChange);
+            }
           }
           devices[isDeviceName] = checkWithMediaQuery(mql, regexp);
         } else {
