@@ -56,11 +56,10 @@ export function isDevice(
             }
 
             if (!matchMediasList[mediaQueryString].has(onMediaQueryChange)) {
-              const _onMediaQueryChange = (): void => {
-                onMediaQueryChange(isDevice(config, onMediaQueryChange));
-              };
               matchMediasList[mediaQueryString].add(onMediaQueryChange);
-              mql.addEventListener('change', _onMediaQueryChange);
+              mql.addEventListener('change', (): void => {
+                onMediaQueryChange(isDevice(config, onMediaQueryChange));
+              });
             }
           }
           devices[isDeviceName] = checkWithMediaQuery(mql, regexp);

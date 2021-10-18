@@ -44,6 +44,10 @@ export class App {
       (this as any).mount = noop;
     }
 
+    this.on('mount', () => {
+      (this as any).mount();
+    });
+
     if ((this as any).unmount && typeof (this as any).unmount === 'function') {
       (this as any).unmount = (this as any).unmount.bind(this);
     } else {
