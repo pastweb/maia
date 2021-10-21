@@ -12,7 +12,7 @@ export const defaultUaRegExp =
 
 let matchMediasList: MatchMediasListeners = {};
 
-export function resetMediaQueryCache(): void {
+export function _testResetMediaQueryCache(): void {
   matchMediasList = {};
 }
 

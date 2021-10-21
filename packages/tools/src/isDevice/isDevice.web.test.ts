@@ -1,4 +1,4 @@
-import { defaultUaRegExp, isDevice, resetMediaQueryCache } from './isDevice';
+import { defaultUaRegExp, isDevice, _testResetMediaQueryCache } from './isDevice';
 import { DevicesConfig, IsDevicesResult } from './types';
 import { setUserAgent, MatchMedia } from '@maia/test';
 
@@ -80,7 +80,7 @@ describe('isDevice - web', () => {
         (`for the device "%s" the mediaQuery listener should be called.`, (device, config) => {
           const { mediaQueryString, uaRegExp } = config;
           if (mediaQueryString && !uaRegExp) {
-            resetMediaQueryCache();
+            _testResetMediaQueryCache();
             let devicesResult: IsDevicesResult = {};
             
             const onMediaQueryChange = jest.fn().mockImplementation((devices: IsDevicesResult) => {
