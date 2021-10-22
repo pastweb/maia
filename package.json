@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "lerna run clean --stream --parallel",
     "build": "lerna run build --stream --concurrency 1",
-    "lint": "eslint ./packages/**/*.{ts} --fix",
+    "lint": "eslint ./packages/**/*.ts --fix",
     "test": "jest",
     "test-coverage": "jest --coverage",
     "post-install": "husky install"
