@@ -1,0 +1,1 @@
+export { readOnlyProp } from './readOnlyProp';

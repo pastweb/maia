@@ -1,0 +1,1 @@
+export { getStyleItCacheTagString } from './getStyleItCacheTagString';

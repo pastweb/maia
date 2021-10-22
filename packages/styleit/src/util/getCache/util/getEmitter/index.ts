@@ -1,0 +1,1 @@
+export { getEmitter } from './getEmitter';

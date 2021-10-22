@@ -1,0 +1,1 @@
+export { getScopedCSS } from './getScopedCSS';
