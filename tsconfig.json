@@ -24,6 +24,7 @@
     ],
     "outDir": "packages/**/dist",
   },
+  "files": ["global.d.ts"],
   "exclude": [
     "node_modules",
     "packages/**/src/**/*.test.ts"
