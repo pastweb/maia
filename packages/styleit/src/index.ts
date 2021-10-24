@@ -1,26 +1,33 @@
 import {
   addScopedCSS,
+  css,
   getCache,
   getUpdateTarget,
   UpdateTarget,
-  getStyleItCacheTagString,
+  getStyleItCacheTagString as _getStyleItCacheTagString,
   removeScopedCSS,
+  ScopedNames,
+  StyleDetail,
 } from './util';
-import { ScopedNames } from './util';
 
 const updateTarget: UpdateTarget = getUpdateTarget();
 const cache = getCache();
 
-function add(rules: string): ScopedNames {
-  return addScopedCSS(rules, cache, updateTarget);
+export function add(styleDetail: StyleDetail): ScopedNames {
+  return addScopedCSS(styleDetail, cache, updateTarget);
 }
 
-function remove(rules: string): void {
-  removeScopedCSS(rules, cache, updateTarget);
+export { css }
+
+export function remove(styleDetail: StyleDetail): void {
+  removeScopedCSS(styleDetail, cache, updateTarget);
 }
 
-export const styleIt = Object.freeze({
+export const getStyleItCacheTagString = (): string => _getStyleItCacheTagString(cache);
+
+export default Object.freeze({
   add,
+  css,
   remove,
-  getStyleItCacheTagString: (): string => getStyleItCacheTagString(cache),
+  getStyleItCacheTagString,
 });

@@ -7,17 +7,17 @@ export type StyleCache = {
 };
 
 export type StyleMap = {
-  [rule: string]: StyleCache;
+  [styleKey: string]: StyleCache;
 };
 
 export interface StyleMapper {
-  has: (rules: string) => boolean,
-  get: (rules: string) => StyleCache,
+  has: (styleKey: string) => boolean,
+  get: (styleKey: string) => StyleCache,
   getStyleMap: () => StyleMap;
   setStyleMap: (newStyleMap: StyleMap) => void;
-  add: (rules: string, styleCache: StyleCache) => void;
-  update: (rules: string, styleCache: StyleCache) => void;
-  remove: (rules: string, styleCache: StyleCache) => void;
+  add: (styleKey: string, styleCache: StyleCache) => void;
+  update: (styleKey: string, styleCache: StyleCache) => void;
+  remove: (styleKey: string, styleCache: StyleCache) => void;
   size: number;
   css: string;
 }

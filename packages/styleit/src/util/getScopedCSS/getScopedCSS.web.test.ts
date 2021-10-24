@@ -1,12 +1,19 @@
 import { getScopedCSS } from './';
 import { isObject } from '@maia/tools';
 import { STYLE_WITH_KEYFRAMES } from '../_mocks';
+import { StyleDetail } from '../types';
+import { hashCode } from '../hashCode';
 
 const id = '_uniqueID';
-const rules = STYLE_WITH_KEYFRAMES;
+const styleDetail: StyleDetail = {
+  rules: STYLE_WITH_KEYFRAMES,
+  fileName: 'some/file/path',
+  componentName: 'MyComponentName',
+  styleKey: hashCode(STYLE_WITH_KEYFRAMES),
+};
 
 describe('styleIt - getScopedCSS', () => {
-  const scoped = getScopedCSS(rules, id);
+  const scoped = getScopedCSS(styleDetail, id);
 
   it('scoped should be defined', () => {
     expect(scoped).toBeDefined();

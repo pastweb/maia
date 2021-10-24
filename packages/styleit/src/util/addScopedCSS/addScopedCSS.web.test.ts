@@ -7,16 +7,31 @@ import {
   STYLE_WITH_KEYFRAMES,
   STYLE_WITHOUT_KEYFRAMES,
 } from '../_mocks';
+import { hashCode } from '../hashCode';
+import { StyleDetail } from '../types';
 
 const updateTarget = getUpdateTarget();
 const cache = getCache();
 
-const rulesWithKeyframes = STYLE_WITH_KEYFRAMES;
+const fileName = 'some/file/path';
+const componentName = 'MyComponentName';
 
-const rulesWithoutKeyframes = STYLE_WITHOUT_KEYFRAMES;
+const styleDetailWithKeyframes: StyleDetail = {
+  rules: STYLE_WITH_KEYFRAMES,
+  fileName,
+  componentName,
+  styleKey: hashCode(STYLE_WITH_KEYFRAMES),
+};
+
+const styleDetailWithoutKeyframes: StyleDetail = {
+  rules: STYLE_WITHOUT_KEYFRAMES,
+  fileName,
+  componentName,
+  styleKey: hashCode(STYLE_WITHOUT_KEYFRAMES),
+};
 
 describe('styleIt - addScopedCSS', () => {
-  const scoped = addScopedCSS(rulesWithKeyframes, cache, updateTarget);
+  const scoped = addScopedCSS(styleDetailWithKeyframes, cache, updateTarget);
 
   it('scoped should be defined', () => {
     expect(scoped).toBeDefined();
@@ -46,12 +61,12 @@ describe('styleIt - addScopedCSS', () => {
     expect(cache.style.size).toBe(1);
   });
 
-  it('styleCache should contains the STYLE_WITH_KEYFRAMES rules as key', () => {
-      expect(cache.style.has(rulesWithKeyframes)).toBe(true);
+  it('styleCache should contains the STYLE_WITH_KEYFRAMES styleKey as key', () => {
+      expect(cache.style.has(styleDetailWithKeyframes.styleKey)).toBe(true);
   });
 
 
-  const styleCache = cache.style.get(STYLE_WITH_KEYFRAMES);
+  const styleCache = cache.style.get(styleDetailWithKeyframes.styleKey);
 
   it('styleCache should be defiled', () => {
     expect(styleCache).toBeDefined();
@@ -89,12 +104,6 @@ describe('styleIt - addScopedCSS', () => {
     expect(typeof styleCache.css).toBe('string');
   });
 
-  it('styleCache "css" property value should has more then 1 id string occurence', () => {
-    const occurrencies = (styleCache.css.match(new RegExp(scoped.id, 'g')) as Array<string>).length;
-    expect(occurrencies).toBeDefined();
-    expect(occurrencies > 1).toBe(true);
-  });
-
   it('styleCache "css" property value should be present in "updateTarget.textContent" property', () => {
     const { textContent } = updateTarget;
     expect((textContent as string).indexOf(styleCache.css) > 0).toBe(true);
@@ -109,8 +118,15 @@ describe('styleIt - addScopedCSS', () => {
 
   it('id2 hsould be equal to id', () => {
     cssTextBeforeUpdate = updateTarget.textContent!;
-    const { id: id2 } = addScopedCSS(rulesWithKeyframes, cache, updateTarget);
+    const { id: id2 } = addScopedCSS(styleDetailWithKeyframes, cache, updateTarget);
     expect(id2 === scoped.id).toBe(true);
+  });
+
+  it('styleCache "css" property value should has more then 1 id string occurence', () => {
+    console.log(styleCache.css)
+    const occurrencies = (styleCache.css.match(new RegExp(scoped.id, 'g')) as Array<string>).length;
+    expect(occurrencies).toBeDefined();
+    expect(occurrencies > 1).toBe(true);
   });
 
   it('updateTarget.textContent should be equal to cssTextBeforeUpdate', () => {
@@ -118,14 +134,14 @@ describe('styleIt - addScopedCSS', () => {
   });
 
   it('styleCache2 "counter" property should be 2', () => {
-    const styleCache2 = cache.style.get(STYLE_WITH_KEYFRAMES);
+    const styleCache2 = cache.style.get(styleDetailWithKeyframes.styleKey);
     expect(styleCache2.counter).toBe(2);
   });
 
   let id3: string = '';
 
   it('cache.ids.size should be 2', () => {
-    id3 = addScopedCSS(rulesWithoutKeyframes, cache, updateTarget).id;
+    id3 = addScopedCSS(styleDetailWithoutKeyframes, cache, updateTarget).id;
     expect(cache.ids.size).toBe(2);
   });
 

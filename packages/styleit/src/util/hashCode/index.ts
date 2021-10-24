@@ -1,0 +1,1 @@
+export { hashCode } from './hashCode';

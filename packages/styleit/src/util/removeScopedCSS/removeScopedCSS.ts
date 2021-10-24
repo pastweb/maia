@@ -1,16 +1,17 @@
 import { updateCSS } from '../updateCSS';
-import { Cache, UpdateTarget, StyleCache } from '../types';
+import { Cache, UpdateTarget, StyleCache, StyleDetail } from '../types';
 
-export function removeScopedCSS(rules: string, cache: Cache, updateTarget: UpdateTarget): void {
-  if (!cache.style) return;
-  if (!cache.style.has(rules)) return;
-  const styleCache: StyleCache = cache.style.get(rules);
+export function removeScopedCSS(styleDetail: StyleDetail, cache: Cache, updateTarget: UpdateTarget): void {
+  const { styleKey } = styleDetail;
+
+  if (!cache.style.has(styleKey)) return;
+  const styleCache: StyleCache = cache.style.get(styleKey);
 
   if (styleCache.counter === 1) {
-    cache.style.remove(rules, styleCache);
+    cache.style.remove(styleKey, styleCache);
     updateCSS(updateTarget, cache);
   } else {
     styleCache.counter -= 1;
-    cache.style.update(rules, styleCache);
+    cache.style.update(styleKey, styleCache);
   }
 }

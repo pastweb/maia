@@ -21,26 +21,26 @@ export function getStyleMapper(styleMap: StyleMap, emitter: EventEmitter): Cache
   const cache: Cache = {
     ids: new Set(),
     style: {
-      has: (rules: string): boolean => !!styleMap[rules],
-      get: (rules: string): StyleCache => styleMap[rules],
+      has: (styleKey: string): boolean => !!styleMap[styleKey],
+      get: (styleKey: string): StyleCache => styleMap[styleKey],
       getStyleMap: (): StyleMap => styleMap,
       setStyleMap: (newStyleMap: StyleMap): void => {
         styleMap = newStyleMap;
       },
-      add: (rules: string, styleCache: StyleCache) => {
+      add: (styleKey: string, styleCache: StyleCache) => {
         const { id } = styleCache;
         cache.ids.add(id);
-        styleMap[rules] = styleCache;
+        styleMap[styleKey] = styleCache;
         updateCache(cache, emitter);
       },
-      update: (rules: string, styleCache: StyleCache): void => {
-        if (!styleMap[rules]) return;
-        styleMap[rules] = styleCache;
+      update: (styleKey: string, styleCache: StyleCache): void => {
+        if (!styleMap[styleKey]) return;
+        styleMap[styleKey] = styleCache;
         updateCache(cache, emitter);
       },
-      remove: (rules: string, styleCache: StyleCache): void => {
+      remove: (styleKey: string, styleCache: StyleCache): void => {
         cache.ids.delete(styleCache.id);
-        delete styleMap[rules];
+        delete styleMap[styleKey];
         updateCache(cache, emitter);
       },
       size: 0,

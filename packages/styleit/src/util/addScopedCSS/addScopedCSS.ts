@@ -2,12 +2,14 @@ import { generateId } from '../generateId';
 import { getScopedCSS } from '../getScopedCSS';
 import { updateCSS } from '../updateCSS';
 import { ScopedNames } from './types';
-import { Cache, StyleCache, UpdateTarget } from '../types';
+import { Cache, StyleCache, UpdateTarget, StyleDetail } from '../types';
 
-export function addScopedCSS(rules: string, cache: Cache, updateTarget: UpdateTarget): ScopedNames {
-  if (!rules || !cache.style) {
+export function addScopedCSS(styleDetail: StyleDetail, cache: Cache, updateTarget: UpdateTarget): ScopedNames {
+  const { rules, styleKey, componentName } = styleDetail;
+  if (!rules) {
     return {
       id: '',
+      componentName,
       fontFamily: {},
       keyframes: {},
     };
@@ -15,11 +17,11 @@ export function addScopedCSS(rules: string, cache: Cache, updateTarget: UpdateTa
 
   let scopedNames: ScopedNames | null = null;
 
-  if (!cache.style.has(rules)) {
+  if (!cache.style.has(styleKey)) {
     const id = generateId(cache.ids);
-    const { css, fontFamily, keyframes } = getScopedCSS(rules, id);
+    const { css, fontFamily, keyframes } = getScopedCSS(styleDetail, id);
 
-    cache.style.add(rules, {
+    cache.style.add(styleKey, {
       counter: 1,
       css,
       fontFamily,
@@ -29,13 +31,13 @@ export function addScopedCSS(rules: string, cache: Cache, updateTarget: UpdateTa
     
     updateCSS(updateTarget, cache);
     
-    scopedNames = { id, fontFamily, keyframes };
+    scopedNames = { id, componentName, fontFamily, keyframes };
   } else {
-    const styleCache: StyleCache = cache.style.get(rules);
+    const styleCache: StyleCache = cache.style.get(styleKey);
     styleCache.counter += 1;
-    cache.style.update(rules, styleCache);
+    cache.style.update(styleKey, styleCache);
     const { id, fontFamily, keyframes } = styleCache;
-    scopedNames = { id, fontFamily, keyframes };
+    scopedNames = { id, componentName, fontFamily, keyframes };
   }
 
   return scopedNames;
