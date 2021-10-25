@@ -1,5 +1,5 @@
 import { getScopedStyle, ScopedStyle } from '../getScopedStyle';
-import { stylis } from '../stylis';
+import { preProcessor } from '../preProcessor';
 import { ScopedCSS } from './types';
 import { StyleDetail } from '../types';
 
@@ -10,7 +10,7 @@ export function getScopedCSS(styleDetail: StyleDetail, id: string): ScopedCSS {
     rules,
   } : ScopedStyle = getScopedStyle(styleDetail.rules, id);
   
-  const css = stylis(styleDetail, rules);
+  const css = preProcessor(styleDetail, rules);
   
   return {
     fontFamily,

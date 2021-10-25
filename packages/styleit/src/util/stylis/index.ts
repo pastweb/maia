@@ -1,1 +1,0 @@
-export { stylis } from './stylis';
