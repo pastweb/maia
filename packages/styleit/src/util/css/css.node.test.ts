@@ -28,7 +28,7 @@ const EXPECTED_STYLE = `
 }
 `;
 
-const styleKey = hashCode(EXPECTED_STYLE);
+const EXPECTED_STYLE_KEY = hashCode(EXPECTED_STYLE);
 
 const styleDetailNoVars = css`
 .example {
@@ -52,7 +52,7 @@ const styleDetailNoVars = css`
     animation: expample-2 5s infinite;
   }
 }
-`();
+`;
 
 const styleDetailWithVars = css`
 .example {
@@ -76,11 +76,18 @@ const styleDetailWithVars = css`
     animation: ${'expample-2'} ${5}s infinite;
   }
 }
-`({ fileName: filename });
+`.styleInfo({ fileName: filename });
+
+const forwardArgs = {
+  backgroundColor: 'red',
+  ExampleAnimationName: 'expample',
+  animationDuration: '5s',
+  ExampleAnimationName2: 'expample-2',
+}
 
 const styleDetailWithFunctions = css`
 .example {
-  background-color: ${() => 'red'};
+  background-color: ${({ backgroundColor }: any) => backgroundColor};
   &:hover {
     animation-name: ${function(){ return 'expample' }};
     animation-duration: ${() => 4}s;
@@ -100,26 +107,29 @@ const styleDetailWithFunctions = css`
     animation: ${function(){ return 'expample-2'}} ${() => 5}s infinite;
   }
 }
-`({
+`.styleInfo({
   fileName: filename,
   componentName: component,
-  styleKey,
-});
+}).forwardArgs(forwardArgs);
 
 describe('css - web', () => {
     it('without vars in template literals, the string should be as expected.', () => {
-      const { rules, fileName, componentName, styleKey } = styleDetailNoVars;
+      expect(typeof styleDetailNoVars.styleInfo).toBe('function');
+      const { forwardArgs } = styleDetailNoVars.styleInfo();
+      expect(typeof forwardArgs).toBe('function');
+      const { rules, fileName, componentName, styleKey } = forwardArgs();
       expect(rules === EXPECTED_STYLE).toBe(true);
       expect(fileName).toBe('');
       expect(componentName).toBe('');
-      expect(styleKey).toBe(styleKey);
+      expect(styleKey).toBe(EXPECTED_STYLE_KEY);
     });
 
     it('with vars in template literals, the string should be as expected.', () => {
-      const { rules, fileName, styleKey } = styleDetailWithVars;
+      expect(typeof styleDetailWithVars.forwardArgs).toBe('function');
+      const { rules, fileName, styleKey } = styleDetailWithVars.forwardArgs();
       expect(rules === EXPECTED_STYLE).toBe(true);
       expect(fileName).toBe(filename);
-      expect(styleKey).toBe(styleKey);
+      expect(styleKey).toBe(EXPECTED_STYLE_KEY);
     });
 
     it('with functions in template literals, the string should be as expected.', () => {
@@ -127,6 +137,6 @@ describe('css - web', () => {
       expect(rules === EXPECTED_STYLE).toBe(true);
       expect(fileName).toBe(filename);
       expect(componentName).toBe(component);
-      expect(styleKey).toBe(styleKey);
+      expect(styleKey).toBe(EXPECTED_STYLE_KEY);
     });
 });

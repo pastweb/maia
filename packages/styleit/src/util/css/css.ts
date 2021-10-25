@@ -1,29 +1,32 @@
-import { StyleDetail, StyleInfo } from './types';
+import { ForwardArgs, StyleDetail, FunctionInfo } from './types';
 import { hashCode } from '../hashCode';
 
-export function css(styleStrings: TemplateStringsArray, ...args: any[]):
-  (styleInfo?: StyleInfo) => StyleDetail
+export function css(styleStrings: TemplateStringsArray, ...args: any[]): FunctionInfo
 {
-  const rules = !args.length ? styleStrings[0] || '' : args.reduce(
-    (acc: string[], cur: string | number | (() => string | number), i: number) => {
-      return `${acc}${typeof cur === 'function' ? cur() : cur }${styleStrings[i+1]}`;
-    },
-    styleStrings[0] || ''
-  );
+  return {
+    styleInfo (styleInfo = {}): FunctionInfo {
+      const {
+        fileName = '',
+        componentName = '',
+      } = styleInfo;
+      
+      return {
+        forwardArgs (forwardArgs = {}): StyleDetail {
+          const rules = !args.length ? styleStrings[0] || '' : args.reduce(
+            (acc: string[], cur: string | number | ((forwardArgs: ForwardArgs) => string | number), i: number) => {
+              return `${acc}${typeof cur === 'function' ? cur({ ...forwardArgs }) : cur }${styleStrings[i+1]}`;
+            },
+            styleStrings[0] || ''
+          );
 
-  return function(styleInfo = {}): StyleDetail {
-    const {
-      fileName = '',
-      componentName = '',
-      styleKey = hashCode(rules),
-    } = styleInfo;
-    return {
-      rules,
-      fileName,
-      componentName,
-      styleKey,
-    };
+          return {
+            rules,
+            fileName,
+            componentName,
+            styleKey: hashCode(rules),
+          };
+        },
+      }
+    }
   }
 }
-
-css.styleItCss = true;
