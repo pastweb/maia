@@ -123,7 +123,6 @@ describe('styleIt - addScopedCSS', () => {
   });
 
   it('styleCache "css" property value should has more then 1 id string occurence', () => {
-    console.log(styleCache.css)
     const occurrencies = (styleCache.css.match(new RegExp(scoped.id, 'g')) as Array<string>).length;
     expect(occurrencies).toBeDefined();
     expect(occurrencies > 1).toBe(true);

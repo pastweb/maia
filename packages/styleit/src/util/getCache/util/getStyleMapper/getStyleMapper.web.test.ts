@@ -1,11 +1,6 @@
 import { isSet } from '@maia/tools';
 import { getStyleMapper } from './getStyleMapper';
 import { getEmitter } from '../getEmitter';
-import {
-  MAIA_STYLEIT_CACHE_UPDATE_EVENT,
-  MAIA_STYLEIT_GET_CACHE_EVENT,
-} from '../../../constants';
-import { tsObjectKeyword } from '@babel/types';
 
 const emitter = getEmitter();
 const cache = getStyleMapper({}, emitter);
