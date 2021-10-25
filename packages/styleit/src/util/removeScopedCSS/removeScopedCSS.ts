@@ -1,5 +1,7 @@
 import { updateCSS } from '../updateCSS';
-import { Cache, UpdateTarget, StyleCache, StyleDetail } from '../types';
+import { UpdateTarget } from '../getUpdateTarget';
+import { Cache, StyleCache } from '../getCache';
+import { StyleDetail } from '../css';
 
 export function removeScopedCSS(styleDetail: StyleDetail, cache: Cache, updateTarget: UpdateTarget): void {
   const { styleKey } = styleDetail;

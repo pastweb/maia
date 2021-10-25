@@ -1,10 +1,18 @@
 import { generateId } from '../generateId';
 import { getScopedCSS } from '../getScopedCSS';
 import { updateCSS } from '../updateCSS';
+import { Cache, StyleCache } from '../getCache';
+import { UpdateTarget } from '../getUpdateTarget';
+import { StyleDetail } from '../css';
 import { ScopedNames } from './types';
-import { Cache, StyleCache, UpdateTarget, StyleDetail } from '../types';
 
-export function addScopedCSS(styleDetail: StyleDetail, cache: Cache, updateTarget: UpdateTarget): ScopedNames {
+export function addScopedCSS(
+  styleDetail: StyleDetail,
+  cache: Cache,
+  updateTarget: UpdateTarget,
+  preProcessor: (scopedRules: string) => string,
+  ): ScopedNames
+{
   const { rules, styleKey, componentName } = styleDetail;
   if (!rules) {
     return {
@@ -19,7 +27,7 @@ export function addScopedCSS(styleDetail: StyleDetail, cache: Cache, updateTarge
 
   if (!cache.style.has(styleKey)) {
     const id = generateId(cache.ids);
-    const { css, fontFamily, keyframes } = getScopedCSS(styleDetail, id);
+    const { css, fontFamily, keyframes } = getScopedCSS(styleDetail, id, preProcessor);
 
     cache.style.add(styleKey, {
       counter: 1,

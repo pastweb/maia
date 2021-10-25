@@ -5,7 +5,7 @@ import {
   GLOBAL_IDS_CACHE_NAME,
   GLOBAL_STYLE_CACHE_NAME
 } from '../constants';
-import { Cache } from '../types';
+import { Cache } from '../getCache';
 
 export function getStyleItCacheTagString(cache: Cache): string {
   if (!cache.style) return '';

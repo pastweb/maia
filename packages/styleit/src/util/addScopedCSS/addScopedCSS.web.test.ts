@@ -2,13 +2,14 @@ import { addScopedCSS } from './addScopedCSS';
 import { isObject } from '@maia/tools';
 import { getCache } from '../getCache';
 import { getUpdateTarget } from '../getUpdateTarget';
+import { defaultPreProcessor } from '../defaultPreProcessor';
 import { MINIRESET } from '../constants';
 import {
   STYLE_WITH_KEYFRAMES,
   STYLE_WITHOUT_KEYFRAMES,
 } from '../_mocks';
 import { hashCode } from '../hashCode';
-import { StyleDetail } from '../types';
+import { StyleDetail } from '../css';
 
 const updateTarget = getUpdateTarget();
 const cache = getCache();
@@ -31,7 +32,12 @@ const styleDetailWithoutKeyframes: StyleDetail = {
 };
 
 describe('styleIt - addScopedCSS', () => {
-  const scoped = addScopedCSS(styleDetailWithKeyframes, cache, updateTarget);
+  const scoped = addScopedCSS(
+    styleDetailWithKeyframes,
+    cache,
+    updateTarget,
+    defaultPreProcessor,
+  );
 
   it('scoped should be defined', () => {
     expect(scoped).toBeDefined();
@@ -118,7 +124,12 @@ describe('styleIt - addScopedCSS', () => {
 
   it('id2 hsould be equal to id', () => {
     cssTextBeforeUpdate = updateTarget.textContent!;
-    const { id: id2 } = addScopedCSS(styleDetailWithKeyframes, cache, updateTarget);
+    const { id: id2 } = addScopedCSS(
+      styleDetailWithKeyframes,
+      cache,
+      updateTarget,
+      defaultPreProcessor,
+    );
     expect(id2 === scoped.id).toBe(true);
   });
 
@@ -140,7 +151,12 @@ describe('styleIt - addScopedCSS', () => {
   let id3: string = '';
 
   it('cache.ids.size should be 2', () => {
-    id3 = addScopedCSS(styleDetailWithoutKeyframes, cache, updateTarget).id;
+    id3 = addScopedCSS(
+      styleDetailWithoutKeyframes,
+      cache,
+      updateTarget,
+      defaultPreProcessor,
+    ).id;
     expect(cache.ids.size).toBe(2);
   });
 
