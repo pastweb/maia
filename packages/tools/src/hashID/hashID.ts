@@ -49,7 +49,7 @@ function generate(prefix?: string, idLength?: number): string {
  * @return {String} A unique ID, or `null` if one could not be generated.
  */
 function generateUnique(
-  cache: string[],
+  cache: string[] | Set<string>,
   prefix?: string,
   idLength?: number,
   retries?: number

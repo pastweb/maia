@@ -35,7 +35,7 @@ export default {
     resolve(),
     // Resolve source maps to the original source
     sourceMaps(),
-    terser(),
+    terser({ format: { comments: false } }),
     visualizer({ filename: './doc/bundle-stats.html', sourcemap })
   ]
 };
