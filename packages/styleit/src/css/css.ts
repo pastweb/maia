@@ -3,14 +3,14 @@ import { hashCode } from './hashCode';
 
 export function css(styleStrings: TemplateStringsArray, ...args: any[]): FunctionInfo
 {
-  return {
+  return Object.freeze({
     styleInfo (styleInfo = {}): FunctionInfo {
       const {
         fileName = '',
         componentName = '',
       } = styleInfo;
       
-      return {
+      return Object.freeze({
         forwardArgs (forwardArgs = {}): StyleDetail {
           const rules = !args.length ? styleStrings[0] || '' : args.reduce(
             (acc: string[], cur: string | number | ((forwardArgs: ForwardArgs) => string | number), i: number) => {
@@ -19,14 +19,14 @@ export function css(styleStrings: TemplateStringsArray, ...args: any[]): Functio
             styleStrings[0] || ''
           );
 
-          return {
+          return Object.freeze({
             rules,
             fileName,
             componentName,
             styleKey: hashCode(rules),
-          };
+          });
         },
-      }
-    }
-  }
+      });
+    },
+  });
 }
