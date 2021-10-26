@@ -16,12 +16,18 @@ export function _testResetMediaQueryCache(): void {
   matchMediasList = {};
 }
 
-export function checkWithMediaQuery(
-  mql: MediaQueryListEvent | MediaQueryList,
-  uaRegex: RegExp
+export function checkUserAgent(
+  userAgent: string,
+  uaRegex: RegExp,
+  mql: MediaQueryList | null,
 ): boolean {
-  const { matches } = mql;
-  return uaRegex.test(window.navigator.userAgent) || matches ? true : false;
+  
+  if (mql) {
+    const { matches } = mql;
+    return uaRegex.test(userAgent) || matches ? true : false;
+  }
+  
+  return uaRegex.test(userAgent);
 }
 
 export function isDevice(
@@ -32,40 +38,39 @@ export function isDevice(
 
   Object.entries(config).forEach(
     ([deviceName, deviceConfig]: [string, DeviceConfig]) => {
-      const { forceTrue, uaRegExp, mediaQueryString } = deviceConfig;
       const isDeviceName = `is${deviceName
         .charAt(0)
         .toUpperCase()}${deviceName.slice(1)}`;
 
-      if (typeof forceTrue !== 'undefined') {
-        devices[isDeviceName] = forceTrue;
-      } else if (isSSR) {
+      const forceFalse = isSSR && !deviceConfig.userAgent ? true : false;
+
+      if (forceFalse) {
         devices[isDeviceName] = false;
       } else {
+        const { uaRegExp, mediaQueryString } = deviceConfig;
+        const userAgent = deviceConfig.userAgent || window && window.navigator.userAgent;
+
         const regexp =
           !uaRegExp || typeof uaRegExp === 'boolean'
             ? defaultUaRegExp
             : uaRegExp;
 
-        if (mediaQueryString) {
-          const mql: MediaQueryList = window.matchMedia(mediaQueryString);
-          
-          if (onMediaQueryChange) {
-            if (!matchMediasList[mediaQueryString]) {
-              matchMediasList[mediaQueryString] = new Set();
-            }
+        const mql: MediaQueryList | null = !isSSR && mediaQueryString ? window.matchMedia(mediaQueryString) : null;
 
-            if (!matchMediasList[mediaQueryString].has(onMediaQueryChange)) {
-              matchMediasList[mediaQueryString].add(onMediaQueryChange);
-              mql.addEventListener('change', (): void => {
-                onMediaQueryChange(isDevice(config, onMediaQueryChange));
-              });
-            }
+        if (mql && mediaQueryString && onMediaQueryChange) {
+          if (!matchMediasList[mediaQueryString]) {
+            matchMediasList[mediaQueryString] = new Set();
           }
-          devices[isDeviceName] = checkWithMediaQuery(mql, regexp);
-        } else {
-          devices[isDeviceName] = regexp.test(window.navigator.userAgent);
+
+          if (!matchMediasList[mediaQueryString].has(onMediaQueryChange)) {
+            matchMediasList[mediaQueryString].add(onMediaQueryChange);
+            mql.addEventListener('change', (): void => {
+              onMediaQueryChange(isDevice(config, onMediaQueryChange));
+            });
+          }
         }
+        
+        devices[isDeviceName] = checkUserAgent(userAgent, regexp, mql);
       }
     }
   );

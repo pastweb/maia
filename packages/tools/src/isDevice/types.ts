@@ -7,7 +7,7 @@ export type MediaQueryCallback = (
 ) => void;
 
 export type DeviceConfig = {
-  forceTrue?: true | undefined;
+  userAgent?: string;
   uaRegExp?: RegExp | true;
   mediaQueryString?: string;
 };
