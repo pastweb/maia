@@ -58,12 +58,11 @@ export function isDevice(
         const mql: MediaQueryList | null = !isSSR && mediaQueryString ? window.matchMedia(mediaQueryString) : null;
 
         if (mql && mediaQueryString && onMediaQueryChange) {
-          if (!matchMediasList[mediaQueryString]) {
-            matchMediasList[mediaQueryString] = new Set();
-          }
+          const listeners: Set<MediaQueryCallback> = matchMediasList[mediaQueryString] ||
+            (matchMediasList[mediaQueryString] = new Set<MediaQueryCallback>());
 
-          if (!matchMediasList[mediaQueryString].has(onMediaQueryChange)) {
-            matchMediasList[mediaQueryString].add(onMediaQueryChange);
+          if (!listeners.has(onMediaQueryChange)) {  
+            listeners.add(onMediaQueryChange);
             mql.addEventListener('change', (): void => {
               onMediaQueryChange(isDevice(config, onMediaQueryChange));
             });
