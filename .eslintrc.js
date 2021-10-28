@@ -41,7 +41,8 @@ module.exports = {
     // disable the rule for all files
     'no-prototype-builtins': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off'
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-this-alias': 'off',
   },
   overrides: [
     {
@@ -49,7 +50,8 @@ module.exports = {
       files: ['*.ts', '*.tsx'],
       rules: {
         '@typescript-eslint/explicit-module-boundary-types': ['off'],
-        '@typescript-eslint/no-namespace': ['off']
+        '@typescript-eslint/no-namespace': ['off'],
+        '@typescript-eslint/no-this-alias': ['off'],
       }
     }
   ]
