@@ -2,7 +2,7 @@ import { EventEmitter } from '@maia/tools';
 import {
   MAIA_STYLEIT_CACHE_UPDATE_EVENT,
   MAIA_STYLEIT_GET_CACHE_EVENT,
-} from '../../../../util/constants';
+} from '../../../constants';
 import { Cache, StyleMap, StyleCache } from '../../types';
 
 export function updateCache(cache: Cache, emitter: EventEmitter): void {

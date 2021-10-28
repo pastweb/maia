@@ -1,4 +1,4 @@
-import { MINIRESET } from '../../util/constants';
+import { MINIRESET } from '../constants';
 import { UpdateTarget } from '../getUpdateTarget';
 import { Cache } from '../getCache';
 

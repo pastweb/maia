@@ -1,6 +1,6 @@
 import { getScopedStyle } from './getScopedStyle';
 import { isObject } from '@maia/tools';
-import { STYLE_WITH_KEYFRAMES } from '../../../util/_mocks';
+import { STYLE_WITH_KEYFRAMES } from '../../test/util';
 
 const id = '_suffixID';
 const suffix = id;

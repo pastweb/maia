@@ -1,19 +1,23 @@
-export type StyleInfo = {
-  fileName?: string;
-  componentName?: string;
-};
-
-export type StyleDetail = {
-  rules: string;
-  fileName: string;
-  componentName: string;
-  styleKey: string;
-};
-
 export type ForwardArgs = {
   [argName: string]: any;
 };
 
-export interface FunctionInfo {
-  [funcName: string]: (styleInfo?: StyleInfo, forwarArgs?: ForwardArgs) => any;
+export type StyleSettings = {
+  argsAsArray?: boolean;
+  componentName?: string;
+  fileName?: string;
+  forwardArgs?: ForwardArgs;
+};
+
+export type StyleInfo = {
+  componentName: string;
+  fileName: string;
+  rules: string
+  styleKey: string;
+}
+
+export interface Style {
+  set: (styleSettings?: StyleSettings) => any;
+  getSettings: () => StyleSettings;
+  make: () => StyleInfo;
 }

@@ -3,12 +3,12 @@ import { isObject } from '@maia/tools';
 import { getCache } from '../getCache';
 import { getUpdateTarget } from '../getUpdateTarget';
 import { defaultPreProcessor } from '../../StyleIt/defaultPreProcessor';
-import { MINIRESET } from '../../util/constants';
+import { MINIRESET } from '../constants';
 import {
   STYLE_WITH_KEYFRAMES,
   STYLE_WITHOUT_KEYFRAMES,
-} from '../../util/_mocks';
-import { StyleDetail, hashCode } from '../../css';
+} from '../test/util';
+import { StyleInfo, hashCode } from '../../css';
 
 const updateTarget = getUpdateTarget();
 const cache = getCache();
@@ -16,14 +16,14 @@ const cache = getCache();
 const fileName = 'some/file/path';
 const componentName = 'MyComponentName';
 
-const styleDetailWithKeyframes: StyleDetail = {
+const styleDetailWithKeyframes: StyleInfo = {
   rules: STYLE_WITH_KEYFRAMES,
   fileName,
   componentName,
   styleKey: hashCode(STYLE_WITH_KEYFRAMES),
 };
 
-const styleDetailWithoutKeyframes: StyleDetail = {
+const styleDetailWithoutKeyframes: StyleInfo = {
   rules: STYLE_WITHOUT_KEYFRAMES,
   fileName,
   componentName,

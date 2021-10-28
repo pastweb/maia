@@ -4,17 +4,17 @@ import { usePreProcessor } from './usePreProcessor';
 import { updateCSS } from '../updateCSS';
 import { Cache, StyleCache } from '../getCache';
 import { UpdateTarget } from '../getUpdateTarget';
-import { StyleDetail } from '../../css';
+import { StyleInfo } from '../../css';
 import { ScopedNames } from './types';
 
 export function addScopedCSS(
-  styleDetail: StyleDetail,
+  styleInfo: StyleInfo,
   cache: Cache,
   updateTarget: UpdateTarget,
   preProcessor: (scopedRules: string) => string,
   ): ScopedNames
 {
-  const { rules, styleKey, componentName } = styleDetail;
+  const { rules, styleKey, componentName } = styleInfo;
   
   if (!rules) {
     return {
@@ -34,9 +34,9 @@ export function addScopedCSS(
       fontFamily,
       keyframes,
       rules: scopedRules,
-    } = getScopedStyle(styleDetail.rules, id);
+    } = getScopedStyle(styleInfo.rules, id);
     
-    const css = usePreProcessor(styleDetail, scopedRules, preProcessor);
+    const css = usePreProcessor(styleInfo, scopedRules, preProcessor);
 
     cache.style.add(styleKey, {
       counter: 1,

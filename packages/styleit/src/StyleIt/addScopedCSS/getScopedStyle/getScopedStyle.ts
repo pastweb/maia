@@ -3,7 +3,7 @@ import {
   GET_FONT_FACE_BLOCKS_REGEX,
   GET_FONT_FAMILY_RAWS_REGEX,
   GET_KEYFRAMES_NAME_RAWS_REGEX,
-} from '../../../util/constants';
+} from '../../constants';
 import { ScopedStyle } from './types';
  
 export function getScopedStyle (rules: string, id: string): ScopedStyle {

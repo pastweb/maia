@@ -17,4 +17,3 @@ export const GLOBAL_STYLE_CACHE_NAME = '___MAIA_STYLEIT_STYLE_CACHE___';
 export const GLOBAL_EMITTER_NAME = '___MAIA_STYLEIT_EMITTER___';
 export const SCRIPT_TAG_NAME = 'maia-styleIt-script';
 export const STYLE_TAG_NAME = 'maia-styleIt';
-  

@@ -5,7 +5,7 @@ import {
   GLOBAL_STYLE_CACHE_NAME,
   SCRIPT_TAG_NAME,
   MAIA_STYLEIT_GET_CACHE_EVENT
-} from '../../../../util/constants';
+} from '../../../constants';
 import { Cache, StyleMap } from '../../types';
 
 export function initCache(emitter: EventEmitter): Cache {

@@ -1,6 +1,6 @@
 import { isSSR } from '@maia/tools';
 import { UpdateTarget } from './types';
-import { STYLE_TAG_NAME } from '../../util/constants';
+import { STYLE_TAG_NAME } from '../constants';
 
 export function getUpdateTarget(): UpdateTarget {
   let updateTarget: UpdateTarget = { textContent: '' };

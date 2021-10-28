@@ -1,9 +1,9 @@
 import { updateCSS } from '../updateCSS';
 import { UpdateTarget } from '../getUpdateTarget';
 import { Cache, StyleCache } from '../getCache';
-import { StyleDetail } from '../../css';
+import { StyleInfo } from '../../css';
 
-export function removeScopedCSS(styleDetail: StyleDetail, cache: Cache, updateTarget: UpdateTarget): void {
+export function removeScopedCSS(styleDetail: StyleInfo, cache: Cache, updateTarget: UpdateTarget): void {
   const { styleKey } = styleDetail;
 
   if (!cache.style.has(styleKey)) return;

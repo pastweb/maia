@@ -3,7 +3,7 @@ import { getCache, Cache } from './getCache';
 import { getUpdateTarget, UpdateTarget } from './getUpdateTarget';
 import { getStyleItCacheTagString as _getStyleItCacheTagString } from './getStyleItCacheTagString';
 import { removeScopedCSS } from './removeScopedCSS';
-import { StyleDetail } from '../css';
+import { StyleInfo } from '../css';
 import { StyleItOptions } from './types';
 import { defaultPreProcessor } from './defaultPreProcessor';
 
@@ -22,16 +22,16 @@ export class StyleIt {
     }
   }
 
-  public add(styleDetail: StyleDetail): ScopedNames {
+  public add(styleInfo: StyleInfo): ScopedNames {
     return addScopedCSS(
-      styleDetail,
+      styleInfo,
       this.cache,
       this.updateTarget,
       (this.options as any).preProcessor
     );
   }
 
-  public remove(styleDetail: StyleDetail): void {
+  public remove(styleDetail: StyleInfo): void {
     removeScopedCSS(styleDetail, this.cache, this.updateTarget);
   }
 
