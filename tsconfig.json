@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "ESNext",
-    "target": "ES5",
+    "target": "ESNext",
     "allowJs": true,
     "moduleResolution": "node",
     "lib": ["es2020", "dom"],
@@ -9,6 +9,7 @@
     "sourceMap": true,
     "declaration": true,
     "removeComments": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
