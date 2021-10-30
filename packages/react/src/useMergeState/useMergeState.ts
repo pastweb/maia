@@ -1,16 +1,15 @@
 import { useReducer } from 'react';
 
-type StateObject = {
-    [key: string]: any;
-};
-
 function reducer(
-    currentState: StateObject,
-    newState: StateObject
-): StateObject {
+    currentState: { [key: string]: any },
+    newState: { [key: string]: any },
+): { [key: string]: any } {
     return { ...currentState, ...newState };
 }
 
-export function useMergeState(initialState: StateObject = {}): any {
-    return useReducer(reducer, initialState);
+export function useMergeState(
+    initialState: { [key: string]: any },
+    init?: ((initialState: { [key: string]: any }) => { [key: string]: any })): { [key: string]: any }
+{
+    return useReducer<any, any>(reducer, initialState, init || (() => initialState));
 }
