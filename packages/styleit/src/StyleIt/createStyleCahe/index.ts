@@ -1,0 +1,1 @@
+export { createStyleCache } from './createStyleCache';

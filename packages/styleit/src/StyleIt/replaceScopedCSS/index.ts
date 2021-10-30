@@ -1,0 +1,1 @@
+export { replaceScopedCSS } from './replaceScopedCSS';

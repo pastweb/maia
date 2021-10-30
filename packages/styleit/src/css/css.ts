@@ -1,40 +1,46 @@
-import { Style, StyleSettings, StyleInfo } from './types';
+import { Style, StyleOptions, StyleInfo, TagArg } from './types';
 import { hashCode } from './hashCode';
+import { isObject } from '@maia/tools';
 
 export function css(styleStrings: TemplateStringsArray, ...args: any[]): Style
 {
   const info = Symbol();
-  const styles = Object.freeze({
+  const styles: Style = Object.freeze({
     [info]: {
       data: {
         argsAsArray: false,
-        componentName: '',
+        name: '',
         fileName: '',
         forwardArgs: {},
       }
     },
-    set(styleSettings = {}): Style {
-      styles[info].data = { ...styles[info].data, ...styleSettings };
+    setOptions(styleOptions = {}): Style {
+      styles[info].data = { ...styles[info].data, ...styleOptions };
       return styles;
     },
-    getSettings(): StyleSettings {
+    getOptions(): StyleOptions {
       return {
         ...styles[info].data,
         forwardArgs: { ... styles[info].data.forwardArgs },
       }
     },
-    make(): StyleInfo {
+    interpolate(): StyleInfo {
       const {
         argsAsArray,
-        componentName,
+        name,
         fileName,
         forwardArgs,
       } = styles[info].data;
       
       const rules = !args.length ? styleStrings[0] || '' : args.reduce(
-        (acc: string[], cur: string | number | ((...args: any[]) => string | number), i: number) => {
+        (acc: string[], cur: TagArg, i: number) => {
           const args = argsAsArray ? Object.values(forwardArgs) : [{ ...forwardArgs }];
-          return `${acc}${typeof cur === 'function' ? cur(...args) : cur }${styleStrings[i+1]}`;
+          
+          return `${acc}${
+            isObject(cur) && typeof (cur as any).interpolate === 'function' ?
+              (cur as any).interpolate().rules :
+                typeof cur === 'function' ? cur(...args) : cur
+          }${styleStrings[i+1]}`;
         },
         styleStrings[0] || ''
       );
@@ -42,7 +48,7 @@ export function css(styleStrings: TemplateStringsArray, ...args: any[]): Style
       const styleKey = hashCode(rules);
 
       return {
-        componentName,
+        name,
         fileName,
         rules,
         styleKey,

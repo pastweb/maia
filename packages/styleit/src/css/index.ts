@@ -1,3 +1,3 @@
 export { css } from './css';
 export { hashCode } from './hashCode';
-export type { StyleInfo, ForwardArgs } from './types';
+export type { Style, StyleOptions, ForwardArgs, StyleInfo } from './types';

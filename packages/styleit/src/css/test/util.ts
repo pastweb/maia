@@ -76,7 +76,7 @@ export const styleWithVars = css`
     animation: ${'expample-2'} ${5}s infinite;
   }
 }
-`.set({ fileName: filename });
+`.setOptions({ fileName: filename });
 
 export const forwardArgs = {
   backgroundColor: 'red',
@@ -107,8 +107,8 @@ export const styleWithFunctions = css`
     animation: ${function(){ return 'expample-2'}} ${() => 5}s infinite;
   }
 }
-`.set({
+`.setOptions({
   fileName: filename,
-  componentName: component,
+  name: component,
   forwardArgs,
 });

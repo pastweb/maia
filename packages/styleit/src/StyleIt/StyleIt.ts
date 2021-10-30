@@ -4,38 +4,23 @@ import { getUpdateTarget, UpdateTarget } from './getUpdateTarget';
 import { getStyleItCacheTagString as _getStyleItCacheTagString } from './getStyleItCacheTagString';
 import { removeScopedCSS } from './removeScopedCSS';
 import { StyleInfo } from '../css';
-import { StyleItOptions } from './types';
-import { defaultPreProcessor } from './defaultPreProcessor';
+import { replaceScopedCSS } from './replaceScopedCSS';
 
-export class StyleIt {
-  private updateTarget: UpdateTarget;
-  private cache: Cache;
-  private options: StyleItOptions;
-  
-  constructor(options : StyleItOptions) {
-    this.updateTarget = getUpdateTarget();
-    this.cache = getCache();
-    this.options = options;
+const updateTarget: UpdateTarget = getUpdateTarget();
+const cache: Cache = getCache();
 
-    if (!options.preProcessor) {
-      this.options.preProcessor = defaultPreProcessor;
-    }
-  }
+export function add(styleInfo: StyleInfo): ScopedNames {
+  return addScopedCSS(styleInfo, cache, updateTarget);
+}
 
-  public add(styleInfo: StyleInfo): ScopedNames {
-    return addScopedCSS(
-      styleInfo,
-      this.cache,
-      this.updateTarget,
-      (this.options as any).preProcessor
-    );
-  }
+export function replace(removeInfo: StyleInfo, addInfo: StyleInfo): ScopedNames {
+  return replaceScopedCSS(removeInfo, addInfo, cache, updateTarget);
+}
 
-  public remove(styleDetail: StyleInfo): void {
-    removeScopedCSS(styleDetail, this.cache, this.updateTarget);
-  }
+export function remove(styleInfo: StyleInfo): void {
+  removeScopedCSS(styleInfo, cache, updateTarget);
+}
 
-  public getStyleItCacheTagString(): string {
-    return _getStyleItCacheTagString(this.cache)
-  }
+export function getStyleItCacheTagString(): string {
+  return _getStyleItCacheTagString(cache)
 }

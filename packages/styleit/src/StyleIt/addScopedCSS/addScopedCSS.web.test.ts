@@ -2,7 +2,6 @@ import { addScopedCSS } from './addScopedCSS';
 import { isObject } from '@maia/tools';
 import { getCache } from '../getCache';
 import { getUpdateTarget } from '../getUpdateTarget';
-import { defaultPreProcessor } from '../../StyleIt/defaultPreProcessor';
 import { MINIRESET } from '../constants';
 import {
   STYLE_WITH_KEYFRAMES,
@@ -14,19 +13,19 @@ const updateTarget = getUpdateTarget();
 const cache = getCache();
 
 const fileName = 'some/file/path';
-const componentName = 'MyComponentName';
+const name = 'MyComponentName';
 
 const styleDetailWithKeyframes: StyleInfo = {
   rules: STYLE_WITH_KEYFRAMES,
   fileName,
-  componentName,
+  name,
   styleKey: hashCode(STYLE_WITH_KEYFRAMES),
 };
 
 const styleDetailWithoutKeyframes: StyleInfo = {
   rules: STYLE_WITHOUT_KEYFRAMES,
   fileName,
-  componentName,
+  name,
   styleKey: hashCode(STYLE_WITHOUT_KEYFRAMES),
 };
 
@@ -35,7 +34,6 @@ describe('styleIt - addScopedCSS', () => {
     styleDetailWithKeyframes,
     cache,
     updateTarget,
-    defaultPreProcessor,
   );
 
   it('scoped should be defined', () => {
@@ -127,7 +125,6 @@ describe('styleIt - addScopedCSS', () => {
       styleDetailWithKeyframes,
       cache,
       updateTarget,
-      defaultPreProcessor,
     );
     expect(id2 === scoped.id).toBe(true);
   });
@@ -154,7 +151,6 @@ describe('styleIt - addScopedCSS', () => {
       styleDetailWithoutKeyframes,
       cache,
       updateTarget,
-      defaultPreProcessor,
     ).id;
     expect(cache.ids.size).toBe(2);
   });
