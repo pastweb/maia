@@ -7,13 +7,14 @@ import { StyleItProps, StyleItState } from './types';
 
 export const StyleIt = forwardRef((props: StyleItProps, ref) => {
   const {
-    tagName = 'div',
+    extFuncOptions,
+    forward,
+    name,
+    options,
     styles,
-    forward = {},
-    argsAsArray = false,
+    tagName = 'div',
     children,
   } = props;
-
   const theme = useTheme();
 
   const [state, setState] = useState<StyleItState>(updateState(props, theme));
@@ -23,12 +24,12 @@ export const StyleIt = forwardRef((props: StyleItProps, ref) => {
   });
 
   useEffect(() => {
+    
     const newState = updateState(props, theme);
 
-    styleIt.remove(state.styleInfo);
-    styleIt.add(newState.styleInfo);
+    styleIt.replace(state.styleInfo, newState.styleInfo);
     setState(newState);
-  }, [styleIt, styles, argsAsArray, forward]);
+  }, [extFuncOptions, forward, name, options, styles, tagName]);
 
   return createElement(tagName, getProps(props, state.scopedNames, ref), children);
 });

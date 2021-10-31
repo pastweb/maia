@@ -1,40 +1,60 @@
-import { Style, StyleOptions, StyleInfo, TagArg } from './types';
+import { StyleObject, ForwardArgs, StyleOptions, StyleInfo, TagArg } from './types';
 import { hashCode } from './hashCode';
 import { isObject } from '@maia/tools';
 
-export function css(styleStrings: TemplateStringsArray, ...args: any[]): Style
+export function css(styleStrings: TemplateStringsArray, ...args: any[]): StyleObject
 {
-  const info = Symbol();
-  const styles: Style = Object.freeze({
-    [info]: {
+  const options = Symbol();
+  const styles: StyleObject = Object.freeze({
+    [options]: {
       data: {
         argsAsArray: false,
-        name: '',
+        argsSelector: [],
         fileName: '',
-        forwardArgs: {},
+        forward: {},
+        name: '',
+        validate: {},
       }
     },
-    setOptions(styleOptions = {}): Style {
-      styles[info].data = { ...styles[info].data, ...styleOptions };
+    setOptions(styleOptions = {}): StyleObject {
+      styles[options].data = { ...styles[options].data, ...styleOptions };
       return styles;
     },
     getOptions(): StyleOptions {
       return {
-        ...styles[info].data,
-        forwardArgs: { ... styles[info].data.forwardArgs },
+        ...styles[options].data,
+        forward: { ... styles[options].data.forward },
       }
     },
     interpolate(): StyleInfo {
       const {
         argsAsArray,
-        name,
+        argsSelector,
         fileName,
-        forwardArgs,
-      } = styles[info].data;
+        forward,
+        name,
+        validate,
+      } = styles[options].data;
+      
+      const toValidate = Object.entries(validate || {});
+      
+      if (toValidate.length) {
+        toValidate.forEach(([ argName, validFunc]: [string, (arg: any) => boolean]) => {
+          if (!validFunc(forward[argName])) {
+            throw new Error(`@maia/styleit - css validation error in: ${fileName.length ? `${fileName} -` : ''}${name} for arg "${argName}"`);
+          }
+        });
+      }
+
+      const selectedArgs = argsSelector.length ? argsSelector.reduce(
+        (acc: ForwardArgs, argName: string) => {
+          return { ...acc, [argName]: forward[argName] };
+        }, {}
+      ) : forward;
       
       const rules = !args.length ? styleStrings[0] || '' : args.reduce(
         (acc: string[], cur: TagArg, i: number) => {
-          const args = argsAsArray ? Object.values(forwardArgs) : [{ ...forwardArgs }];
+          const args = argsAsArray ? Object.values(selectedArgs) : [{ ...selectedArgs }];
           
           return `${acc}${
             isObject(cur) && typeof (cur as any).interpolate === 'function' ?

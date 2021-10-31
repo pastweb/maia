@@ -1,35 +1,54 @@
-import styleIt, { ScopedNames } from '@maia/styleit';
+import styleIt, { ForwardArgs, ScopedNames } from '@maia/styleit';
 import { StyleItProps, StyleItState, Theme } from './types';
 
 export function updateState(props:StyleItProps, theme: Theme): StyleItState {
-  const { styles, argsAsArray, forward, componentName} = props;
-
-  const forwardArgs = Object.keys(theme).length ? { ...forward, theme } : forward;
+  const {
+    extFuncOptions,
+    name,
+    options = {},
+    styles,
+  } = props;
   
-  const styleObject = typeof styles === 'function'? styles(forwardArgs) : styles;
+  const forward: ForwardArgs = { ...props.forward, theme };
+  let extFuncForward: ForwardArgs = forward;
 
-  const styleInfo = styleObject.set({
-    argsAsArray,
-    forwardArgs,
-    name: componentName,
-  }).interpolate();
+  if (extFuncOptions) {
+    const { argsSelector, argsAsArray } = extFuncOptions;
+    
+    if (argsSelector && Array.isArray(argsSelector) && argsSelector.length) {
+      extFuncForward = argsSelector.reduce((acc: ForwardArgs, argName: string) => {
+          return { ...acc, [argName]: forward[argName] };
+        }, {}
+      );
+    }
+
+    if (argsAsArray) {
+      extFuncForward = Object.values(extFuncForward);  
+    }
+  }
+  
+  const styleObject = typeof styles === 'function'? styles(extFuncForward) : styles;
+
+  const newOptions = { ...options, name: name || options.name, ...forward };
+  const styleInfo = styleObject.setOptions(newOptions).interpolate();
 
   const scopedNames = styleIt.add(styleInfo);
   
   return {
-    styles: styleObject,
     styleInfo,
     scopedNames, 
   };
 }
 
 const skipProps = new Set([
-  'ref',
-  'tagName',
-  'styles',
   'className',
+  'extFuncOptions',
   'forward',
-  'componentName',
+  'name',
+  'options',
+  'ref',
+  'styles',
+  'tagName',
 ]);
 
 export function getProps(props: StyleItProps, scopedNames: ScopedNames, ref: any) {

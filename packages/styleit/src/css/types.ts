@@ -3,15 +3,21 @@ export type ForwardArgs = {
 };
 
 export type TagArg = string |
-                     number |
-                     Style |
-                     ((...args: any[]) => string | number)
+number |
+StyleObject |
+((...args: any[]) => string | number)
+
+export type Validate = {
+  [argName: string]: (arg: any) => boolean;
+};
 
 export type StyleOptions = {
   argsAsArray?: boolean;
-  name?: string;
+  argsSelector?: string[];
   fileName?: string;
-  forwardArgs?: ForwardArgs;
+  forward?: ForwardArgs;
+  name?: string;
+  validate?: Validate;
 };
 
 export type StyleInfo = {
@@ -21,12 +27,14 @@ export type StyleInfo = {
   styleKey: string;
 }
 
-export interface Style {
-  [info: symbol]: { data: {
+export interface StyleObject {
+  [options: symbol]: { data: {
       argsAsArray: boolean;
-      name: string;
+      argsSelector: string[];
       fileName: string;
-      forwardArgs: ForwardArgs;
+      forward: ForwardArgs;
+      name: string;
+      validate?: Validate;
     }
   };
   setOptions: (styleOptions?: StyleOptions) => any;

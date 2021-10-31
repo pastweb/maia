@@ -78,7 +78,7 @@ export const styleWithVars = css`
 }
 `.setOptions({ fileName: filename });
 
-export const forwardArgs = {
+export const forward = {
   backgroundColor: 'red',
   ExampleAnimationName: 'expample',
   animationDuration: '5s',
@@ -110,5 +110,5 @@ export const styleWithFunctions = css`
 `.setOptions({
   fileName: filename,
   name: component,
-  forwardArgs,
+  forward,
 });

@@ -5,7 +5,7 @@ import {
   styleWithFunctions,
   filename,
   component,
-  forwardArgs,
+  forward,
   EXPECTED_STYLE,
   EXPECTED_STYLE_KEY,
 } from './util';
@@ -47,10 +47,10 @@ describe('css - web', () => {
         expect(options.name).toBe('');
       });
 
-      it('"options.forwardArgs" should an empty Object {}.', () => {
+      it('"options.forward" should an empty Object {}.', () => {
         const options = styleNoVars.getOptions();
-        expect(isObject(options.forwardArgs)).toBe(true);
-        expect(JSON.stringify(options.forwardArgs)).toBe(JSON.stringify({}));
+        expect(isObject(options.forward)).toBe(true);
+        expect(JSON.stringify(options.forward)).toBe(JSON.stringify({}));
       });
 
       it('"styleInfo" should be an Object.', () => {
@@ -95,10 +95,10 @@ describe('css - web', () => {
         expect(options.name).toBe('');
       });
 
-      it('"options.forwardArgs" should an empty Object {}.', () => {
+      it('"options.forward" should an empty Object {}.', () => {
         const options = styleWithVars.getOptions();
-        expect(isObject(options.forwardArgs)).toBe(true);
-        expect(JSON.stringify(options.forwardArgs)).toBe(JSON.stringify({}));
+        expect(isObject(options.forward)).toBe(true);
+        expect(JSON.stringify(options.forward)).toBe(JSON.stringify({}));
       });
 
       it('"styleInfo.name" should be an empty string.', () => {
@@ -138,10 +138,10 @@ describe('css - web', () => {
         expect(options.name).toBe(component);
       });
 
-      it('"options.forwardArgs" should be as expected.', () => {
+      it('"options.forward" should be as expected.', () => {
         const options = styleWithFunctions.getOptions();
-        expect(isObject(options.forwardArgs)).toBe(true);
-        expect(JSON.stringify(options.forwardArgs)).toBe(JSON.stringify(forwardArgs));
+        expect(isObject(options.forward)).toBe(true);
+        expect(JSON.stringify(options.forward)).toBe(JSON.stringify(forward));
       });
 
       it('"styleInfo.name" should as expected.', () => {

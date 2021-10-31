@@ -2,7 +2,7 @@ import  styleIt, { ScopedNames } from './styleIt';
 
 export {
   css,
-  Style,
+  StyleObject,
   StyleOptions,
   ForwardArgs,
   StyleInfo,

@@ -7,7 +7,6 @@ import { preProcessor } from './preProcessor';
 export function createStyleCache(styleInfo: StyleInfo, cache: Cache): StyleCache {
   const id = generateId(cache.ids);
 
-
   const {
     fontFamily,
     keyframes,

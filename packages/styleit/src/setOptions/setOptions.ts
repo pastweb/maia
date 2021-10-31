@@ -1,5 +1,5 @@
-import { StyleOptions, Style } from '../css';
+import { StyleOptions, StyleObject } from '../css';
 
-export function setOptions(styleOptions: StyleOptions, css: Style): Style {
+export function setOptions(styleOptions: StyleOptions, css: StyleObject): StyleObject {
   return css.setOptions(styleOptions);
 }

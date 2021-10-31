@@ -1,12 +1,18 @@
-import { Style, ForwardArgs, StyleInfo, ScopedNames } from '@maia/styleit';
+import { StyleObject, StyleOptions, StyleInfo, ScopedNames, ForwardArgs } from '@maia/styleit';
 import { ReactChildren, ReactHTMLElement } from 'react';
+
+export type ExternalFunctionOptions = {
+  argsAsArray?: boolean;
+  argsSelector?: string[];
+};
 
 export interface StyleItProps extends ReactHTMLElement <HTMLElement> {
   className?: string;
-  componentName?: string;
-  styles: Style | ((...args: any[]) => Style);
+  extFuncOptions?: ExternalFunctionOptions;
   forward?: ForwardArgs;
-  argsAsArray?: boolean;
+  name?: string;
+  options?: StyleOptions;
+  styles: StyleObject | ((...args: any[]) => StyleObject);
   tagName?: string;
   children: ReactChildren;
 };
