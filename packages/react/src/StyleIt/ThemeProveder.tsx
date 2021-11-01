@@ -6,11 +6,9 @@ const ThemeContext = createContext({});
 
 export function ThemeProvider({ theme, children }: ThemeProviderProps) {
   return (
-    <>
-      <ThemeContext.Provider value={theme}>
-        {children}
-      </ThemeContext.Provider>
-    </>
+    <ThemeContext.Provider value={theme}>
+      {children}
+    </ThemeContext.Provider>
   );
 }
 
