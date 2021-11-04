@@ -1,4 +1,5 @@
 import styleIt, { ForwardArgs, ScopedNames } from '@maia/styleit';
+import { skipProps } from '../skipProps';
 import { StyleItProps, StyleItState, Theme } from './types';
 
 export function updateState(props:StyleItProps, theme: Theme): StyleItState {
@@ -40,7 +41,7 @@ export function updateState(props:StyleItProps, theme: Theme): StyleItState {
   };
 }
 
-const skipProps = new Set([
+const propsToSkip = [
   'className',
   'extFuncOptions',
   'forward',
@@ -49,7 +50,7 @@ const skipProps = new Set([
   'ref',
   'styles',
   'tagName',
-]);
+];
 
 export function getProps(props: StyleItProps, scopedNames: ScopedNames, ref: any) {
   const { className = '' } = props;
@@ -59,9 +60,6 @@ export function getProps(props: StyleItProps, scopedNames: ScopedNames, ref: any
     ref,
     className: `${name}${className ? ` ${className}` : ''} ${id}`,
   };
-  
-  return Object.entries(props).reduce((acc, [propName, value]) => {
-    if (skipProps.has(propName)) return { ...acc };
-    return { ...acc, [propName]: value };
-  }, newProps);
+
+  return skipProps(props, propsToSkip, newProps);
 }
