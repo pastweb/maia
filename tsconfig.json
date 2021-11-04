@@ -1,33 +1,13 @@
 {
+  "extends": "./generalTsOptions",
   "compilerOptions": {
     "module": "ESNext",
     "target": "ESNext",
-    "allowJs": true,
-    "moduleResolution": "node",
-    "lib": ["es2020", "dom"],
-    "strict": true,
-    "sourceMap": true,
-    "declaration": true,
-    "removeComments": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "noImplicitThis": false,
+    "types": ["node", "jest"],
     "paths": {
       "@maia/*": ["./packages/*"]
     },
-    "typeRoots": ["node_modules/@types"],
-    "types": [
-      "node",
-      "jest"
-    ],
     "outDir": "packages/**/dist",
   },
-  "files": ["global.d.ts"],
-  "exclude": [
-    "node_modules",
-    "packages/**/src/**/*.test.ts"
-  ]
+  "exclude": ["packages/**/src/**/*.test.ts"]
 }
