@@ -14,7 +14,7 @@ export { isObject } from './isObject';
 export { isSet } from './isSet';
 export { isSymbol } from './isSymbol';
 export { isType } from './isType';
-export { mergeObjects } from './mergObjects';
+export { mergeDeep } from './mergDeep';
 export { throttle } from './throttle';
 export { noop } from './noop';
 export { portal, createPortal } from './portal';

@@ -1,5 +1,5 @@
 import { isObject } from '../isObject';
-import { mergeObjects } from './';
+import { mergeDeep } from './mergeDeep';
 
 const targetObj = {
   original: 1,
@@ -24,7 +24,7 @@ const source2 = {
 };
 
 describe('mergeObjects', () => {
-  const result = mergeObjects(targetObj, source1);
+  const result = mergeDeep(targetObj, source1);
 
   describe('with one source', () => {
     it('result.original sould be 1', () => {
@@ -53,7 +53,7 @@ describe('mergeObjects', () => {
   });
 
   describe('with two source', () => {
-    const result = mergeObjects(targetObj, source1, source2);
+    const result = mergeDeep(targetObj, source1, source2);
 
     it('result.original sould be 10', () => {
       expect(result.original).toBe(10);

@@ -5,7 +5,7 @@ import { isObject } from '../isObject';
  * @param ...sources
  */
 
-export function mergeObjects(...sources: { [key: string]: any }[]): {
+export function mergeDeep(...sources: { [key: string]: any }[]): {
   [key: string]: any;
 } {
   if (!sources.length) return {};
@@ -18,7 +18,7 @@ export function mergeObjects(...sources: { [key: string]: any }[]): {
         if (Array.isArray(accVal) && Array.isArray(currVal)) {
           acc[key] = accVal.concat(...currVal);
         } else if (isObject(accVal) && isObject(currVal)) {
-          acc[key] = mergeObjects(accVal, currVal);
+          acc[key] = mergeDeep(accVal, currVal);
         } else {
           acc[key] = currVal;
         }

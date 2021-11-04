@@ -1,6 +1,7 @@
 import { EventEmitter, EventCallback } from '../EventEmitter';
-import { mergeObjects } from '..';
+import { mergeDeep } from '../mergDeep';
 import { noop } from '../noop';
+import { isSSR } from '../isSSR';
 import { AppOptions, PrivateKeys } from './types';
 
 const emitter = Symbol();
@@ -45,7 +46,22 @@ export class App {
     }
 
     this.on('mount', () => {
-      (this as any).mount();
+      if (isSSR) {
+        if ((this as any).ssRenderer && (this as any).ssr) {
+          (async () => {
+            try {
+              const ssRenderer = await (this as any).ssRenderer();
+              // TODO: the ssr method (below called), should return an html string
+              // which shoul be cached with as unique key for a late html composition
+              (this as any).ssr(ssRenderer);
+            } catch(e) {
+              console.error(e);
+            }
+          })();
+        }
+      } else {
+        (this as any).mount();
+      }
     });
 
     if ((this as any).unmount && typeof (this as any).unmount === 'function') {
@@ -91,12 +107,12 @@ export class App {
 
   public mergeOptions(newOptions: AppOptions): void {
     if ((this as any)[keys].optionsKey) {
-      (this as any)[(this as any)[keys].optionsKey] = mergeObjects(
+      (this as any)[(this as any)[keys].optionsKey] = mergeDeep(
         (this as any)[(this as any)[keys].optionsKey],
         newOptions
       );
     } else {
-      this.options = mergeObjects((this as any).options, newOptions);
+      this.options = mergeDeep((this as any).options, newOptions);
     }
   }
 }
