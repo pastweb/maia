@@ -10,7 +10,9 @@ export function Scrollbars({ children, ...rest }: ScrollbarsProps) {
 
 	function calcHeight(): void {
 		const { height } = parentElement.current!.getBoundingClientRect();
-    setScrollbarsHeight(height);
+		if (height !== scrollbarsHeight) {
+			setScrollbarsHeight(height);
+		}
 	}
 
 	const ro = useRef(new ResizeObserver(() => {
