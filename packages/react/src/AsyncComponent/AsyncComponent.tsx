@@ -1,21 +1,15 @@
 import { useRef, createElement, ReactNode } from 'react';
-import { skipProps } from '../skipProps';
 import { useWillMount } from '../useWillMount';
 import { useForceUpdate } from '../useForceUpdate';
 import { loadDependency } from './util';
 import { AsyncComponentProps, DependencyInfo } from './types';
-
-const propsToSkip = [
-  'component',
-  'dependencies',
-  'fallback',
-];
 
 export function AsyncComponent(props: AsyncComponentProps) {
   const {
     component,
     dependencies,
     fallback = null,
+    ...restProps
   } = props;
 
   const Component = useRef<NonNullable<ReactNode> | null>(fallback);
@@ -27,7 +21,9 @@ export function AsyncComponent(props: AsyncComponentProps) {
     const { onSuccess } = component;
     component.onSuccess = (module: any) => {
       Component.current = (module as any)[exportName];
-      onSuccess(module);
+      if (onSuccess) {
+        onSuccess(module);
+      }
     };
     loadDependency(component);
     forceUpdate();
@@ -58,6 +54,5 @@ export function AsyncComponent(props: AsyncComponentProps) {
     loadDependencies();
   });
 
-  const componentProps = skipProps(props, propsToSkip);
-  return Component.current ? createElement((Component as any).current, { ...componentProps }) : null;
+  return Component.current ? createElement((Component as any).current, { ...restProps }) : null;
 }

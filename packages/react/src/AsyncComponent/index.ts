@@ -1,2 +1,2 @@
 export { AsyncComponent } from './AsyncComponent';
-export type { AsyncComponentProps, DependenciesFunctions } from './types';
+export type { AsyncComponentProps, DependencyInfo } from './types';

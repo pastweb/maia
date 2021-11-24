@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 
 export type DependencyFunctions = {
-  onSuccess: (module: any) => void;
-  onError: (error: any) => void;
+  onSuccess?: (module: any) => void;
+  onError?: (error: any) => void;
 };
 
 export type DependencyInfo = DependencyFunctions & {
