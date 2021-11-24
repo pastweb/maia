@@ -1,11 +1,11 @@
-import { createElement, forwardRef, useState, useEffect } from 'react';
+import { createElement, forwardRef, useState, useEffect, Ref } from 'react';
 import styleIt from '@maia/styleit';
 import { useWillUnmount } from '..';
 import { useTheme } from './ThemeProveder';
-import { updateState, getProps } from './util';
+import { updateState } from './util';
 import { StyleItProps, StyleItState } from './types';
 
-export const StyleIt = forwardRef((props: StyleItProps, ref) => {
+export const StyleIt = forwardRef((props: StyleItProps, ref: Ref<Element>) => {
   const {
     extFuncOptions,
     forward,
@@ -14,10 +14,12 @@ export const StyleIt = forwardRef((props: StyleItProps, ref) => {
     styles,
     tagName = 'div',
     children,
+    ...restProps
   } = props;
+
   const theme = useTheme();
 
-  const [state, setState] = useState<StyleItState>(updateState(props, theme));
+	const [state, setState] = useState<StyleItState>(updateState(props, theme));
 
   useWillUnmount(() => {
     styleIt.remove(state.styleInfo);
@@ -31,5 +33,15 @@ export const StyleIt = forwardRef((props: StyleItProps, ref) => {
     setState(newState);
   }, [extFuncOptions, forward, name, options, styles, tagName]);
 
-  return createElement(tagName, getProps(props, state.scopedNames, ref), children);
+  const { className } = props;
+  const { id } = state.scopedNames;
+  const { name: styleName } = state.styleInfo;
+
+  const compProps = {
+    ref,
+    className: `${styleName ? `${styleName} ` : ''}${className ? `${className} ` : ''}${id}`,
+    ...restProps,
+  };
+
+  return createElement(tagName, compProps, children);
 });

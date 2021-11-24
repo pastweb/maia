@@ -1,20 +1,23 @@
 import { StyleObject, StyleOptions, StyleInfo, ScopedNames, ForwardArgs } from '@maia/styleit';
-import { ReactChildren, ReactHTMLElement } from 'react';
+import { ReactNode, ElementType, Ref, HTMLAttributes } from 'react';
 
 export type ExternalFunctionOptions = {
   argsAsArray?: boolean;
   argsSelector?: string[];
 };
 
-export interface StyleItProps extends ReactHTMLElement <HTMLElement> {
+// interface Props extends SimpleBarJS.Options, HTMLAttributes<HTMLElement>
+
+export interface StyleItProps extends HTMLAttributes<HTMLElement> {
   className?: string;
   extFuncOptions?: ExternalFunctionOptions;
   forward?: ForwardArgs;
   name?: string;
   options?: StyleOptions;
   styles: StyleObject | ((...args: any[]) => StyleObject);
-  tagName?: string;
-  children: ReactChildren;
+  tagName?: ElementType<any>;
+  ref?: Ref<Element>;
+  children: ReactNode;
 };
 
 export type StyleItState = {
@@ -28,5 +31,5 @@ export type Theme = {
 
 export type ThemeProviderProps = {
   theme: { [key: string]: any };
-  children: ReactChildren;
+  children: ReactNode;
 }

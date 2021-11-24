@@ -1,8 +1,7 @@
-import styleIt, { ForwardArgs, ScopedNames } from '@maia/styleit';
-import { skipProps } from '../skipProps';
-import { StyleItProps, StyleItState, Theme } from './types';
+import styleIt, { ForwardArgs } from '@maia/styleit';
+import { StyleItState, Theme } from './types';
 
-export function updateState(props:StyleItProps, theme: Theme): StyleItState {
+export function updateState(props: any, theme: Theme): StyleItState {
   const {
     extFuncOptions,
     name,
@@ -29,8 +28,9 @@ export function updateState(props:StyleItProps, theme: Theme): StyleItState {
   }
   
   const styleObject = typeof styles === 'function'? styles(extFuncForward) : styles;
+  const styleName = name || options.name || styleObject.getOptions().name;
 
-  const newOptions = { ...options, name: name || options.name, ...forward };
+  const newOptions = { ...options, name: styleName, ...forward };
   const styleInfo = styleObject.setOptions(newOptions).interpolate();
 
   const scopedNames = styleIt.add(styleInfo);
@@ -39,27 +39,4 @@ export function updateState(props:StyleItProps, theme: Theme): StyleItState {
     styleInfo,
     scopedNames, 
   };
-}
-
-const propsToSkip = [
-  'className',
-  'extFuncOptions',
-  'forward',
-  'name',
-  'options',
-  'ref',
-  'styles',
-  'tagName',
-];
-
-export function getProps(props: StyleItProps, scopedNames: ScopedNames, ref: any) {
-  const { className = '' } = props;
-  const { name, id } = scopedNames;
-  
-  const newProps = {
-    ref,
-    className: `${name}${className ? ` ${className}` : ''} ${id}`,
-  };
-
-  return skipProps(props, propsToSkip, newProps);
 }

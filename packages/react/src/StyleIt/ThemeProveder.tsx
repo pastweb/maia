@@ -13,7 +13,7 @@ export function ThemeProvider({ theme, children }: ThemeProviderProps) {
 }
 
 export const useTheme = (theme?: Theme) => {
-  if (!isObject(theme)) {
+  if (theme && !isObject(theme)) {
     throw new Error('@maia/react - StyleIt - useTheme() error:\nThe theme argument must be an Object.');
   }
   return useContext(theme ? createContext(theme) : ThemeContext);
