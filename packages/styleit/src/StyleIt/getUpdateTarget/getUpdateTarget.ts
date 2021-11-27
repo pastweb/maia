@@ -1,6 +1,6 @@
 import { isSSR } from '@maia/tools';
 import { UpdateTarget } from './types';
-import { STYLE_TAG_NAME } from '../constants';
+import { STYLE_TAG_NAME } from '../../constants';
 
 export function getUpdateTarget(): UpdateTarget {
   let updateTarget: UpdateTarget = { textContent: '' };
@@ -12,11 +12,7 @@ export function getUpdateTarget(): UpdateTarget {
       updateTarget.id = STYLE_TAG_NAME;
       document.head.appendChild(updateTarget);
     }
-
-    return updateTarget;
   }
-  
-  (global as any).updateTarget = updateTarget;
 
   return updateTarget;
 }

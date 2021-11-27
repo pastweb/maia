@@ -1,33 +1,20 @@
 import { addScopedCSS } from './addScopedCSS';
 import { isObject } from '@maia/tools';
-import { getCache } from '../getCache';
+import { getCache } from '../../cache/getCache';
 import { getUpdateTarget } from '../getUpdateTarget';
-import { MINIRESET } from '../constants';
+import { MINIRESET } from '../../constants';
 import {
   STYLE_WITH_KEYFRAMES,
   STYLE_WITHOUT_KEYFRAMES,
-} from '../test/util';
-import { StyleInfo, hashCode } from '../../css';
+} from '../../testUtil';
+import { css, StyleInfo } from '../../css';
 
 const updateTarget = getUpdateTarget();
 const cache = getCache();
 
-const fileName = 'some/file/path';
-const name = 'MyComponentName';
+const styleDetailWithKeyframes: StyleInfo = css`${STYLE_WITH_KEYFRAMES}`.interpolate();
 
-const styleDetailWithKeyframes: StyleInfo = {
-  rules: STYLE_WITH_KEYFRAMES,
-  fileName,
-  name,
-  styleKey: hashCode(STYLE_WITH_KEYFRAMES),
-};
-
-const styleDetailWithoutKeyframes: StyleInfo = {
-  rules: STYLE_WITHOUT_KEYFRAMES,
-  fileName,
-  name,
-  styleKey: hashCode(STYLE_WITHOUT_KEYFRAMES),
-};
+const styleDetailWithoutKeyframes: StyleInfo = css`${STYLE_WITHOUT_KEYFRAMES}`.interpolate();
 
 describe('styleIt - addScopedCSS', () => {
   const scoped = addScopedCSS(
@@ -44,20 +31,20 @@ describe('styleIt - addScopedCSS', () => {
     expect(isObject(scoped)).toBe(true);
   });
 
-  it('scoped.id should be defined', () => {
-    expect(scoped.id).toBeDefined();
+  it('scoped.styleKey should be defined', () => {
+    expect(scoped.styleKey).toBeDefined();
   });
 
   it('scoped.id should be a string', () => {
-    expect(typeof scoped.id).toBe('string');
+    expect(typeof scoped.styleKey).toBe('string');
   });
 
   it('cache.ids.size should be 1', () => {
     expect(cache.ids.size).toBe(1);
   });
 
-  it(`cache.ids should contains the id: ${scoped.id}`, () => {
-    expect(cache.ids.has(scoped.id)).toBe(true);
+  it(`cache.ids should contains the id: ${scoped.styleKey}`, () => {
+    expect(cache.ids.has(scoped.styleKey)).toBe(true);
   });
 
   it('cache.style.size should be 1', () => {
@@ -79,16 +66,16 @@ describe('styleIt - addScopedCSS', () => {
     expect(isObject(styleCache)).toBe(true);
   });
 
-  it('styleCache should contains a defined "id" property', () => {
-    expect(styleCache.id).toBeDefined();
+  it('styleCache should contains a defined "styleKey" property', () => {
+    expect(styleCache.styleKey).toBeDefined();
   });
 
-  it('styleCache "id" property should be a string', () => {
-    expect(typeof styleCache.id).toBe('string');
+  it('styleCache "styleKey" property should be a string', () => {
+    expect(typeof styleCache.styleKey).toBe('string');
   });
 
-  it('styleCache "id" string should be present in cache.ids', () => {
-    expect(cache.ids.has(styleCache.id)).toBe(true);
+  it('styleCache "styleKey" string should be present in cache.ids', () => {
+    expect(cache.ids.has(styleCache.styleKey)).toBe(true);
   });
 
   it('styleCache should contains a defined "counter" property', () => {
@@ -121,16 +108,16 @@ describe('styleIt - addScopedCSS', () => {
 
   it('id2 hsould be equal to id', () => {
     cssTextBeforeUpdate = updateTarget.textContent!;
-    const { id: id2 } = addScopedCSS(
+    const { styleKey: id2 } = addScopedCSS(
       styleDetailWithKeyframes,
       cache,
       updateTarget,
     );
-    expect(id2 === scoped.id).toBe(true);
+    expect(id2 === scoped.styleKey).toBe(true);
   });
 
   it('styleCache "css" property value should has more then 1 id string occurence', () => {
-    const occurrencies = (styleCache.css.match(new RegExp(scoped.id, 'g')) as Array<string>).length;
+    const occurrencies = (styleCache.css.match(new RegExp(scoped.styleKey, 'g')) as Array<string>).length;
     expect(occurrencies).toBeDefined();
     expect(occurrencies > 1).toBe(true);
   });
@@ -151,7 +138,7 @@ describe('styleIt - addScopedCSS', () => {
       styleDetailWithoutKeyframes,
       cache,
       updateTarget,
-    ).id;
+    ).styleKey;
     expect(cache.ids.size).toBe(2);
   });
 

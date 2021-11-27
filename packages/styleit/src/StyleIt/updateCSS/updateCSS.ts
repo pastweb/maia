@@ -1,6 +1,6 @@
-import { MINIRESET } from '../constants';
+import { MINIRESET } from '../../constants';
 import { UpdateTarget } from '../getUpdateTarget';
-import { Cache } from '../getCache';
+import { Cache } from '../../cache';
 
 export function updateCSS(target: UpdateTarget, cache: Cache): void {
   if (!cache.style) return;

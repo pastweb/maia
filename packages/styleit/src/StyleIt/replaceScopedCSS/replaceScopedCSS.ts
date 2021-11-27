@@ -1,6 +1,6 @@
 import { updateCSS } from '../updateCSS';
 import { UpdateTarget } from '../getUpdateTarget';
-import { Cache, StyleCache } from '../getCache';
+import { Cache, StyleCache } from '../../cache';
 import { createStyleCache } from '../createStyleCahe';
 import { StyleInfo } from '../../css';
 import { ScopedNames } from '..';
@@ -22,10 +22,10 @@ export function replaceScopedCSS(removeInfo: StyleInfo, addInfo: StyleInfo, cach
     }
   }
 
-  let addCache : StyleCache | null = null;
+  let addCache : StyleCache;
 
   if (!cache.style.has(addKey)) {
-    addCache = createStyleCache(addInfo, cache);
+    addCache = createStyleCache(addInfo);
     cache.style.add(addKey, addCache);
     update = true;
   } else {
@@ -39,7 +39,7 @@ export function replaceScopedCSS(removeInfo: StyleInfo, addInfo: StyleInfo, cach
   }
 
   const { name } = addInfo;
-  const { id, fontFamily, keyframes } = addCache;
+  const { styleKey, fontFamily, keyframes } = addCache;
 
-  return { id, name, fontFamily, keyframes };
+  return { styleKey, name, fontFamily, keyframes };
 }

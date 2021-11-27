@@ -1,3 +1,5 @@
+import { ScopedStyle } from './util/applyId';
+
 export type ForwardArgs = {
   [argName: string]: any;
 };
@@ -20,10 +22,9 @@ export type StyleOptions = {
   validate?: Validate;
 };
 
-export type StyleInfo = {
+export type StyleInfo = ScopedStyle & {
   name: string;
   fileName: string;
-  rules: string
   styleKey: string;
 }
 
@@ -40,4 +41,5 @@ export interface StyleObject {
   setOptions: (styleOptions?: StyleOptions) => any;
   getOptions: () => StyleOptions;
   interpolate: () => StyleInfo;
+  // getStyle: (id?: string) => StyleInfo;
 }

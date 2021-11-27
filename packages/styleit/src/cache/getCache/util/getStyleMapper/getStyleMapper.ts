@@ -2,7 +2,7 @@ import { EventEmitter } from '@maia/tools';
 import {
   MAIA_STYLEIT_CACHE_UPDATE_EVENT,
   MAIA_STYLEIT_GET_CACHE_EVENT,
-} from '../../../constants';
+} from '../../../../constants';
 import { Cache, StyleMap, StyleCache } from '../../types';
 
 export function updateCache(cache: Cache, emitter: EventEmitter): void {
@@ -28,8 +28,7 @@ export function getStyleMapper(styleMap: StyleMap, emitter: EventEmitter): Cache
         styleMap = newStyleMap;
       },
       add: (styleKey: string, styleCache: StyleCache) => {
-        const { id } = styleCache;
-        cache.ids.add(id);
+        cache.ids.add(styleKey);
         styleMap[styleKey] = styleCache;
         updateCache(cache, emitter);
       },
@@ -39,7 +38,7 @@ export function getStyleMapper(styleMap: StyleMap, emitter: EventEmitter): Cache
         updateCache(cache, emitter);
       },
       remove: (styleKey: string, styleCache: StyleCache): void => {
-        cache.ids.delete(styleCache.id);
+        cache.ids.delete(styleCache.styleKey);
         delete styleMap[styleKey];
         updateCache(cache, emitter);
       },

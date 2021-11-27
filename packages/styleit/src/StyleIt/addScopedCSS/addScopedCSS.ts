@@ -1,27 +1,27 @@
 import { updateCSS } from '../updateCSS';
-import { Cache, StyleCache } from '../getCache';
+import { Cache, StyleCache } from '../../cache';
 import { UpdateTarget } from '../getUpdateTarget';
 import { StyleInfo } from '../../css';
 import { ScopedNames } from './types';
-import { createStyleCache } from '../createStyleCahe/createStyleCache';
+import { createStyleCache } from '../createStyleCahe';
 
 export function addScopedCSS(styleInfo: StyleInfo, cache: Cache, updateTarget: UpdateTarget): ScopedNames
 {
-  const { rules, styleKey, name } = styleInfo;
+  const { rules, styleKey, name, fontFamily, keyframes } = styleInfo;
   
   if (!rules) {
     return {
-      id: '',
+      styleKey: '',
       name,
       fontFamily: {},
       keyframes: {},
     };
   }
 
-  let styleCache: StyleCache | null = null;
+  let styleCache: StyleCache;
 
   if (!cache.style.has(styleKey)) {
-    styleCache = createStyleCache(styleInfo, cache);
+    styleCache = createStyleCache(styleInfo);
     cache.style.add(styleKey, styleCache);
     updateCSS(updateTarget, cache);
   } else {
@@ -30,7 +30,5 @@ export function addScopedCSS(styleInfo: StyleInfo, cache: Cache, updateTarget: U
     cache.style.update(styleKey, styleCache);
   }
 
-  const { id, fontFamily, keyframes } = styleCache;
-
-  return { id, name, fontFamily, keyframes };;
+  return { styleKey, name, fontFamily, keyframes };;
 }

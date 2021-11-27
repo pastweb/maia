@@ -2,7 +2,7 @@ export type StyleCache = {
   counter: number;
   css: string;
   fontFamily: { [name: string]: string };
-  id: string;
+  styleKey: string;
   keyframes: { [name: string]: string };
 };
 

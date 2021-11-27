@@ -3,17 +3,18 @@ import {
   GET_FONT_FACE_BLOCKS_REGEX,
   GET_FONT_FAMILY_RAWS_REGEX,
   GET_KEYFRAMES_NAME_RAWS_REGEX,
-} from '../../constants';
+} from '../../../constants';
 import { ScopedStyle } from './types';
  
-export function getScopedStyle (rules: string, id: string): ScopedStyle {
+export function applyId (rules: string, id: string): ScopedStyle {
   const hasKeyframes = rules.includes('@keyframes');
   const hasFontFace = rules.includes('@font-face');
   const scopedRules = `.${id}{${rules}}`;
   const scoped: ScopedStyle = {
     fontFamily: {},
     keyframes: {},
-    rules: scopedRules,
+    rules,
+    scopedRules,
   };
 
   if (hasKeyframes) {
@@ -28,12 +29,12 @@ export function getScopedStyle (rules: string, id: string): ScopedStyle {
         scoped.keyframes[name] = scopedName;
 
         const keyFramesNameRegex = new RegExp(`@keyframes ${name}\\s*{`,'g');
-        scoped.rules = scoped.rules.replace(keyFramesNameRegex, `@keyframes ${scopedName}{`);
+        scoped.scopedRules = scoped.scopedRules.replace(keyFramesNameRegex, `@keyframes ${scopedName}{`);
 
         if (animationLines) {
           animationLines.forEach(line => {
             const scopedLine = line.replace(name, scopedName);
-            scoped.rules = scoped.rules.replace(line, scopedLine);
+            scoped.scopedRules = scoped.scopedRules.replace(line, scopedLine);
           });
         }
       });
@@ -54,7 +55,7 @@ export function getScopedStyle (rules: string, id: string): ScopedStyle {
           scoped.fontFamily[name] = scopedName;
           const fontFamilyNameRegex = new RegExp(`font-family:\\s*['"]${name}['"]`,'g');
           const scopedFaceBlock = fontFaceBlock.replace(fontFamilyNameRegex, `font-family:'${scopedName}'`);
-          scoped.rules = scoped.rules.replace(fontFaceBlock, scopedFaceBlock);
+          scoped.scopedRules = scoped.scopedRules.replace(fontFaceBlock, scopedFaceBlock);
         }
       });
     }

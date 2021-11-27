@@ -1,6 +1,6 @@
-import { StyleObject, ForwardArgs, StyleOptions, StyleInfo, TagArg } from './types';
-import { hashCode } from './hashCode';
-import { isObject } from '@maia/tools';
+import { cache } from '../cache';
+import { StyleObject, StyleOptions, StyleInfo } from './types';
+import { validateArgs, selectArgs, generateId, interpolate } from './util';
 
 export function css(styleStrings: TemplateStringsArray, ...args: any[]): StyleObject
 {
@@ -21,56 +21,32 @@ export function css(styleStrings: TemplateStringsArray, ...args: any[]): StyleOb
       return styles;
     },
     getOptions(): StyleOptions {
-      return {
-        ...styles[options].data,
-        forward: { ... styles[options].data.forward },
-      }
+      return { ...styles[options].data };
     },
     interpolate(): StyleInfo {
-      const {
-        argsAsArray,
-        argsSelector,
-        fileName,
-        forward,
-        name,
-        validate,
-      } = styles[options].data;
-      
-      const toValidate = Object.entries(validate || {});
-      
-      if (toValidate.length) {
-        toValidate.forEach(([ argName, validFunc]: [string, (arg: any) => boolean]) => {
-          if (!validFunc(forward[argName])) {
-            throw new Error(`@maia/styleit - css validation error in: ${fileName.length ? `${fileName} -` : ''}${name} for arg "${argName}"`);
-          }
-        });
-      }
+      const _options = styles[options].data;
+      const { name, fileName } = _options;
 
-      const selectedArgs = argsSelector.length ? argsSelector.reduce(
-        (acc: ForwardArgs, argName: string) => {
-          return { ...acc, [argName]: forward[argName] };
-        }, {}
-      ) : forward;
-      
-      const rules = !args.length ? styleStrings[0] || '' : args.reduce(
-        (acc: string[], cur: TagArg, i: number) => {
-          const args = argsAsArray ? Object.values(selectedArgs) : [{ ...selectedArgs }];
-          
-          return `${acc}${
-            isObject(cur) && typeof (cur as any).interpolate === 'function' ?
-              (cur as any).interpolate().rules :
-                typeof cur === 'function' ? cur(...args) : cur
-          }${styleStrings[i+1]}`;
-        },
-        styleStrings[0] || ''
+      const styleKey = generateId(cache.ids);
+
+      validateArgs(_options);
+
+      const selectedArgs = selectArgs(_options);
+
+      const { fontFamily, keyframes, rules, scopedRules } = interpolate(
+        styleKey,
+        { ..._options, forward: selectedArgs },
+        styleStrings,
+        args
       );
-      
-      const styleKey = hashCode(rules);
 
       return {
         name,
         fileName,
+        fontFamily,
+        keyframes,
         rules,
+        scopedRules,
         styleKey,
       };
     },

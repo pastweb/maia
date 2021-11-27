@@ -2,7 +2,7 @@ import { getEmitter } from './getEmitter';
 import { EventEmitter } from '@maia/tools';
 import {
   GLOBAL_EMITTER_NAME,
-} from '../../../constants';
+} from '../../../../constants';
 
 describe('getEmitter', () => {
   it('if the emitter is present in the window Object, should be returned from getEmitter().', () => {

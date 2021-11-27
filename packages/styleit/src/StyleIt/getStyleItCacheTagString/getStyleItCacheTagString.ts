@@ -4,8 +4,8 @@ import {
   STYLE_TAG_NAME,
   GLOBAL_IDS_CACHE_NAME,
   GLOBAL_STYLE_CACHE_NAME
-} from '../constants';
-import { Cache } from '../getCache';
+} from '../../constants';
+import { Cache } from '../../cache';
 
 export function getStyleItCacheTagString(cache: Cache): string {
   if (!cache.style) return '';

@@ -2,9 +2,10 @@ import { StyleInfo } from '../../../css';
 import { PreProcessorError } from './types';
 import { compile, serialize, middleware, prefixer, stringify } from 'stylis';
 
-export function preProcessor(styleInfo: StyleInfo, scopedRules: string): string
+export function preProcessor(styleInfo: StyleInfo): string
 {
-  const { rules, fileName, name } = styleInfo;
+  const { rules, scopedRules, fileName, name } = styleInfo;
+  
   try {
     return serialize(compile(scopedRules), middleware([prefixer, stringify]));
   } catch(e) {

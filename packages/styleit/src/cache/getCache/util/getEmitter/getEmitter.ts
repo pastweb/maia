@@ -1,7 +1,7 @@
 import { isSSR, EventEmitter } from '@maia/tools';
 import {
   GLOBAL_EMITTER_NAME,
-} from '../../../constants';
+} from '../../../../constants';
 import { readOnlyProp } from '../readOnlyProp';
 
 export function getEmitter(): EventEmitter {

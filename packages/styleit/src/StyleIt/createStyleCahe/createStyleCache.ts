@@ -1,25 +1,17 @@
 import { StyleInfo } from '../../css';
-import { Cache, StyleCache } from '../getCache';
-import { generateId } from './generateId';
-import { getScopedStyle } from './getScopedStyle';
+import { StyleCache } from '../../cache';
 import { preProcessor } from './preProcessor';
 
-export function createStyleCache(styleInfo: StyleInfo, cache: Cache): StyleCache {
-  const id = generateId(cache.ids);
-
-  const {
-    fontFamily,
-    keyframes,
-    rules: scopedRules,
-  } = getScopedStyle(styleInfo.rules, id);
+export function createStyleCache(styleInfo: StyleInfo): StyleCache {
+  const { fontFamily, keyframes, styleKey } = styleInfo;
   
-  const css = preProcessor(styleInfo, scopedRules);
+  const css = preProcessor(styleInfo);
 
   return {
     counter: 1,
     css,
     fontFamily,
-    id,
+    styleKey,
     keyframes,
   };
 }

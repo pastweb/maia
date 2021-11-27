@@ -1,12 +1,12 @@
-import { getScopedStyle } from './getScopedStyle';
+import { applyId } from './applyId';
 import { isObject } from '@maia/tools';
-import { STYLE_WITH_KEYFRAMES } from '../../test/util';
+import { STYLE_WITH_KEYFRAMES } from '../../../testUtil';
 
 const id = '_suffixID';
 const suffix = id;
 
-describe('styleIt - getScopedStyle', () => {
-  const scoped = getScopedStyle(STYLE_WITH_KEYFRAMES, id);
+describe('styleIt - applyId', () => {
+  const scoped = applyId(STYLE_WITH_KEYFRAMES, id);
 
   it('scoped should be defined', () => {
     expect(scoped).toBeDefined();
@@ -87,39 +87,51 @@ describe('styleIt - getScopedStyle', () => {
     expect(scoped.rules).toBeDefined();
   });
 
+  it('scoped.scopedRules should be defined', () => {
+    expect(scoped.scopedRules).toBeDefined();
+  });
+
   it('scoped.rules should be a string', () => {
     expect(typeof scoped.rules).toBe('string');
   });
 
-  it(`scoped.rules should contains the scoped class: .${id}`, () => {
-    expect(scoped.rules.includes(`.${id}`)).toBe(true);
+  it('scoped.scopedRules should be a string', () => {
+    expect(typeof scoped.scopedRules).toBe('string');
   });
 
-  it(`scoped class: .${id} inside the scoped.rules string should be 0`, () => {
-    expect(scoped.rules.indexOf(`.${id}`)).toBe(0);
+  it(`scoped.rules should not contains the scoped class: .${id}`, () => {
+    expect(scoped.rules.includes(`.${id}`)).toBe(false);
+  });
+
+  it(`scoped.scopedRules should contains the scoped class: .${id}`, () => {
+    expect(scoped.scopedRules.includes(`.${id}`)).toBe(true);
+  });
+
+  it(`scoped class: .${id} inside the scoped.scopedRules string should be 0`, () => {
+    expect(scoped.scopedRules.indexOf(`.${id}`)).toBe(0);
   });
 
   it(`should not modify any className`, () => {
-    expect(scoped.rules.includes(`.expample${suffix}`)).toBe(false);
+    expect(scoped.scopedRules.includes(`.expample${suffix}`)).toBe(false);
   });
 
-  it(`scoped font-family: ${scoped.fontFamily[fontFamilyName]} inside the scoped.rules string should be present`, () => {
-    expect(scoped.rules.indexOf(scoped.fontFamily[fontFamilyName]) !== -1).toBe(true);
+  it(`scoped font-family: ${scoped.fontFamily[fontFamilyName]} inside the scoped.scopedRules string should be present`, () => {
+    expect(scoped.scopedRules.indexOf(scoped.fontFamily[fontFamilyName]) !== -1).toBe(true);
   });
 
   it(`should render a scoped animation-name value: expample${suffix}`, () => {
-    expect(scoped.rules.includes(`animation-name: expample${suffix}`)).toBe(true);
+    expect(scoped.scopedRules.includes(`animation-name: expample${suffix}`)).toBe(true);
   });
 
   it(`should render a scoped keyframes name: expample${suffix}`, () => {
-    expect(scoped.rules.includes(`@keyframes expample${suffix}`)).toBe(true);
+    expect(scoped.scopedRules.includes(`@keyframes expample${suffix}`)).toBe(true);
   });
 
   it(`should render a scoped animation name value: expample${suffix}`, () => {
-    expect(scoped.rules.includes(`animation: expample${suffix}`)).toBe(true);
+    expect(scoped.scopedRules.includes(`animation: expample${suffix}`)).toBe(true);
   });
 
   it(`should render a scoped keyframes name: example-2${suffix}`, () => {
-    expect(scoped.rules.includes(`@keyframes example-2${suffix}`)).toBe(true);
+    expect(scoped.scopedRules.includes(`@keyframes example-2${suffix}`)).toBe(true);
   });
 });

@@ -1,5 +1,5 @@
 import { addScopedCSS, ScopedNames } from './addScopedCSS';
-import { getCache, Cache } from './getCache';
+import { cache } from '../cache';
 import { getUpdateTarget, UpdateTarget } from './getUpdateTarget';
 import { getStyleItCacheTagString as _getStyleItCacheTagString } from './getStyleItCacheTagString';
 import { removeScopedCSS } from './removeScopedCSS';
@@ -7,7 +7,6 @@ import { StyleInfo } from '../css';
 import { replaceScopedCSS } from './replaceScopedCSS';
 
 const updateTarget: UpdateTarget = getUpdateTarget();
-const cache: Cache = getCache();
 
 export function add(styleInfo: StyleInfo): ScopedNames {
   return addScopedCSS(styleInfo, cache, updateTarget);
