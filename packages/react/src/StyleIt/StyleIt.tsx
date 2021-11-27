@@ -13,6 +13,7 @@ export const StyleIt = forwardRef((props: StyleItProps, ref: Ref<Element>) => {
     options,
     styles,
     tagName = 'div',
+    className,
     children,
     ...restProps
   } = props;
@@ -31,15 +32,14 @@ export const StyleIt = forwardRef((props: StyleItProps, ref: Ref<Element>) => {
 
     styleIt.replace(state.styleInfo, newState.styleInfo);
     setState(newState);
-  }, [extFuncOptions, forward, name, options, styles, tagName]);
+  }, [extFuncOptions, forward, name, options, styles, tagName, className]);
 
-  const { className } = props;
-  const { id } = state.scopedNames;
+  const { styleKey } = state.scopedNames;
   const { name: styleName } = state.styleInfo;
 
   const compProps = {
     ref,
-    className: `${styleName ? `${styleName} ` : ''}${className ? `${className} ` : ''}${id}`,
+    className: `${styleName ? `${styleName} ` : ''}${className ? `${className} ` : ''}${styleKey}`,
     ...restProps,
   };
 
