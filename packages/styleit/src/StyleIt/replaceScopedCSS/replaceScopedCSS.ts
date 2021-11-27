@@ -1,11 +1,10 @@
+import { cache, StyleCache } from '../../cache';
 import { updateCSS } from '../updateCSS';
-import { UpdateTarget } from '../getUpdateTarget';
-import { Cache, StyleCache } from '../../cache';
 import { createStyleCache } from '../createStyleCahe';
 import { StyleInfo } from '../../css';
 import { ScopedNames } from '..';
 
-export function replaceScopedCSS(removeInfo: StyleInfo, addInfo: StyleInfo, cache: Cache, updateTarget: UpdateTarget): ScopedNames {
+export function replaceScopedCSS(removeInfo: StyleInfo, addInfo: StyleInfo): ScopedNames {
   const { styleKey: removeKey } = removeInfo;
   const { styleKey: addKey } = addInfo;
   let update = false;
@@ -35,7 +34,7 @@ export function replaceScopedCSS(removeInfo: StyleInfo, addInfo: StyleInfo, cach
   }
 
   if (update) {
-    updateCSS(updateTarget, cache);
+    updateCSS();
   }
 
   const { name } = addInfo;

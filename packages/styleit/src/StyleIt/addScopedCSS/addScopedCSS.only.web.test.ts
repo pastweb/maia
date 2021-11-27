@@ -1,7 +1,7 @@
 import { addScopedCSS } from './addScopedCSS';
 import { isObject } from '@maia/tools';
-import { getCache } from '../../cache/getCache';
-import { getUpdateTarget } from '../getUpdateTarget';
+import { cache } from '../../cache';
+import { updateTarget } from '../updateTarget';
 import { MINIRESET } from '../../constants';
 import {
   STYLE_WITH_KEYFRAMES,
@@ -9,19 +9,12 @@ import {
 } from '../../testUtil';
 import { css, StyleInfo } from '../../css';
 
-const updateTarget = getUpdateTarget();
-const cache = getCache();
-
 const styleDetailWithKeyframes: StyleInfo = css`${STYLE_WITH_KEYFRAMES}`.interpolate();
 
 const styleDetailWithoutKeyframes: StyleInfo = css`${STYLE_WITHOUT_KEYFRAMES}`.interpolate();
 
 describe('styleIt - addScopedCSS', () => {
-  const scoped = addScopedCSS(
-    styleDetailWithKeyframes,
-    cache,
-    updateTarget,
-  );
+  const scoped = addScopedCSS(styleDetailWithKeyframes);
 
   it('scoped should be defined', () => {
     expect(scoped).toBeDefined();
@@ -108,11 +101,7 @@ describe('styleIt - addScopedCSS', () => {
 
   it('id2 hsould be equal to id', () => {
     cssTextBeforeUpdate = updateTarget.textContent!;
-    const { styleKey: id2 } = addScopedCSS(
-      styleDetailWithKeyframes,
-      cache,
-      updateTarget,
-    );
+    const { styleKey: id2 } = addScopedCSS(styleDetailWithKeyframes);
     expect(id2 === scoped.styleKey).toBe(true);
   });
 
@@ -134,11 +123,7 @@ describe('styleIt - addScopedCSS', () => {
   let id3: string = '';
 
   it('cache.ids.size should be 2', () => {
-    id3 = addScopedCSS(
-      styleDetailWithoutKeyframes,
-      cache,
-      updateTarget,
-    ).styleKey;
+    id3 = addScopedCSS(styleDetailWithoutKeyframes).styleKey;
     expect(cache.ids.size).toBe(2);
   });
 

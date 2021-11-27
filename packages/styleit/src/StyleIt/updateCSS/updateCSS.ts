@@ -1,8 +1,8 @@
 import { MINIRESET } from '../../constants';
-import { UpdateTarget } from '../getUpdateTarget';
-import { Cache } from '../../cache';
+import { updateTarget } from '../updateTarget';
+import { cache } from '../../cache';
 
-export function updateCSS(target: UpdateTarget, cache: Cache): void {
+export function updateCSS(): void {
   if (!cache.style) return;
-  target.textContent = `${MINIRESET}${cache.style.css}`;
+  updateTarget.textContent = `${MINIRESET}${cache.style.css}`;
 }

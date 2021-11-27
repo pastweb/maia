@@ -1,11 +1,10 @@
 import { updateCSS } from '../updateCSS';
-import { Cache, StyleCache } from '../../cache';
-import { UpdateTarget } from '../getUpdateTarget';
+import { StyleCache, cache } from '../../cache';
 import { StyleInfo } from '../../css';
 import { ScopedNames } from './types';
 import { createStyleCache } from '../createStyleCahe';
 
-export function addScopedCSS(styleInfo: StyleInfo, cache: Cache, updateTarget: UpdateTarget): ScopedNames
+export function addScopedCSS(styleInfo: StyleInfo): ScopedNames
 {
   const { rules, styleKey, name, fontFamily, keyframes } = styleInfo;
   
@@ -23,7 +22,7 @@ export function addScopedCSS(styleInfo: StyleInfo, cache: Cache, updateTarget: U
   if (!cache.style.has(styleKey)) {
     styleCache = createStyleCache(styleInfo);
     cache.style.add(styleKey, styleCache);
-    updateCSS(updateTarget, cache);
+    updateCSS();
   } else {
     styleCache = cache.style.get(styleKey);
     styleCache.counter += 1;
