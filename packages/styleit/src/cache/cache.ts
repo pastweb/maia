@@ -1,3 +1,3 @@
-import { getCache, Cache } from './getCache';
+import { getCache } from './getCache';
 
-export const cache: Cache = getCache();
+export const cache = getCache();
