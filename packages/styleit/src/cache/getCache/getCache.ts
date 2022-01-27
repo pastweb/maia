@@ -1,8 +1,13 @@
-import { EventEmitter } from '@maia/tools';
-import { getEmitter, initCache } from './util';
-import { Cache } from './types';
+
+import { isSSR } from '@maia/tools';
+import { GLOBAL_STYLE_CACHE_NAME } from '../../constants';
+import { initCache } from '../initCache';
+import { Cache } from '../types';
 
 export function getCache(): Cache {
-  const emitter: EventEmitter = getEmitter();
-  return initCache(emitter);
+  if (!isSSR && window[GLOBAL_STYLE_CACHE_NAME]) {
+    return window[GLOBAL_STYLE_CACHE_NAME];
+  }
+
+  return initCache();
 }
