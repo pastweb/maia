@@ -1,0 +1,1 @@
+export { cssToObject } from './cssToObject';

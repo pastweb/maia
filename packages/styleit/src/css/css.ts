@@ -1,56 +1,92 @@
+import { StyleObject, StyleOptions, StyleInfo, CSSObject } from './types';
+import { stringify, hash } from './util';
 import { cache } from '../cache';
-import { StyleObject, StyleOptions, StyleInfo } from './types';
-import { validateArgs, selectArgs, generateId, interpolate } from './util';
+import {
+  validateArgs,
+  selectArgs,
+  interpolate,
+  applyStyleKey,
+  parse,
+} from './util';
 
-export function css(styleStrings: TemplateStringsArray, ...args: any[]): StyleObject
+export function css(styleStrings: TemplateStringsArray | CSSObject, ...args: any[]): StyleObject
 {
-  const options = Symbol();
-  const styles: StyleObject = Object.freeze({
-    [options]: {
-      data: {
+  const data = Symbol();
+
+  const styles: StyleObject = {
+    [data]: {
+      info: {
+        classId: '',
+        frameworkId: '',
+        name: '',
+        fileName: '',
+        frameworkName: '',
+        fontFamily: {},
+        keyframes: {},
+        cssObject: {},
+        css: '',
+        styleKey: '',
+      },
+      options: {
         argsAsArray: false,
         argsSelector: [],
         fileName: '',
         forward: {},
+        frameworkName: '',
+        useFrameworkClassId: false,
         name: '',
         validate: {},
-      }
+      },
     },
     setOptions(styleOptions = {}): StyleObject {
-      styles[options].data = { ...styles[options].data, ...styleOptions };
+      styles[data].options = { ...styles[data].options, ...styleOptions };
       return styles;
     },
     getOptions(): StyleOptions {
-      return { ...styles[options].data };
+      return { ...styles[data].options };
     },
-    interpolate(): StyleInfo {
-      const _options = styles[options].data;
-      const { name, fileName } = _options;
+    getStyleInfo(): StyleInfo {
+      const { name, fileName, frameworkName, useFrameworkClassId } = styles[data].options;
 
-      const styleKey = generateId(cache.ids);
+      validateArgs(styles[data].options);
+      const selectedArgs = selectArgs(styles[data].options);
+      const forwardOptions = { ...styles[data].options, forward: selectedArgs };
 
-      validateArgs(_options);
+      const cssObject = interpolate(forwardOptions, styleStrings, args);
+      const scss = stringify(cssObject);
+      const styleKey = hash(scss);
+      
+      let { fontFamily, keyframes, css, classId } = styles[data].info;
+      const _frameworkId = frameworkName && cache.frameworks[frameworkName] ||
+        frameworkName && styleKey;
+      const frameworkId = useFrameworkClassId ? '' : _frameworkId;
+      classId = useFrameworkClassId ? _frameworkId : styleKey;
+      
+      if (styleKey !== styles[data].info.styleKey) {
+        const withKey = applyStyleKey(scss, classId);
+        const { fontFamily: _fontFamily, keyframes: _keyframes } = withKey; 
+        const _css = parse(withKey.scoped, `.${classId}`);
+        fontFamily = _fontFamily;
+        keyframes = _keyframes;
+        css = _css;
+      }
 
-      const selectedArgs = selectArgs(_options);
-
-      const { fontFamily, keyframes, rules, scopedRules } = interpolate(
-        styleKey,
-        { ..._options, forward: selectedArgs },
-        styleStrings,
-        args
-      );
-
-      return {
+      styles[data].info = {
+        classId,
+        frameworkId,
         name,
         fileName,
+        frameworkName,
         fontFamily,
         keyframes,
-        rules,
-        scopedRules,
+        css,
+        cssObject,
         styleKey,
       };
-    },
-  });
 
-  return styles;
+      return Object.freeze(styles[data].info);
+    },
+  };
+
+  return Object.freeze(styles);
 }

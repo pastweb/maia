@@ -1,2 +1,8 @@
 export { css } from './css';
-export type { StyleObject, StyleOptions, ForwardArgs, StyleInfo } from './types';
+export type {
+  CSSObject,
+  StyleObject,
+  StyleOptions,
+  ForwardArgs,
+  StyleInfo,
+} from './types';
