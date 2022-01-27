@@ -34,12 +34,12 @@ export const StyleIt = forwardRef((props: StyleItProps, ref: Ref<Element>) => {
     setState(newState);
   }, [extFuncOptions, forward, name, options, styles, tagName, className]);
 
-  const { styleKey } = state.scopedNames;
+  const { classId, frameworkId } = state.scopedNames;
   const { name: styleName } = state.styleInfo;
 
   const compProps = {
     ref,
-    className: `${styleName ? `${styleName} ` : ''}${className ? `${className} ` : ''}${styleKey}`,
+    className: `${styleName ? `${styleName} ` : ''}${className ? `${className} ` : ''}${classId}${frameworkId ? ` ${frameworkId}` : ''}`,
     ...restProps,
   };
 
