@@ -1,4 +1,4 @@
-import styleIt, { ForwardArgs } from '@maia/styleit';
+import styleIt, { ForwardArgs, ScopedNames } from '@maia/styleit';
 import { StyleItState, Theme } from './types';
 
 export function updateState(props: any, theme: Theme): StyleItState {
@@ -31,9 +31,9 @@ export function updateState(props: any, theme: Theme): StyleItState {
   const styleName = name || options.name || styleObject.getOptions().name;
 
   const newOptions = { ...options, name: styleName, ...forward };
-  const styleInfo = styleObject.setOptions(newOptions).interpolate();
+  const styleInfo = styleObject.setOptions(newOptions).getStyleInfo();
 
-  const scopedNames = styleIt.add(styleInfo);
+  const scopedNames: ScopedNames = styleIt.add(styleInfo);
   
   return {
     styleInfo,

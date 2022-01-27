@@ -9,9 +9,9 @@ import {
 } from '../../testUtil';
 import { css, StyleInfo } from '../../css';
 
-const styleDetailWithKeyframes: StyleInfo = css`${STYLE_WITH_KEYFRAMES}`.interpolate();
+const styleDetailWithKeyframes: StyleInfo = css`${STYLE_WITH_KEYFRAMES}`.getStyleInfo();
 
-const styleDetailWithoutKeyframes: StyleInfo = css`${STYLE_WITHOUT_KEYFRAMES}`.interpolate();
+const styleDetailWithoutKeyframes: StyleInfo = css`${STYLE_WITHOUT_KEYFRAMES}`.getStyleInfo();
 
 describe('styleIt - addScopedCSS', () => {
   const scoped = addScopedCSS(styleDetailWithKeyframes);
@@ -32,22 +32,13 @@ describe('styleIt - addScopedCSS', () => {
     expect(typeof scoped.styleKey).toBe('string');
   });
 
-  it('cache.ids.size should be 1', () => {
-    expect(cache.ids.size).toBe(1);
-  });
-
-  it(`cache.ids should contains the id: ${scoped.styleKey}`, () => {
-    expect(cache.ids.has(scoped.styleKey)).toBe(true);
-  });
-
   it('cache.style.size should be 1', () => {
     expect(cache.style.size).toBe(1);
   });
 
-  it('styleCache should contains the STYLE_WITH_KEYFRAMES styleKey as key', () => {
-      expect(cache.style.has(styleDetailWithKeyframes.styleKey)).toBe(true);
+  it(`cache.style should contains the id: ${scoped.styleKey}`, () => {
+    expect(cache.style.has(scoped.styleKey)).toBe(true);
   });
-
 
   const styleCache = cache.style.get(styleDetailWithKeyframes.styleKey);
 
@@ -57,18 +48,6 @@ describe('styleIt - addScopedCSS', () => {
 
   it('styleCache should be a plain Object', () => {
     expect(isObject(styleCache)).toBe(true);
-  });
-
-  it('styleCache should contains a defined "styleKey" property', () => {
-    expect(styleCache.styleKey).toBeDefined();
-  });
-
-  it('styleCache "styleKey" property should be a string', () => {
-    expect(typeof styleCache.styleKey).toBe('string');
-  });
-
-  it('styleCache "styleKey" string should be present in cache.ids', () => {
-    expect(cache.ids.has(styleCache.styleKey)).toBe(true);
   });
 
   it('styleCache should contains a defined "counter" property', () => {
@@ -122,13 +101,13 @@ describe('styleIt - addScopedCSS', () => {
 
   let id3: string = '';
 
-  it('cache.ids.size should be 2', () => {
+  it('cache.style.size should be 2', () => {
     id3 = addScopedCSS(styleDetailWithoutKeyframes).styleKey;
-    expect(cache.ids.size).toBe(2);
+    expect(cache.style.size).toBe(2);
   });
 
-  it(`the id: ${id3}, shold be into cache.ids`, () => {
-    expect(cache.ids.has(id3)).toBe(true);
+  it(`the styleKey: ${id3}, shold be into cache.style`, () => {
+    expect(cache.style.has(id3)).toBe(true);
   });
 
   it('cache.style.size should be 2', () => {

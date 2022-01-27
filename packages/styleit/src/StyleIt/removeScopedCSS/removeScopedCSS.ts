@@ -1,18 +1,9 @@
 import { updateCSS } from '../updateCSS';
-import { cache, StyleCache } from '../../cache';
+import { cache } from '../../cache';
 import { StyleInfo } from '../../css';
 
 export function removeScopedCSS(styleInfo: StyleInfo): void {
-  const { styleKey } = styleInfo;
-
-  if (!cache.style.has(styleKey)) return;
-  const styleCache: StyleCache = cache.style.get(styleKey);
-
-  if (styleCache.counter === 1) {
-    cache.style.remove(styleKey, styleCache);
+  if (cache.style.remove(styleInfo)) {
     updateCSS();
-  } else {
-    styleCache.counter -= 1;
-    cache.style.update(styleKey, styleCache);
   }
 }
