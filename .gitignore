@@ -11,3 +11,5 @@ yarn-error.log
 tsconfig.tsbuildinfo
 package-lock.json
 lerna-debug.log
+
+version.ts

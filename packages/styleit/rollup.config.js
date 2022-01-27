@@ -5,6 +5,10 @@ import typescript from 'rollup-plugin-typescript2';
 import json from '@rollup/plugin-json';
 import { terser } from 'rollup-plugin-terser';
 import visualizer from 'rollup-plugin-visualizer';
+import pkg from './package.json';
+import { writeFileSync } from 'fs';
+
+writeFileSync('./src/version.ts', `export default '${pkg.version}';\n`, 'utf8');
 
 const { name, main, module, peerDependencies } = require('./package.json');
 
