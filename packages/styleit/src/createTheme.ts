@@ -1,36 +1,31 @@
-import { isObject } from '@maia/tools';
+import { isObject, mergeDeep } from '@maia/tools';
 
 export type Theme = {
   [prop: string]: string | number | Theme | ((theme: Theme) => string | number | Theme);
 }
 
-export function createTheme(themes: Theme[], skipProps: string | string[] = []): Theme {
+export type ThemeFunction = (theme: Theme) => Theme;
+
+export function createTheme(themes: any[], skipProps: string | string[] = []): Theme {
   let _theme = {};
   const _skipProps = new Set(Array.isArray(skipProps) ? skipProps : [skipProps]);
 
-  function mergeDeep(theme: Theme): Theme {
-    return Object.entries(theme).reduce((acc, [prop, value]) => {
-      if (isObject(value)) {
-        return { ...acc, [prop]: mergeDeep(value as Theme) };
-      }
-
-      return { ...acc, [prop]: value };
-    }, _theme);
-  }
-
-  themes.forEach((theme: Theme) => {
-    _theme = mergeDeep(theme);
+  themes.forEach((curr: any) => {
+    const themeObject = typeof curr === 'function' ? curr(_theme) : curr;
+    _theme = mergeDeep(_theme, themeObject);
   });
 
-  function interpolate(theme: Theme): Theme {
-    return Object.entries(theme).reduce((acc, [prop, value]) => {
-      if (typeof value === 'function' && !_skipProps.has(prop)) {
-        return { ...acc, [prop]: value(acc) };
+  function interpolate(target: any): void {
+    Object.entries(target).forEach(([prop, value]) => {
+      if (isObject(value)) {
+        interpolate(value);
+      } else if (typeof value === 'function' && !_skipProps.has(prop)) {
+        target[prop] = value(_theme);
       }
-
-      return acc;
-    }, _theme);
+    });
   }
 
-  return interpolate(_theme);
+  interpolate(_theme);
+
+  return _theme;
 }

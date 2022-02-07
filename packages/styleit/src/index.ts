@@ -1,4 +1,5 @@
-import  styleIt, { ScopedNames } from './styleIt';
+import styleIt from './styleIt';
+export  { ScopedNames } from './styleIt';
 export {
   css,
   StyleObject,
@@ -7,9 +8,6 @@ export {
   StyleInfo,
 } from './css';
 export { setOptions } from './setOptions';
-export type { ScopedNames };
 export { createTheme, Theme } from './createTheme';
 
-
 export default styleIt;
-

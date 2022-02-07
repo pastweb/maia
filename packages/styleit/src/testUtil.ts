@@ -133,7 +133,7 @@ export const STYLE_WITH_KEYFRAMES = `
 }
 
 @font-face {
-  font-family: 'MyWebFont';
+  font-family: "MyWebFont", 'OtherFallBack', sans-serif;
   src: url('webfont.eot'); /* IE9 Compat Modes */
   src: url('webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
        url('webfont.woff2') format('woff2'), /* Super Modern Browsers */
