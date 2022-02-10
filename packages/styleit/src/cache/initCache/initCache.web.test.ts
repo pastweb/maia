@@ -1,9 +1,7 @@
 import { isObject } from '@maia/tools';
-import { getStyleMapper } from './getStyleMapper';
-import { getEmitter } from '../getEmitter';
+import { initCache } from './InitCache';
 
-const emitter = getEmitter();
-const cache = getStyleMapper({}, emitter);
+const cache = initCache();
 
 describe('getStyleMapper', () => {
   it('cache should be defined', () => {
@@ -29,14 +27,12 @@ describe('getStyleMapper', () => {
 
   it('cache.style.getStyleMap should be a function and return the current styleMap.', () => {
     const styleMap = {};
-    const cache = getStyleMapper(styleMap, emitter);
     expect(typeof cache.style.getStyleMap).toBe('function');
     expect(cache.style.getStyleMap()).toBe(styleMap);
   });
 
   it('cache.style.setStyleMap should be a function and set a new styleMap.', () => {
     const styleMap = {};
-    const cache = getStyleMapper({}, emitter);
     expect(typeof cache.style.setStyleMap).toBe('function');
     cache.style.setStyleMap(styleMap);
     expect(cache.style.getStyleMap()).toBe(styleMap);
@@ -64,8 +60,7 @@ describe('getStyleMapper', () => {
     expect(cache.style.css).toBe('');
   });
 
-  it('cache.style.has("div { background: black; }") should return false.', () => {
-    const cache = getStyleMapper({}, emitter);
-    expect(cache.style.has('div { background: black; }')).toBe(false);
+  it('cache.style.has("_23424") should return false.', () => {
+    expect(cache.style.has('_23424')).toBe(false);
   });
 });

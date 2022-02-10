@@ -1,10 +1,7 @@
 import { isSSR } from '@maia/tools';
 import { Cache, StyleMap, StyleCache } from '../types';
 import { StyleInfo } from '../../css';
-import {
-  GLOBAL_FRAMEWORKS_NAME,
-  GLOBAL_STYLEMAP_NAME,
-} from '../../constants';
+import { GLOBAL_STYLE_CACHE_NAME } from '../../constants';
 
 const styleMap = Symbol();
 
@@ -13,13 +10,11 @@ export function initCache(): Cache {
   let _styleMap: StyleMap = {};
 
   if (!isSSR) {
-    if (window[GLOBAL_FRAMEWORKS_NAME]) {
-      frameworks = JSON.parse(window[GLOBAL_FRAMEWORKS_NAME]);
-      delete window[GLOBAL_FRAMEWORKS_NAME];
-    }
-    if (window[GLOBAL_STYLEMAP_NAME]) {
-      _styleMap = JSON.parse(window[GLOBAL_STYLEMAP_NAME]);
-      delete window[GLOBAL_STYLEMAP_NAME];
+    if (window[GLOBAL_STYLE_CACHE_NAME]) {
+      const globalCahe = JSON.parse(window[GLOBAL_STYLE_CACHE_NAME]);
+      frameworks = globalCahe.frameworks;
+      _styleMap = globalCahe.styleMap;
+      delete window[GLOBAL_STYLE_CACHE_NAME];
     }
   }
 
