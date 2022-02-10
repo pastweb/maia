@@ -16,7 +16,25 @@ export function mergeDeep(...sources: { [key: string]: any }[]): {
         const currVal = curr[key];
 
         if (Array.isArray(accVal) && Array.isArray(currVal)) {
-          acc[key] = accVal.concat(...currVal);
+          let newArr = [];
+          
+          for(let i=0; i < accVal.length; i++) {
+            if (!currVal[i]) {
+              newArr = newArr.concat(...accVal.slice(i));
+              break;
+            }
+            if ((isObject(accVal[i]) && isObject(currVal[i]))) {
+              newArr.push(mergeDeep(accVal[i], currVal[i]));
+            } else {
+              newArr.push(currVal[i]);
+            }
+          }
+
+          if (currVal.length > accVal.length) {
+            newArr = newArr.concat(...currVal.slice(newArr.length));
+          }
+
+          acc[key] = newArr;
         } else if (isObject(accVal) && isObject(currVal)) {
           acc[key] = mergeDeep(accVal, currVal);
         } else {
