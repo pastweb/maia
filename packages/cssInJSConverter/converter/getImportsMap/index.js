@@ -3,8 +3,8 @@ const { resolve } = require('path');
 const { getFilePath, getPathComponents } = require('../util');
 const addComments = require('./addComments');
 
-function getImportsMap(filePath, globalVars, prefix = '') {
-  const source = addComments(readFileSync(filePath, 'utf8'), globalVars);
+function getImportsMap(filePath, globalVars, keyframes, prefix = '') {
+  const source = addComments(readFileSync(filePath, 'utf8'), globalVars, keyframes);
 
   const { fileDir, ext } = getPathComponents(filePath);
 
@@ -30,7 +30,7 @@ function getImportsMap(filePath, globalVars, prefix = '') {
 
         const importFilePath = getFilePath(resolve(fileDir), fileImport);
         const importKey = `${prefix ? `${prefix}/` : ''}${fileImport}`;
-        map.imports[importKey] = getImportsMap(importFilePath, globalVars, importPrefix);
+        map.imports[importKey] = getImportsMap(importFilePath, globalVars, keyframes, importPrefix);
     });
   }
 

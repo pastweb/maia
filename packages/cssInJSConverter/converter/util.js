@@ -1,8 +1,11 @@
-const { readdirSync, writeFileSync } = require('fs');
+const { readdirSync, writeFileSync, existsSync } = require('fs');
 const { resolve, sep } = require('path');
+const { createTheme } = require('../../dist/maia-styleit.cjs');
 
 const PROPERTIES_REGEXP = /[ \t]+?((-+)?[a-z]+)+:/g;
 const VAR_NAME_REGEXP = /\$[a-zA-Z-_0-9]+/g;
+
+const CWD = process.cwd();
 
 function camelize (str) {
   return str.replace(/(-|\/)./g, (x) => x.toUpperCase()[1]);
@@ -50,7 +53,24 @@ function writeImportsMap (fileMap, filePath) {
   writeFileSync(filePath, source);
 }
 
+function getGlobalVars(entries, frameworkKey, theme) {
+  entries.forEach(entry => {
+    const { fileDir, fileName } = getPathComponents(entry);
+    const themeFilePath = resolve(CWD, `${fileDir}/${fileName}.theme.js`);
+    if (existsSync(themeFilePath)) {
+      theme = createTheme([theme, require(themeFilePath)]);
+      if (!theme[frameworkKey]) {
+        throw new Error(`Error in: ${themeFile} - The key "${frameworkKey}" must be used as root Object of yours theme variables declarations.`);
+      }
+    }
+  });
+
+  const varNames = Object.keys(theme[frameworkKey]).map(name => `$${kebabize(name)}`);
+  return new Set(varNames);
+}
+
 module.exports = {
+  CWD,
   PROPERTIES_REGEXP,
   VAR_NAME_REGEXP,
   camelize,
@@ -58,4 +78,5 @@ module.exports = {
   getPathComponents,
   getFilePath,
   writeImportsMap,
+  getGlobalVars,
 };
