@@ -169,6 +169,7 @@ const sources = {
   _findColorInvert,
   _findLightColor,
   _findDarkColor,
+  _bulmaRgba,
 };
 
 function getFunction(functionName, ...args) {
@@ -196,9 +197,14 @@ function darken(color, percent) {
   return getFunction('darken', color, `${percent}%`);
 }
 
+function bulmaRgba(color, alpha) {
+  return getFunction('bulmaRgba', color, alpha);
+}
+
 module.exports = {
   findColorInvert,
   findLightColor,
   findDarkColor,
   darken,
+  bulmaRgba,
 };

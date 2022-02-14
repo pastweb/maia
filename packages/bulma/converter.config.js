@@ -1,9 +1,8 @@
-const base = require('./base/theme');
-
 module.exports = {
-  entries: ['base/_all.sass'],
   exclude: ['minireset'],
-  globalVars: [
-    ...Object.keys(base),
+  entries: [
+    'base/_all.sass',
+    'elements/button/button.sass',
+    // 'form/input-textarea/input-textarea.sass',
   ],
 };
