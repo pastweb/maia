@@ -8,6 +8,7 @@ html {
   /*{{min-width: $body-min-width}}*/
   min-width: 300px;
   overflow-x: hidden;
+  /*{{overflow-y: $body-overflow-y}}*/
   overflow-y: scroll;
   text-rendering: optimizeLegibility;
   text-size-adjust: 100%;
@@ -42,6 +43,7 @@ pre {
 }
 
 body {
+  /*{{color: $body-color}}*/
   color: #4a4a4a;
   font-size: 1em;
   /*{{font-weight: $body-weight}}*/
@@ -50,6 +52,7 @@ body {
 }
 
 a {
+  /*{{color: $link}}*/
   color: #485fc7;
   cursor: pointer;
   text-decoration: none;
@@ -63,11 +66,13 @@ a:hover {
 }
 
 code {
+  /*{{background-color: $code-background}}*/
   background-color: whitesmoke;
   color: #da1039;
   /*{{font-size: $code-size}}*/
   font-size: 0.875em;
   font-weight: normal;
+  /*{{padding: $code-padding}}*/
   padding: 0.25em 0.5em 0.25em;
 }
 
@@ -112,10 +117,13 @@ fieldset {
 }
 
 pre {
+  /*[[+overflow-touch]]*/
   -webkit-overflow-scrolling: touch;
+  /*[[+overflow-touch]]*/
   /*{{background-color: $pre-background}}*/
   background-color: whitesmoke;
   color: #4a4a4a;
+  /*{{font-size: $pre-font-size}}*/
   font-size: 0.875em;
   overflow-x: auto;
   /*{{padding: $pre-padding}}*/

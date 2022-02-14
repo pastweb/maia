@@ -1,6 +1,9 @@
-import { css } from '@maia/styleit';
+import { setOptions, css } from '@maia/styleit';
 
-export default ({ theme: { bulma: b }}) => css`
+export default ({ theme: { bulma: b }}) => setOptions({
+  frameworkName: 'bulma__1_0_0',
+  useFrameworkClassId: true,
+}, css`
 /* Bulma Base */
 html {
   background-color: ${b.bodyBackgroundColor};
@@ -9,7 +12,7 @@ html {
   -webkit-font-smoothing: antialiased;
   min-width: ${b.bodyMinWidth};
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: ${b.bodyOverflowY};
   text-rendering: optimizeLegibility;
   text-size-adjust: 100%;
 }
@@ -41,14 +44,14 @@ pre {
 }
 
 body {
-  color: #4a4a4a;
+  color: ${b.bodyColor};
   font-size: ${b.preCodeFontSize};
   font-weight: ${b.bodyWeight};
   line-height: 1.5;
 }
 
 a {
-  color: #485fc7;
+  color: ${b.link};
   cursor: pointer;
   text-decoration: none;
 }
@@ -60,15 +63,15 @@ a:hover {
 }
 
 code {
-  background-color: ${b.hrBackgroundColor};
+  background-color: ${b.codeBackground};
   color: #da1039;
   font-size: ${b.codeSize};
   font-weight: normal;
-  padding: 0.25em 0.5em 0.25em;
+  padding: ${b.codePadding};
 }
 
 hr {
-  background-color: ${b.preBackground};
+  background-color: ${b.hrBackgroundColor};
   border: none;
   display: block;
   height: 2px;
@@ -104,10 +107,12 @@ fieldset {
 }
 
 pre {
+  /*[[+overflow-touch]]*/
   -webkit-overflow-scrolling: touch;
-  background-color: whitesmoke;
+  /*[[+overflow-touch]]*/
+  background-color: ${b.preBackground};
   color: #4a4a4a;
-  font-size: 0.875em;
+  font-size: ${b.preFontSize};
   overflow-x: auto;
   padding: ${b.prePadding};
   white-space: pre;
@@ -140,4 +145,4 @@ table th {
     transform: rotate(359deg);
   }
 }
-`;
+`);
