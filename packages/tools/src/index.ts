@@ -1,7 +1,7 @@
-export { App } from './App';
+export { App, AppOptions, PrivateKeys } from './App';
 export { classNames } from './classNames';
 export { debounce } from './debounce';
-export { EventEmitter } from './EventEmitter';
+export { EventEmitter, EventCallback, EmitterSubscribeObject } from './EventEmitter';
 export { getFromBreakPoints } from './getFromBreakPoints';
 export { getFullElementSize } from './getFullElementSize';
 export { getObjectValue } from './getObjectValue';
@@ -14,7 +14,7 @@ export { isObject } from './isObject';
 export { isSet } from './isSet';
 export { isSymbol } from './isSymbol';
 export { isType } from './isType';
-export { mergeDeep } from './mergDeep';
+export { mergeDeep } from './mergeDeep';
 export { throttle } from './throttle';
 export { noop } from './noop';
 export { portal, createPortal } from './portal';

@@ -10,8 +10,8 @@ const functions = {
 class MyApp extends App {
   node?: HTMLElement;
 
-  constructor(options: AppOptions, domElement: HTMLElement) {
-    super(options, domElement);
+  constructor(options: AppOptions) {
+    super(options);
   }
 
   mount() {
@@ -40,8 +40,8 @@ class MyApp extends App {
 class MyApp2 extends App {
   node?: HTMLElement;
 
-  constructor(options: AppOptions, domElement: HTMLElement) {
-    super(options, domElement);
+  constructor(options: AppOptions) {
+    super(options);
   }
 
   mount() {
@@ -69,8 +69,8 @@ class MyApp2 extends App {
 
 describe('App', () => {
   const domElement = document.querySelector('body') as HTMLElement;
-  const firstApp = new MyApp({}, domElement);
-  const secondApp = new MyApp2({}, domElement);
+  const firstApp = new MyApp({ domElement });
+  const secondApp = new MyApp2({ domElement });
   const { body } = document;
 
   describe('mount', () => {

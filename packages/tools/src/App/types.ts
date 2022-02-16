@@ -1,4 +1,6 @@
 export type AppOptions = {
+  domElement?: HTMLElement;
+  initData?: { [key: string]: any };
   [key: string]: any;
 };
 
