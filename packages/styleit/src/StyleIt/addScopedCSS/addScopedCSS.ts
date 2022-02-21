@@ -4,11 +4,11 @@ import { StyleInfo } from '../../css';
 import { ScopedNames } from './types';
 
 export function addScopedCSS(styleInfo: StyleInfo): ScopedNames {
-  const { fontFamily, keyframes, name, classId, frameworkId } = styleInfo;
+  const { name, classId, frameworkId } = styleInfo;
 
   if (cache.style.add(styleInfo)) {
     updateCSS();
   }
 
-  return { fontFamily, keyframes, name, classId, frameworkId };
+  return { name, classId, frameworkId };
 }

@@ -49,7 +49,12 @@ export function initCache(): Cache {
         return updateTargetCSS;
       },
       replace: (removeInfo: StyleInfo, addInfo: StyleInfo): boolean => {
-        return cache.style.remove(removeInfo) || cache.style.add(addInfo);
+        let response = cache.style.remove(removeInfo);
+        const addResponse = cache.style.add(addInfo);
+        if (!response) {
+          response = addResponse;
+        }
+        return response;
       },
       remove: (styleInfo: StyleInfo): boolean => {
         const { styleKey, frameworkName } = styleInfo;
@@ -90,5 +95,5 @@ export function initCache(): Cache {
     },
   });
 
-  return Object.freeze(cache);
+  return cache;
 }

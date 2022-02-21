@@ -18,8 +18,6 @@ export type Validate = {
 };
 
 export type StyleOptions = {
-  argsAsArray?: boolean;
-  argsSelector?: string[];
   fileName?: string;
   forward?: ForwardArgs;
   frameworkName?: string;
@@ -32,9 +30,7 @@ export type StyleInfo = {
   frameworkId: string;
   name: string;
   fileName: string;
-  frameworkName: string,
-  fontFamily: { [familyName: string]: string },
-  keyframes: { [frameName: string]: string },
+  frameworkName: string;
   cssObject: CSSObject;
   css: string,
   styleKey: string;
@@ -44,8 +40,6 @@ export interface StyleObject {
   [data: symbol]: {
     info: StyleInfo,
     options: {
-      argsAsArray: boolean;
-      argsSelector: string[];
       fileName: string;
       forward: ForwardArgs;
       frameworkName: string;

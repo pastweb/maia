@@ -1,24 +1,23 @@
 import { isObject, mergeDeep } from '@maia/tools';
+import { Theme, ThemeFunction } from './types';
 
-export type Theme = {
-  [prop: string]: string | number | Theme | ((theme: Theme) => string | number | Theme);
-}
+export function createTheme(themes: (Theme | ThemeFunction)[], skipProps: string | string[] = []): Theme {
+  let _theme: Theme = {
+    fontFamily: {},
+    keyframes: {},
+  };
 
-export type ThemeFunction = (theme: Theme) => Theme;
-
-export function createTheme(themes: any[], skipProps: string | string[] = []): Theme {
-  let _theme = {};
   const _skipProps = new Set(Array.isArray(skipProps) ? skipProps : [skipProps]);
 
-  themes.forEach((curr: any) => {
+  themes.forEach((curr: Theme | ThemeFunction) => {
     const themeObject = typeof curr === 'function' ? curr(_theme) : curr;
     _theme = mergeDeep(_theme, themeObject);
   });
 
-  function interpolate(target: any): void {
+  function interpolate(target: Theme): void {
     Object.entries(target).forEach(([prop, value]) => {
       if (isObject(value)) {
-        interpolate(value);
+        interpolate(value as Theme);
       } else if (typeof value === 'function' && !_skipProps.has(prop)) {
         target[prop] = value(_theme);
       }

@@ -3,7 +3,7 @@ import { initCache } from './InitCache';
 
 const cache = initCache();
 
-describe('getStyleMapper', () => {
+describe('initCache', () => {
   it('cache should be defined', () => {
     expect(cache).toBeDefined();
   });
@@ -23,12 +23,6 @@ describe('getStyleMapper', () => {
 
   it('cache.style.get should be a function.', () => {
     expect(typeof cache.style.get).toBe('function');
-  });
-
-  it('cache.style.getStyleMap should be a function and return the current styleMap.', () => {
-    const styleMap = {};
-    expect(typeof cache.style.getStyleMap).toBe('function');
-    expect(cache.style.getStyleMap()).toBe(styleMap);
   });
 
   it('cache.style.setStyleMap should be a function and set a new styleMap.', () => {

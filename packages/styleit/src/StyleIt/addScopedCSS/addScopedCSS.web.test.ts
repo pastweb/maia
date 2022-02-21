@@ -24,20 +24,12 @@ describe('styleIt - addScopedCSS', () => {
     expect(isObject(scoped)).toBe(true);
   });
 
-  it('scoped.styleKey should be defined', () => {
-    expect(scoped.styleKey).toBeDefined();
-  });
-
-  it('scoped.id should be a string', () => {
-    expect(typeof scoped.styleKey).toBe('string');
-  });
-
   it('cache.style.size should be 1', () => {
     expect(cache.style.size).toBe(1);
   });
 
-  it(`cache.style should contains the id: ${scoped.styleKey}`, () => {
-    expect(cache.style.has(scoped.styleKey)).toBe(true);
+  it(`cache.style should contains the id: ${styleDetailWithKeyframes.styleKey}`, () => {
+    expect(cache.style.has(styleDetailWithKeyframes.styleKey)).toBe(true);
   });
 
   const styleCache = cache.style.get(styleDetailWithKeyframes.styleKey);
@@ -58,10 +50,6 @@ describe('styleIt - addScopedCSS', () => {
     expect(typeof styleCache.counter).toBe('number');
   });
 
-  it('styleCache "counter" property should be 1', () => {
-    expect(styleCache.counter).toBe(1);
-  });
-
   it('styleCache "css" property should be a string', () => {
     expect(typeof styleCache.css).toBe('string');
   });
@@ -80,12 +68,12 @@ describe('styleIt - addScopedCSS', () => {
 
   it('id2 hsould be equal to id', () => {
     cssTextBeforeUpdate = updateTarget.textContent!;
-    const { styleKey: id2 } = addScopedCSS(styleDetailWithKeyframes);
-    expect(id2 === scoped.styleKey).toBe(true);
+    const { classId: id2 } = addScopedCSS(styleDetailWithKeyframes);
+    expect(id2 === scoped.classId).toBe(true);
   });
 
   it('styleCache "css" property value should has more then 1 id string occurence', () => {
-    const occurrencies = (styleCache.css.match(new RegExp(scoped.styleKey, 'g')) as Array<string>).length;
+    const occurrencies = (styleCache.css.match(new RegExp(scoped.classId, 'g')) as Array<string>).length;
     expect(occurrencies).toBeDefined();
     expect(occurrencies > 1).toBe(true);
   });
@@ -94,15 +82,10 @@ describe('styleIt - addScopedCSS', () => {
     expect(updateTarget.textContent === cssTextBeforeUpdate).toBe(true);
   });
 
-  it('styleCache2 "counter" property should be 2', () => {
-    const styleCache2 = cache.style.get(styleDetailWithKeyframes.styleKey);
-    expect(styleCache2.counter).toBe(2);
-  });
-
   let id3: string = '';
 
   it('cache.style.size should be 2', () => {
-    id3 = addScopedCSS(styleDetailWithoutKeyframes).styleKey;
+    id3 = addScopedCSS(styleDetailWithoutKeyframes).classId;
     expect(cache.style.size).toBe(2);
   });
 

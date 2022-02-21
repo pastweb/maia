@@ -3,7 +3,6 @@ import { stringify, hash } from './util';
 import { cache } from '../cache';
 import {
   validateArgs,
-  selectArgs,
   interpolate,
   applyStyleKey,
   parse,
@@ -21,42 +20,60 @@ export function css(styleStrings: TemplateStringsArray | CSSObject, ...args: any
         name: '',
         fileName: '',
         frameworkName: '',
-        fontFamily: {},
-        keyframes: {},
         cssObject: {},
         css: '',
         styleKey: '',
       },
       options: {
-        argsAsArray: false,
-        argsSelector: [],
         fileName: '',
-        forward: {},
+        forward: {
+          theme: {
+            fontFamily: {},
+            keyframes: {},
+          },
+        },
         frameworkName: '',
         useFrameworkClassId: false,
         name: '',
         validate: {},
       },
     },
-    setOptions(styleOptions = {}): StyleObject {
+    setOptions(styleOptions = styles[data].options): StyleObject {
       styles[data].options = { ...styles[data].options, ...styleOptions };
       return styles;
     },
     getOptions(): StyleOptions {
-      return { ...styles[data].options };
+      return styles[data].options;
     },
     getStyleInfo(): StyleInfo {
-      const { name, fileName, frameworkName, useFrameworkClassId } = styles[data].options;
+      const { options } = styles[data];
+      const { name, fileName, frameworkName, useFrameworkClassId } = options;
 
-      validateArgs(styles[data].options);
-      const selectedArgs = selectArgs(styles[data].options);
-      const forwardOptions = { ...styles[data].options, forward: selectedArgs };
+      if (!options.forward) {
+        options.forward = {
+          theme: {
+            fontFamily: {},
+            keyframes: {},
+          },
+        };
+      } else if(!options.forward.theme) {
+        options.forward.theme = {
+          fontFamily: {},
+          keyframes: {},
+        };
+      } else if (!options.forward.theme.fontFamily) {
+        options.forward.theme.fontFamily = {};
+      } else if (!options.forward.theme.keyframes) {
+        options.forward.theme.keyframes = {};
+      }
 
-      const cssObject = interpolate(forwardOptions, styleStrings, args);
+      validateArgs(options);
+
+      const cssObject = interpolate(options, styleStrings, args);
       const scss = stringify(cssObject);
       const styleKey = hash(scss);
       
-      let { fontFamily, keyframes, css, classId } = styles[data].info;
+      let { css, classId } = styles[data].info;
       const _frameworkId = frameworkName && cache.frameworks[frameworkName] ||
         frameworkName && styleKey;
       const frameworkId = useFrameworkClassId ? '' : _frameworkId;
@@ -64,10 +81,11 @@ export function css(styleStrings: TemplateStringsArray | CSSObject, ...args: any
       
       if (styleKey !== styles[data].info.styleKey) {
         const withKey = applyStyleKey(scss, classId);
-        const { fontFamily: _fontFamily, keyframes: _keyframes } = withKey; 
+        const { fontFamily, keyframes } = withKey; 
         const _css = parse(withKey.scoped, `.${classId}`);
-        fontFamily = _fontFamily;
-        keyframes = _keyframes;
+
+        options.forward.theme.fontFamily = { ...options.forward.theme.fontFamily || {}, ...fontFamily };
+        options.forward.theme.keyframes = { ...options.forward.theme.keyframes || {}, ...keyframes };
         css = _css;
       }
 
@@ -77,16 +95,14 @@ export function css(styleStrings: TemplateStringsArray | CSSObject, ...args: any
         name,
         fileName,
         frameworkName,
-        fontFamily,
-        keyframes,
         css,
         cssObject,
         styleKey,
       };
 
-      return Object.freeze(styles[data].info);
+      return styles[data].info;
     },
   };
 
-  return Object.freeze(styles);
+  return styles;
 }
