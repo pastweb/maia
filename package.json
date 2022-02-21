@@ -7,8 +7,8 @@
     "clean": "lerna run clean --stream --parallel",
     "build": "lerna run build --stream --concurrency 1",
     "lint": "eslint ./packages/**/*.ts --fix",
-    "test": "jest",
-    "test-coverage": "jest --coverage",
+    "test": "lerna run test",
+    "test-coverage": "lerna run test-coverage",
     "post-install": "husky install"
   },
   "workspaces": {
@@ -19,12 +19,9 @@
   "author": "Domenico Pasto",
   "license": "ISC",
   "devDependencies": {
-    "@babel/preset-env": "^7.15.6",
     "husky": "^7.0.0",
     "lerna": "^4.0.0",
-    "prettier": "^2.4.1",
-    "tslib": "^2.3.1",
-    "typescript": "^4.4.3"
+    "prettier": "^2.4.1"
   },
   "lint-staged": {
     "packages/**/*.{ts}": [

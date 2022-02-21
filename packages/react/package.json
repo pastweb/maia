@@ -9,7 +9,7 @@
     "build": "rimraf dist && rimraf doc && rollup -c",
     "dev": "rollup -c -w",
     "lint": "eslint ./src/**/*.ts --fix",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test-coverage": "jest --coverage"
   },
   "repository": {
