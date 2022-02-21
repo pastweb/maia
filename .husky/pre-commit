@@ -1,31 +1,30 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+# . "$(dirname "$0")/_/husky.sh"
 
-packages=()
+# packages=()
 
-for line in `git diff --name-only --cached`
-do
-  if [[ $line == *"packages/"* ]]
-  then
-    packagePath=$( echo $line | cut -d'/' -f-2 )
+# for line in `git diff --name-only --cached`
+# do
+#   if [[ $line == *"packages/"* ]]
+#   then
+#     packagePath=$( echo $line | cut -d'/' -f-2 )
 
-    if [[ ! " ${packages[*]} " =~ " ${packagePath} " ]]; then
-      packages+=($packagePath)
-    fi
-  fi
-done
+#     if [[ ! " ${packages[*]} " =~ " ${packagePath} " ]]; then
+#       packages+=($packagePath)
+#     fi
+#   fi
+# done
 
-rootDir=$PWD
+# rootDir=$PWD
 
-for package in "${packages[@]}"
-do
-  packageAbsolutePath=$rootDir'/'$package
-	cd $packageAbsolutePath
-  echo '----- '$package' -----> lint checking...'
-  yarn lint
-  echo '----- '$package' -----> building...'
-  yarn build
-  git add .
-  cd $rootDir
-done
-
+# for package in "${packages[@]}"
+# do
+#   packageAbsolutePath=$rootDir'/'$package
+# 	cd $packageAbsolutePath
+#   echo '----- '$package' -----> lint checking...'
+#   yarn lint
+#   echo '----- '$package' -----> building...'
+#   yarn build
+#   git add .
+#   cd $rootDir
+# done

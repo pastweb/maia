@@ -8,8 +8,8 @@ export const INIT_VALUE = 'INIT_VALUE';
 export class FirstApp extends App {
   node?: HTMLElement;
 
-  constructor(options: AppOptions, domElement: HTMLElement) {
-    super(options, domElement);
+  constructor(options?: AppOptions) {
+    super(options);
   }
 
   mount() {
@@ -37,15 +37,15 @@ export class FirstApp extends App {
 
 export class SecondApp extends App {
   node?: HTMLElement;
-  constructor(options: AppOptions, domElement: HTMLElement) {
-    super(options, domElement);
+  constructor(options: AppOptions) {
+    super(options);
   }
 
   mount() {
     const node = document.createElement('div');
     node.className = 'secondApp';
     if (this.options) {
-      node.innerHTML = this.options.initValue || INIT_VALUE;
+      node.innerHTML = (this.options.initData as any).initValue || INIT_VALUE;
     }
     this.node = node;
     if (this.domElement && this.node) {

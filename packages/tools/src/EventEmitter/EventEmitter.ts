@@ -1,24 +1,24 @@
 import { EventCallback, EmitterSubscribeObject } from './types';
 
-const events = Symbol();
-const keys = Symbol();
-const unsubscribe = Symbol();
-
 export class EventEmitter {
+  private events: { [eventName: string]: Map<symbol, EventCallback> };
+  private keys: { [eventCallbackKey: symbol]: string };
+  
   constructor() {
-    (this as any)[events] = {};
-    (this as any)[keys] = {};
-    (this as any)[unsubscribe] = this[unsubscribe].bind(this);
+    this.events = {};
+    this.keys = {};
+
     this.emit = this.emit.bind(this);
     this.on = this.on.bind(this);
     this.removeListener = this.removeListener.bind(this);
+    this.unsubscribe = this.unsubscribe.bind(this);
   }
 
   emit(eventName: string, ...args: any[]): void {
-    if ((this as any)[events][eventName]) {
+    if (this.events[eventName]) {
       const callBackCache = new Set();
 
-      (this as any)[events][eventName].forEach(
+      this.events[eventName].forEach(
         (eventCallback: EventCallback) => {
           if (!callBackCache.has(eventCallback)) {
             callBackCache.add(eventCallback);
@@ -30,29 +30,29 @@ export class EventEmitter {
   }
 
   on(eventName: string, eventCallback: EventCallback): EmitterSubscribeObject {
-    if (!(this as any)[events][eventName]) {
-      (this as any)[events][eventName] = new Map();
+    if (!this.events[eventName]) {
+      this.events[eventName] = new Map();
     }
 
     const eventCallbackKey = Symbol();
-    (this as any)[events][eventName].set(eventCallbackKey, eventCallback);
-    (this as any)[keys][eventCallbackKey] = eventName;
+    this.events[eventName].set(eventCallbackKey, eventCallback);
+    this.keys[eventCallbackKey] = eventName;
 
     return {
       eventCallbackKey,
-      removeListener: () => this[unsubscribe](eventName, eventCallbackKey)
+      removeListener: () => this.unsubscribe(eventName, eventCallbackKey)
     };
   }
 
   removeListener(eventCallbackKey: symbol): void {
-    const event = (this as any)[keys][eventCallbackKey];
+    const event = this.keys[eventCallbackKey];
     if (event) {
-      this[unsubscribe](event, eventCallbackKey);
+      this.unsubscribe(event, eventCallbackKey);
     }
   }
 
-  [unsubscribe](eventName: string, eventCallbackKey: symbol): void {
-    (this as any)[events][eventName].delete(eventCallbackKey);
-    delete (this as any)[keys][eventCallbackKey];
+  private unsubscribe(eventName: string, eventCallbackKey: symbol): void {
+    this.events[eventName].delete(eventCallbackKey);
+    delete this.keys[eventCallbackKey];
   }
 }

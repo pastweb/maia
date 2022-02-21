@@ -1,0 +1,9 @@
+{
+  "name": "bulma",
+  "version": "1.0.0",
+  "description": "bulma css framework for @maia/styleit",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Domenico Pasto",
+  "license": "MIT"
+}

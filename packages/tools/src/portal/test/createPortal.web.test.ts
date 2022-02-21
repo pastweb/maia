@@ -8,7 +8,7 @@ describe('createPortal', () => {
   rootPortal.id = portalId;
   document.body.appendChild(rootPortal);
 
-  const portalConfig = { portalId, app: { AppClass: FirstApp } };
+  const portalConfig = { portalId, app: new FirstApp() };
   const portal = createPortal(portalConfig);
 
   it('portal shuold be al object', () => {

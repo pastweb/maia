@@ -1,1 +1,2 @@
-export { debounce, DebouceCallback } from './debounce';
+export { debounce } from './debounce';
+export type { DebouceCallback } from './types';

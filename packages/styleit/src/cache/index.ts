@@ -1,2 +1,2 @@
 export { cache } from './cache';
-export type { Cache, StyleCache } from './getCache';
+export type { Cache, StyleCache } from './types';

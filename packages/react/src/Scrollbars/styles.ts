@@ -7,7 +7,7 @@ export default css`
     flex-wrap: wrap;
     justify-content: flex-start;
     align-content: flex-start;
-    align-items: flex-start
+    align-items: flex-start;
 }
 
 .simplebar-wrapper {
@@ -57,7 +57,7 @@ export default css`
     max-width: 100%;
     max-height: 100%;
     scrollbar-width: none;
-    -ms-overflow-style:none;
+    -ms-overflow-style: none;
 }
 
 .simplebar-content-wrapper::-webkit-scrollbar,
@@ -69,7 +69,7 @@ export default css`
 .simplebar-content:after,
 .simplebar-content:before {
     content: ' ';
-    display:table;
+    display: table;
 }
 
 .simplebar-placeholder {

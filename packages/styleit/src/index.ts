@@ -1,15 +1,9 @@
-import  styleIt, { ScopedNames } from './styleIt';
-
-export {
-  css,
-  StyleObject,
-  StyleOptions,
-  ForwardArgs,
-  StyleInfo,
-} from './css';
-
+import styleIt from './styleIt';
+export  type { ScopedNames } from './styleIt';
+export { css } from './css';
+export type { StyleObject, StyleOptions, ForwardArgs, StyleInfo } from './css';
 export { setOptions } from './setOptions';
-
-export type { ScopedNames };
+export { createTheme } from './createTheme';
+export type { Theme, ThemeFunction } from './createTheme';
 
 export default styleIt;

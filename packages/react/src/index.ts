@@ -1,8 +1,13 @@
 export { AppAdapter } from './AppAdapter';
-export { AsyncComponent, AsyncComponentProps, DependencyInfo } from './AsyncComponent';
-export { Scrollbars, ScrollbarsProps } from './Scrollbars';
-export { StyleIt, ThemeProvider, useTheme } from './StyleIt';
-export { useDevice, DevicesConfig, IsDevicesResult } from './useDevice';
+export type { AppAdapterProps } from './AppAdapter';
+export { AsyncComponent } from './AsyncComponent';
+export type { AsyncComponentProps, DependencyInfo } from './AsyncComponent';
+export { Scrollbars } from './Scrollbars';
+export type { ScrollbarsProps } from './Scrollbars';
+export { UpdateApp } from './UpdateApp';
+export type { UpdateAppProps } from './UpdateApp';
+export { useDevice } from './useDevice';
+export type { DevicesConfig, IsDevicesResult } from './useDevice';
 export { useDidMount } from './useDidMount';
 export { useForceUpdate } from './useForceUpdate';
 export { useWillMount } from './useWillMount';

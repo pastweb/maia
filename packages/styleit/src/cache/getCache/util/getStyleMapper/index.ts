@@ -1,1 +1,0 @@
-export { getStyleMapper } from './getStyleMapper';

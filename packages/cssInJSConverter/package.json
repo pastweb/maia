@@ -1,0 +1,13 @@
+{
+  "name": "@maia/css-in-js-converter",
+  "version": "1.0.0",
+  "description": "converts sass/scss in CSS-in-JS styleit format",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Domenico Pasto",
+  "license": "MIT",
+  "types": "./index.d.ts",
+  "dependencies": {
+    "sass": "^1.49.7"
+  }
+}
