@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "bulma css framework for @maia/styleit",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "author": "Domenico Pasto",
   "license": "MIT"
 }
