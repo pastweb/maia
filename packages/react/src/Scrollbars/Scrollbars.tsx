@@ -1,5 +1,5 @@
 import { useRef, useCallback, useState } from 'react';
-import { StyleIt } from '../StyleIt';
+import { StyleIt } from '@maia/react-styleit';
 import SimpleBar from 'simplebar-react';
 import { ScrollbarsProps } from './types';
 import styles from './styles';
@@ -9,7 +9,8 @@ export function Scrollbars({ children, ...rest }: ScrollbarsProps) {
 	const [scrollbarsHeight, setScrollbarsHeight] = useState(0);
 
 	function calcHeight(): void {
-		const { height } = parentElement.current!.getBoundingClientRect();
+		const element = parentElement.current as HTMLElement;
+		const { height } = element.getBoundingClientRect();
 		if (height !== scrollbarsHeight) {
 			setScrollbarsHeight(height);
 		}

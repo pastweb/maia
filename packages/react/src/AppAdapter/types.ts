@@ -1,14 +1,6 @@
-export const EXCLUDE_PROPS = [
-  'tagName',
-  'tagClass',
-	'tagStyle',
-	'app',
-];
-
+import { AppExtension } from '@maia/tools';
 
 export interface AppAdapterProps {
-  tagName?: string;
-  tagClass?: string;
-  tagStyle?: { [styleProp: string]: string | number };
-  app: any;
+  app: AppExtension;
+  [propName: string]: any;
 };
