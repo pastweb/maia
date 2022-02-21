@@ -5,11 +5,11 @@ import { isSSR } from '../isSSR';
 import { hashID } from '../hashID';
 import { AppOptions, PrivateKeys } from './types';
 
-const methods = ['mount', 'hydrate', 'update', 'unmount', 'ssr'];
+const methods = ['mount', 'update', 'unmount', 'ssr'];
 
 const ssrIds = new Set<string>();
 let ssrMap: { [ssrKey: string]: Promise<string> } = {};
-let isStaticSSR = false;
+let isStaticSSR = true;
 
 export class App {
   private keys: PrivateKeys;
@@ -21,7 +21,10 @@ export class App {
   emit: (eventName: string, ...args: any[]) => void;
   removeListener: (eventCallbackKey: symbol) => void;
 
-  constructor(options: AppOptions = {}, privateKeys: PrivateKeys = {}) {
+  constructor(options?: AppOptions, privateKeys: PrivateKeys = {}) {
+    options = options || {};
+    options.initData = options.initData || {};
+
     if (isSSR) {
       const ssrId = hashID.generateUnique(ssrIds);
       ssrIds.add(ssrId);
@@ -56,11 +59,9 @@ export class App {
         (this as any)[method] = noop;
       }
 
-      if (method !== 'mount') {
-        this.on(method, (...args: any[]) => {
-          (this as any)[method](...args);
-        });
-      }
+      this.on(method, (...args: any[]) => {
+        (this as any)[method](...args);
+      });
     });
   }
 
@@ -69,7 +70,9 @@ export class App {
     ssrMap[this.ssrId as string] = htmlPromise;
   }
 
-  public async getComposedSSR(isStatic = false): Promise<string> {
+  public async getComposedSSR(isStatic?: boolean): Promise<string> {
+    isStatic = typeof isStatic !== 'undefined' ? isStatic : true;
+
     isStaticSSR = isStatic;
     const rootRender = await (this as any).ssr(isStatic);
 
@@ -117,7 +120,7 @@ export class App {
         newOptions
       );
     } else {
-      this.options = mergeDeep((this as any).options, newOptions);
+      this.options = mergeDeep(this.options || {}, newOptions);
     }
   }
 }

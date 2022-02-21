@@ -1,4 +1,4 @@
-export type DebouceCallback = (...args: any[]) => any;
+import { DebouceCallback } from './types';
 
 export function debounce(fn: DebouceCallback, timeout = 300): DebouceCallback {
   let timer: any;

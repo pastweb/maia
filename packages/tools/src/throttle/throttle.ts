@@ -1,4 +1,4 @@
-export type ThrottleCallback = (...args: any[]) => any;
+import { ThrottleCallback } from './types';
 
 export function throttle(
   fn: ThrottleCallback,

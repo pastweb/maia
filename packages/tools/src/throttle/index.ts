@@ -1,1 +1,2 @@
-export { throttle, ThrottleCallback } from './throttle';
+export { throttle } from './throttle';
+export type { ThrottleCallback } from './types';
