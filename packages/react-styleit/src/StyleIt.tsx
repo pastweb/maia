@@ -1,13 +1,13 @@
 import { createElement, forwardRef, useState, useEffect, Ref } from 'react';
 import styleIt from '@maia/styleit';
-import { useWillUnmount } from '..';
-import { useTheme } from './ThemeProveder';
+import { useWillUnmount } from '@maia/react';
 import { updateState } from './util';
+import { useTheme as useGlobalTheme } from './ThemeProveder';
 import { StyleItProps, StyleItState } from './types';
 
 export const StyleIt = forwardRef((props: StyleItProps, ref: Ref<Element>) => {
   const {
-    extFuncOptions,
+    useTheme,
     forward,
     name,
     options,
@@ -18,7 +18,7 @@ export const StyleIt = forwardRef((props: StyleItProps, ref: Ref<Element>) => {
     ...restProps
   } = props;
 
-  const theme = useTheme();
+  const theme = useTheme ? useTheme() : useGlobalTheme();
 
 	const [state, setState] = useState<StyleItState>(updateState(props, theme));
 
@@ -32,7 +32,7 @@ export const StyleIt = forwardRef((props: StyleItProps, ref: Ref<Element>) => {
 
     styleIt.replace(state.styleInfo, newState.styleInfo);
     setState(newState);
-  }, [extFuncOptions, forward, name, options, styles, tagName, className]);
+  }, [ forward, name, options, styles, tagName, className]);
 
   const { classId, frameworkId } = state.scopedNames;
   const { name: styleName } = state.styleInfo;
