@@ -1,6 +1,6 @@
 {
   "name": "@maia/react",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Set of tools for react web application development",
   "main": "dist/maia-react.cjs.js",
   "module": "dist/maia-react.es.js",
@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/pastweb/maia#readme",
   "peerDependencies": {
-    "@maia/react-styleit": "^0.0.1-dev",
+    "@maia/react-styleit": "^0.0.2",
     "@maia/tools": "^1.0.0",
     "react": "17.0.2"
   },
