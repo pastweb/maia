@@ -6,5 +6,5 @@ export type {
   UpdatePortalConfig,
   ClosePortalConfig,
   CreatePortalConfig,
-  CreatedPortal
+  CreatedPortal,
 } from './types';

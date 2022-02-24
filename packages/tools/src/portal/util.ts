@@ -50,10 +50,7 @@ export function update(portals: Portals, portalConfig: UpdatePortalConfig): bool
   return true;
 }
 
-export function close(
-  portals: Portals,
-  { portalId, appId }: ClosePortalConfig
-): boolean {
+export function close(portals: Portals,{ portalId, appId }: ClosePortalConfig): boolean {
   if (!portals[portalId] || (appId !== '*' && !portals[portalId][appId]))
     return false;
 
