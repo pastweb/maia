@@ -1,8 +1,7 @@
-import { useRef, createElement, ReactNode } from 'react';
+import { useState, useRef, cloneElement, ReactElement, isValidElement, createElement } from 'react';
 import { useWillMount } from '../useWillMount';
-import { useForceUpdate } from '../useForceUpdate';
-import { loadDependency } from './util';
-import { AsyncComponentProps, DependencyInfo } from './types';
+import { loadDependency, normalizeDependency } from './util';
+import { AsyncComponentProps, Dependency, DependencyInfo } from './types';
 
 export function AsyncComponent(props: AsyncComponentProps) {
   const {
@@ -12,21 +11,19 @@ export function AsyncComponent(props: AsyncComponentProps) {
     ...restProps
   } = props;
 
-  const Component = useRef<NonNullable<ReactNode> | null>(fallback);
+  const [Component, setComponent] = useState<ReactElement | null>(fallback);
   const depCounter = useRef(0);
-  const forceUpdate = useForceUpdate();
 
   function loadComponent() {
-    const exportName = Object.keys(component)[0];
-    const { onSuccess } = component;
-    component.onSuccess = (module: any) => {
-      Component.current = (module as any)[exportName];
+    const info = normalizeDependency(component);
+    const { onSuccess } = info;
+    info.onSuccess = (module: any) => {
       if (onSuccess) {
         onSuccess(module);
       }
+      setComponent(module);
     };
-    loadDependency(component);
-    forceUpdate();
+    loadDependency(info);
   }
 
   function depCountrIncrement(): void {
@@ -38,10 +35,10 @@ export function AsyncComponent(props: AsyncComponentProps) {
 
   function loadDependencies() {
     if (dependencies) {
-      dependencies.forEach((dep: DependencyInfo, i: number) => {
-        const depPromise = loadDependency(dep);
-        depPromise.then(() => depCountrIncrement());
-        depPromise.catch(e => {
+      dependencies.forEach((dep: Dependency | DependencyInfo, i: number) => {
+          const depPromise = loadDependency(normalizeDependency(dep));
+          depPromise.then(() => depCountrIncrement());
+          depPromise.catch(e => {
           console.error(`the dependency with the index ${i} has an error: ${e}`);
         });
       });
@@ -54,5 +51,11 @@ export function AsyncComponent(props: AsyncComponentProps) {
     loadDependencies();
   });
 
-  return Component.current ? createElement((Component as any).current, { ...restProps }) : null;
+  return (
+    Component ? 
+      isValidElement(Component) ?
+      cloneElement(Component as ReactElement, restProps) :
+      createElement(Component, restProps)
+    : null
+  );
 }

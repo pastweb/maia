@@ -1,16 +1,17 @@
-import { ReactNode } from 'react';
+import { ReactElement } from 'react';
 
-export type DependencyFunctions = {
-  onSuccess?: (module: any) => void;
+export interface DependencyInfo {
+  exportName?: string;
+  dependency: Promise<any> | (() => Promise<any>);
+  onSuccess?: (dependency: any) => void;
   onError?: (error: any) => void;
-};
-
-export type DependencyInfo = DependencyFunctions & {
-  [exportName: string]: Promise<any> | (() => Promise<any>);
 }
 
+export type Dependency = Promise<any> | (() => Promise<any>) | DependencyInfo;
+
 export interface AsyncComponentProps {
-  component: DependencyInfo;
-  dependencies?: DependencyInfo[];
-  fallback?: NonNullable<ReactNode> | null;
+  component: Dependency | DependencyInfo;
+  dependencies?: (Dependency | DependencyInfo)[];
+  fallback?: ReactElement | null;
 };
+
