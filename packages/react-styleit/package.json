@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/pastweb/maia#readme",
   "peerDependencies": {
-    "@maia/react": "^0.0.1-dev",
+    "@maia/react": "^0.0.3",
     "@maia/styleit": "^1.0.0",
     "@maia/tools": "^1.0.0",
     "react": "17.0.2"
