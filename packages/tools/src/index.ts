@@ -1,5 +1,5 @@
 export { App } from './App';
-export type { AppOptions, PrivateKeys, AppExtension } from './App';
+export type { AppOptions, AppExtension } from './App';
 export { classNames } from './classNames';
 export { debounce } from './debounce';
 export type { DebouceCallback } from './debounce';
@@ -23,3 +23,4 @@ export { throttle } from './throttle';
 export type { ThrottleCallback } from './throttle';
 export { noop } from './noop';
 export { portal, createPortal } from './portal';
+export type { CreatedPortal } from './portal';
