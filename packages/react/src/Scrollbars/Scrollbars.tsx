@@ -1,36 +1,42 @@
 import { useRef, useCallback, useState } from 'react';
 import { StyleIt } from '@maia/react-styleit';
+import { useWillUnmount } from '../useWillUnmount';
 import SimpleBar from 'simplebar-react';
 import { ScrollbarsProps } from './types';
 import styles from './styles';
 
-export function Scrollbars({ children, ...rest }: ScrollbarsProps) {
+export default function Scrollbars({ children, ...rest }: ScrollbarsProps) {
 	const parentElement = useRef<null | HTMLElement>(null);
-	const [scrollbarsHeight, setScrollbarsHeight] = useState(0);
+	const [size, setSize] = useState({});
 
 	function calcHeight(): void {
 		const element = parentElement.current as HTMLElement;
-		const { height } = element.getBoundingClientRect();
-		if (height !== scrollbarsHeight) {
-			setScrollbarsHeight(height);
-		}
+		const { width, height } = element.getBoundingClientRect();
+		setSize({ width, height });
 	}
 
-	const ro = useRef(new ResizeObserver(() => {
-		calcHeight();
-	}));
+	const ro = useRef<ResizeObserver | null>(null);
 
-	const scrollbarsRef = useCallback((node: HTMLDivElement) => {
+	const scrollbarsRef = useCallback((node: HTMLElement) => {
     if (node) {
 			parentElement.current = node.parentElement as HTMLElement;
+			ro.current = new ResizeObserver(() => {
+				calcHeight();
+			});
 			ro.current.observe(parentElement.current);
       calcHeight();
     }
   }, []);
 
+	useWillUnmount(() => {
+		(ro.current as ResizeObserver).disconnect();
+		ro.current = null;
+		parentElement.current = null;
+	});
+
 	return (
-		<StyleIt styles={styles} ref={scrollbarsRef} style={{ height: scrollbarsHeight }}>
-			<SimpleBar style={{ height: scrollbarsHeight }} {...rest}>
+		<StyleIt styles={styles} ref={scrollbarsRef} style={size}>
+			<SimpleBar style={size} {...rest}>
 				{children}
 			</SimpleBar>
 		</StyleIt>
