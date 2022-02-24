@@ -1,8 +1,8 @@
 export { AppAdapter } from './AppAdapter';
 export type { AppAdapterProps } from './AppAdapter';
-export { AsyncComponent } from './AsyncComponent';
-export type { AsyncComponentProps, DependencyInfo } from './AsyncComponent';
-export { Scrollbars } from './Scrollbars';
+export { default as AsyncComponent, normalizeDependency } from './AsyncComponent';
+export type { AsyncComponentProps, Dependency, DependencyInfo } from './AsyncComponent';
+export { default as Scrollbars } from './Scrollbars';
 export type { ScrollbarsProps } from './Scrollbars';
 export { UpdateApp } from './UpdateApp';
 export type { UpdateAppProps } from './UpdateApp';
