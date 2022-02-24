@@ -1,2 +1,2 @@
 export { App } from './App';
-export type { AppOptions, PrivateKeys, AppExtension } from './types';
+export type { AppOptions, AppExtension } from './types';

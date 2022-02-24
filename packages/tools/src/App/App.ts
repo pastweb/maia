@@ -3,7 +3,7 @@ import { mergeDeep } from '../mergeDeep';
 import { noop } from '../noop';
 import { isSSR } from '../isSSR';
 import { hashID } from '../hashID';
-import { AppOptions, PrivateKeys } from './types';
+import { AppOptions } from './types';
 
 const methods = ['mount', 'update', 'unmount', 'ssr'];
 
@@ -12,8 +12,8 @@ let ssrMap: { [ssrKey: string]: Promise<string> } = {};
 let isStaticSSR = true;
 
 export class App {
-  private keys: PrivateKeys;
   private emitter: EventEmitter;
+  AppComponent: any;
   ssrId: string | undefined;
   domElement: HTMLElement | undefined;
   options: AppOptions | undefined;
@@ -21,7 +21,7 @@ export class App {
   emit: (eventName: string, ...args: any[]) => void;
   removeListener: (eventCallbackKey: symbol) => void;
 
-  constructor(options?: AppOptions, privateKeys: PrivateKeys = {}) {
+  constructor(options?: AppOptions) {
     options = options || {};
     options.initData = options.initData || {};
 
@@ -31,22 +31,11 @@ export class App {
       this.ssrId = ssrId;
     }
 
-    const { domElement } = options;
-    const { optionsKey, domElementKey } = privateKeys;
-    this.keys = privateKeys;
+    this.options = options;
+    this.domElement = options.domElement;
+    this.AppComponent = options.AppComponent;
+    
     this.emitter = new EventEmitter();
-
-    if (domElementKey) {
-      (this as any)[domElementKey] = domElement;
-    } else {
-      this.domElement = domElement;
-    }
-
-    if (optionsKey) {
-      (this as any)[optionsKey] = options;
-    } else {
-      this.options = options;
-    }
 
     this.on = this.emitter.on;
     this.emit = this.emitter.emit;
@@ -93,34 +82,19 @@ export class App {
     });
   }
 
-  public setDomElement(domElement: HTMLElement, domElementKey?: symbol): void {
-    if (domElementKey) {
-      (this as any)[domElementKey] = domElement;
-    } else if (this.keys.domElementKey) {
-      (this.keys as any).domElementKey = domElement;
-    } else {
-      this.domElement = domElement;
-    }
+  public setDomElement(domElement: HTMLElement): void {
+    this.domElement = domElement;
   }
 
-  public setOptions(options: AppOptions, optionsKey?: symbol): void {
-    if (optionsKey) {
-      (this as any)[optionsKey] = options;
-    } else if (this.keys.optionsKey) {
-      (this as any)[(this.keys as any).optionsKey] = options;
-    } else {
-      this.options = options;
-    }
+  public setOptions(options: AppOptions): void {
+    this.options = options;
   }
 
   public mergeOptions(newOptions: AppOptions): void {
-    if (this.keys.optionsKey) {
-      (this as any)[this.keys.optionsKey] = mergeDeep(
-        (this as any)[this.keys.optionsKey],
-        newOptions
-      );
-    } else {
-      this.options = mergeDeep(this.options || {}, newOptions);
-    }
+    this.options = mergeDeep(this.options || {}, newOptions);
+  }
+
+  public setAppComponent(Component: any): void {
+    this.AppComponent = Component;
   }
 }

@@ -1,12 +1,10 @@
+import { App } from './App';
+
 export type AppOptions = {
+  AppComponent?: any;
   domElement?: HTMLElement;
   initData?: { [key: string]: any };
   [key: string]: any;
-};
-
-export type PrivateKeys = {
-  optionsKey?: symbol;
-  domElementKey?: symbol;
 };
 
 export type AppExtension = App & {
