@@ -23,14 +23,13 @@ export function checkTheme(theme?: Theme): Theme {
 }
 
 export function updateState(props: any, theme: Theme): StyleItState {
-  const { name, options = {}, styles } = props;
+  const { options = { forward: {} }, forward = {}, styles } = props;
   
-  const forward: ForwardArgs = { ...props.forward, theme };
+  const _forward: ForwardArgs = { ...forward, theme };
   
-  const styleObject = typeof styles === 'function'? styles(forward) : styles;
-  const styleName = name || options.name || styleObject.getOptions().name;
+  const styleObject = typeof styles === 'function'? styles(_forward) : styles;
 
-  const newOptions = { ...options, name: styleName, ...forward };
+  const newOptions = { ...options, forward: { ..._forward } };
   const styleInfo = styleObject.setOptions(newOptions).getStyleInfo();
 
   const scopedNames: ScopedNames = styleIt.add(styleInfo);

@@ -9,7 +9,6 @@ export const StyleIt = forwardRef((props: StyleItProps, ref: Ref<Element>) => {
   const {
     useTheme,
     forward,
-    name,
     options,
     styles,
     tagName = 'div',
@@ -32,7 +31,7 @@ export const StyleIt = forwardRef((props: StyleItProps, ref: Ref<Element>) => {
 
     styleIt.replace(state.styleInfo, newState.styleInfo);
     setState(newState);
-  }, [ forward, name, options, styles, tagName, className]);
+  }, [ forward, options, styles, tagName, className]);
 
   const { classId, frameworkId } = state.scopedNames;
   const { name: styleName } = state.styleInfo;

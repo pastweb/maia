@@ -5,7 +5,6 @@ export interface StyleItProps extends HTMLAttributes<HTMLElement> {
   useTheme?: () => Theme; 
   className?: string;
   forward?: ForwardArgs;
-  name?: string;
   options?: StyleOptions;
   styles: StyleObject | ((...args: any[]) => StyleObject);
   tagName?: ElementType<any>;
