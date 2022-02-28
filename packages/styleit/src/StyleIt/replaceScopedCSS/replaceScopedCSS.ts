@@ -8,6 +8,6 @@ export function replaceScopedCSS(removeInfo: StyleInfo, addInfo: StyleInfo): Sco
     updateCSS();
   }
 
-  const { name, classId, frameworkId } = addInfo;
-  return { classId, name, frameworkId };
+  const { classId, frameworkId } = addInfo;
+  return { classId, frameworkId };
 }

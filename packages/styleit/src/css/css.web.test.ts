@@ -4,7 +4,6 @@ import {
   styleWithVars,
   styleWithFunctions,
   filename,
-  component,
 } from '../testUtil';
 
 const defaultForward = {
@@ -39,12 +38,6 @@ describe('css - web', () => {
       expect(options.fileName).toBe('');
     });
 
-    it('"options.name" should an empty string.', () => {
-      const options = styleNoVars.getOptions();
-      expect(typeof options.name).toBe('string');
-      expect(options.name).toBe('');
-    });
-
     it('"options.forward" should an empty as defaultForward.', () => {
       const options = styleNoVars.getOptions();
       expect(isObject(options.forward)).toBe(true);
@@ -54,11 +47,6 @@ describe('css - web', () => {
     it('"styleInfo" should be an Object.', () => {
       const styleInfo = styleNoVars.getStyleInfo();
       expect(isObject(styleInfo)).toBe(true);
-    });
-
-    it('"styleInfo.name" should be an empty string.', () => {
-      const styleInfo = styleNoVars.getStyleInfo();
-      expect(styleInfo.name).toBe('');
     });
 
     it('"styleInfo.fileName" should be an empty string.', () => {
@@ -80,14 +68,6 @@ describe('css - web', () => {
       expect(options.fileName).toBe(filename);
     });
 
-    it('"options.name" should an empty string.', () => {
-      expect(options.name).toBe('');
-    });
-
-    it('"styleInfo.name" should be an empty string.', () => {
-      expect(styleInfo.name).toBe('');
-    });
-
     it('"styleInfo.fileName" should be as expected.', () => {
       expect(styleInfo.fileName).toBe(filename);
     });
@@ -104,14 +84,6 @@ describe('css - web', () => {
 
     it('"options.fileName" should be as expected.', () => {
       expect(options.fileName).toBe(filename);
-    });
-
-    it('"options.name" should be as expected.', () => {
-      expect(options.name).toBe(component);
-    });
-
-    it('"styleInfo.name" should as expected.', () => {
-      expect(styleInfo.name).toBe(component);
     });
 
     it('"styleInfo.fileName" should be as expected.', () => {

@@ -17,7 +17,6 @@ export function css(styleStrings: TemplateStringsArray | CSSObject, ...args: any
       info: {
         classId: '',
         frameworkId: '',
-        name: '',
         fileName: '',
         frameworkName: '',
         cssObject: {},
@@ -34,7 +33,6 @@ export function css(styleStrings: TemplateStringsArray | CSSObject, ...args: any
         },
         frameworkName: '',
         useFrameworkClassId: false,
-        name: '',
         validate: {},
       },
     },
@@ -47,7 +45,7 @@ export function css(styleStrings: TemplateStringsArray | CSSObject, ...args: any
     },
     getStyleInfo(): StyleInfo {
       const { options } = styles[data];
-      const { name, fileName, frameworkName, useFrameworkClassId } = options;
+      const { fileName, frameworkName, useFrameworkClassId } = options;
 
       if (!options.forward) {
         options.forward = {
@@ -92,7 +90,6 @@ export function css(styleStrings: TemplateStringsArray | CSSObject, ...args: any
       styles[data].info = {
         classId,
         frameworkId,
-        name,
         fileName,
         frameworkName,
         css,

@@ -21,14 +21,12 @@ export type StyleOptions = {
   fileName?: string;
   forward?: ForwardArgs;
   frameworkName?: string;
-  name?: string;
   validate?: Validate;
 };
 
 export type StyleInfo = {
   classId: string;
   frameworkId: string;
-  name: string;
   fileName: string;
   frameworkName: string;
   cssObject: CSSObject;
@@ -43,7 +41,6 @@ export interface StyleObject {
       fileName: string;
       forward: ForwardArgs;
       frameworkName: string;
-      name: string;
       validate?: Validate;
       useFrameworkClassId: boolean,
     };
