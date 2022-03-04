@@ -1,4 +1,5 @@
-import { createElement, forwardRef, useState, useEffect, Ref } from 'react';
+import { createElement, cloneElement, Children, forwardRef, useState, useEffect, Ref } from 'react';
+import { noop } from '@maia/tools';
 import styleIt from '@maia/styleit';
 import { useWillUnmount } from '@maia/react';
 import { updateState } from './util';
@@ -9,6 +10,8 @@ export const StyleIt = forwardRef((props: StyleItProps, ref: Ref<Element>) => {
   const {
     useTheme,
     forward,
+    passClassId = false,
+    onClassId = noop,
     options,
     styles,
     tagName = 'div',
@@ -31,16 +34,22 @@ export const StyleIt = forwardRef((props: StyleItProps, ref: Ref<Element>) => {
 
     styleIt.replace(state.styleInfo, newState.styleInfo);
     setState(newState);
-  }, [ forward, options, styles, tagName, className]);
+  }, [ forward, options, styles ]);
+
+  useEffect(() => {
+    const { classId } = state.scopedNames;
+    onClassId(classId);
+  }, [ state.scopedNames ]);
 
   const { classId, frameworkId } = state.scopedNames;
-  const { name: styleName } = state.styleInfo;
 
   const compProps = {
     ref,
-    className: `${styleName ? `${styleName} ` : ''}${className ? `${className} ` : ''}${classId}${frameworkId ? ` ${frameworkId}` : ''}`,
+    className: `${className ? `${className} ` : ''}${classId}${frameworkId ? ` ${frameworkId}` : ''}`,
     ...restProps,
   };
 
-  return createElement(tagName, compProps, children);
+  const childProps = passClassId ? { classId } : {};
+
+  return createElement(tagName, compProps, Children.map(children, child => cloneElement(child, childProps)));
 });
