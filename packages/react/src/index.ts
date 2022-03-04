@@ -10,5 +10,6 @@ export { useDevice } from './useDevice';
 export type { DevicesConfig, IsDevicesResult } from './useDevice';
 export { useDidMount } from './useDidMount';
 export { useForceUpdate } from './useForceUpdate';
+export { useFunction } from './useFunction';
 export { useWillMount } from './useWillMount';
 export { useWillUnmount } from './useWillUnmount';
