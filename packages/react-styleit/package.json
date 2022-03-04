@@ -1,6 +1,6 @@
 {
   "name": "@maia/react-styleit",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "StyleIt component for react",
   "main": "dist/maia-react-styleit.cjs.js",
   "module": "dist/maia-react-styleit.es.js",
