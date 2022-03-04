@@ -1,5 +1,5 @@
 import { StyleObject, StyleOptions, StyleInfo, ScopedNames, ForwardArgs, Theme } from '@maia/styleit';
-import { ElementType, Ref, HTMLAttributes, ReactElement } from 'react';
+import { ReactNode, ElementType, Ref, HTMLAttributes, ReactElement } from 'react';
 
 export interface StyleItProps extends HTMLAttributes<HTMLElement> { 
   useTheme?: () => Theme; 
@@ -11,7 +11,7 @@ export interface StyleItProps extends HTMLAttributes<HTMLElement> {
   styles: StyleObject | ((...args: any[]) => StyleObject);
   tagName?: ElementType<any>;
   ref?: Ref<Element>;
-  children: ReactElement | ReactElement[];
+  children: ReactNode | ReactNode[];
 };
 
 export type StyleItState = {

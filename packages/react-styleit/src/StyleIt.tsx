@@ -1,4 +1,4 @@
-import { createElement, cloneElement, Children, forwardRef, useState, useEffect, Ref } from 'react';
+import { ReactElement, createElement, cloneElement, Children, forwardRef, useState, useEffect, Ref, isValidElement } from 'react';
 import { noop } from '@maia/tools';
 import styleIt from '@maia/styleit';
 import { useWillUnmount } from '@maia/react';
@@ -51,5 +51,11 @@ export const StyleIt = forwardRef((props: StyleItProps, ref: Ref<Element>) => {
 
   const childProps = passClassId ? { classId } : {};
 
-  return createElement(tagName, compProps, Children.map(children, child => cloneElement(child, childProps)));
+  return createElement(tagName, compProps, Children.map(children, child => {
+    if (isValidElement(child)) {
+      return cloneElement(child as ReactElement, childProps);
+    }
+    
+    return child;
+  }));
 });
