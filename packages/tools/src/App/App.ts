@@ -87,11 +87,15 @@ export class App {
   }
 
   public setOptions(options: AppOptions): void {
+    const { domElement, AppComponent } = options;
     this.options = options;
+    if (domElement) this.domElement = domElement;
+    if (AppComponent) this.AppComponent = AppComponent;
   }
 
-  public mergeOptions(newOptions: AppOptions): void {
-    this.options = mergeDeep(this.options || {}, newOptions);
+  public mergeOptions(options: AppOptions): void {
+    const newOptions = mergeDeep(this.options || {}, options);
+    this.setOptions(newOptions);
   }
 
   public setAppComponent(Component: any): void {
