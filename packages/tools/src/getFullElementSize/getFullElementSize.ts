@@ -20,7 +20,7 @@ const attrs = {
 
 const empty: FullElementSize = { width: 0, height: 0 };
 
-export function getFullElementSize(element?: HTMLElement): FullElementSize {
+export function getFullElementSize(element?: HTMLElement | null): FullElementSize {
   if (!element) return empty;
   if (isSSR) return empty;
 

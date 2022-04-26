@@ -3,7 +3,7 @@ import { mergeDeep } from '../mergeDeep';
 import { noop } from '../noop';
 import { isSSR } from '../isSSR';
 import { hashID } from '../hashID';
-import { AppOptions } from './types';
+import { EntryOptions } from './types';
 
 const methods = ['mount', 'update', 'unmount', 'ssr'];
 
@@ -11,17 +11,17 @@ const ssrIds = new Set<string>();
 let ssrMap: { [ssrKey: string]: Promise<string> } = {};
 let isStaticSSR = true;
 
-export class App {
+export class Entry {
   private emitter: EventEmitter;
-  AppComponent: any;
+  EntryComponent: any;
   ssrId: string | undefined;
   domElement: HTMLElement | undefined;
-  options: AppOptions | undefined;
+  options: EntryOptions | undefined;
   on: (eventName: string, eventCallback: EventCallback) => void;
   emit: (eventName: string, ...args: any[]) => void;
   removeListener: (eventCallbackKey: symbol) => void;
 
-  constructor(options?: AppOptions) {
+  constructor(options?: EntryOptions) {
     options = options || {};
     options.initData = options.initData || {};
 
@@ -33,7 +33,7 @@ export class App {
 
     this.options = options;
     this.domElement = options.domElement;
-    this.AppComponent = options.AppComponent;
+    this.EntryComponent = options.EntryComponent;
     
     this.emitter = new EventEmitter();
 
@@ -86,15 +86,19 @@ export class App {
     this.domElement = domElement;
   }
 
-  public setOptions(options: AppOptions): void {
+  public setOptions(options: EntryOptions): void {
+    const { domElement, EntryComponent } = options;
     this.options = options;
+    if (domElement) this.domElement = domElement;
+    if (EntryComponent) this.EntryComponent = EntryComponent;
   }
 
-  public mergeOptions(newOptions: AppOptions): void {
-    this.options = mergeDeep(this.options || {}, newOptions);
+  public mergeOptions(options: EntryOptions): void {
+    const newOptions = mergeDeep(this.options || {}, options);
+    this.setOptions(newOptions);
   }
 
-  public setAppComponent(Component: any): void {
-    this.AppComponent = Component;
+  public setEntryComponent(Component: any): void {
+    this.EntryComponent = Component;
   }
 }

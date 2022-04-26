@@ -1,6 +1,6 @@
 import { createPortal } from '../';
 import { isObject } from '../../isObject';
-import { FirstApp } from './_mocks';
+import { FirstEntry } from './_mocks';
 
 describe('createPortal', () => {
   const rootPortal = document.createElement('div');
@@ -8,7 +8,7 @@ describe('createPortal', () => {
   rootPortal.id = portalId;
   document.body.appendChild(rootPortal);
 
-  const portalConfig = { portalId, app: new FirstApp() };
+  const portalConfig = { portalId, entry: new FirstEntry() };
   const portal = createPortal(portalConfig);
 
   it('portal shuold be al object', () => {

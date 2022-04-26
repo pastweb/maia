@@ -1,18 +1,18 @@
 import { portal } from './portal';
 import { CreatedPortal, CreatePortalConfig } from './types';
 
-export function createPortal({ portalId, app }: CreatePortalConfig): CreatedPortal {
+export function createPortal({ portalId, entry }: CreatePortalConfig): CreatedPortal {
   const _portal = {
     open: (component: any, initData?: { [key: string]: any }): string | false => {
       initData = initData || {};
-      app.setAppComponent(component);
-      app.mergeOptions({ initData: { portal: _portal, component, ...initData } });
-      return portal.open({ portalId, app });
+      entry.setEntryComponent(component);
+      entry.mergeOptions({ initData: { portal: _portal, component, ...initData } });
+      return portal.open({ portalId, entry });
     },
-    update: (appId: string, appData?: any): boolean => {
-      return portal.update({ portalId, appId, appData });
+    update: (entryId: string, entryData?: any): boolean => {
+      return portal.update({ portalId, entryId, entryData });
     },
-    close: (appId: string): boolean => portal.close({ portalId, appId }),
+    close: (entryId: string): boolean => portal.close({ portalId, entryId }),
   };
 
   return Object.freeze(_portal);
