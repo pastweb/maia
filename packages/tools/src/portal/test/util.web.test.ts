@@ -1,18 +1,18 @@
 import { open, update, close } from '../util';
-import { FirstApp, SecondApp, portals, INIT_VALUE } from './_mocks';
+import { FirstEntry, SecondEntry, portals, INIT_VALUE } from './_mocks';
 
 const rootPortal = document.createElement('div');
 const portalId = 'rootPortal';
 rootPortal.id = portalId;
 document.body.appendChild(rootPortal);
-const firstConfig = { portalId, app: new FirstApp() };
+const firstConfig = { portalId, entry: new FirstEntry() };
 const secondConfig = {
   portalId,
-  app: new SecondApp({ initData: { initValue: 'passedValue'} }),
+  entry: new SecondEntry({ initData: { initValue: 'passedValue'} }),
 };
 
-const firstAppId: string | false = open(portals, firstConfig);
-const secondAppId: string | false = open(portals, secondConfig);
+const firstEntryId: string | false = open(portals, firstConfig);
+const secondEntryId: string | false = open(portals, secondConfig);
 
 describe('portal - util', () => {
   describe('open', () => {
@@ -20,91 +20,91 @@ describe('portal - util', () => {
       expect(rootPortal.childNodes.length).toBe(2);
     });
 
-    it('firstAppId should be inside portals[portalId]', () => {
+    it('firstEntryId should be inside portals[portalId]', () => {
       expect(
-        Object.keys(portals[portalId]).includes(firstAppId as string)
+        Object.keys(portals[portalId]).includes(firstEntryId as string)
       ).toBe(true);
     });
 
-    it('secondAppId should be inside portals[portalId]', () => {
+    it('secondEntryId should be inside portals[portalId]', () => {
       expect(
-        Object.keys(portals[portalId]).includes(secondAppId as string)
+        Object.keys(portals[portalId]).includes(secondEntryId as string)
       ).toBe(true);
     });
 
-    it('portals[portalId][firstAppId] should contains the instance of FirstApp class', () => {
-      expect(portals[portalId][firstAppId as string] instanceof FirstApp).toBe(
+    it('portals[portalId][firstEntryId] should contains the instance of FirstEntry class', () => {
+      expect(portals[portalId][firstEntryId as string] instanceof FirstEntry).toBe(
         true
       );
     });
 
-    it('portals[portalId][secondAppId] should contains the instance of SecondApp class', () => {
+    it('portals[portalId][secondEntryId] should contains the instance of SecondEntry class', () => {
       expect(
-        portals[portalId][secondAppId as string] instanceof SecondApp
+        portals[portalId][secondEntryId as string] instanceof SecondEntry
       ).toBe(true);
     });
 
-    it(`the element with id="${firstAppId}" should be present into the DOM`, () => {
+    it(`the element with id="${firstEntryId}" should be present into the DOM`, () => {
       expect(
-        typeof document.getElementById(firstAppId as string) !== null
+        typeof document.getElementById(firstEntryId as string) !== null
       ).toBe(true);
     });
 
-    it(`the element with id="${secondAppId}" should be present into the DOM`, () => {
+    it(`the element with id="${secondEntryId}" should be present into the DOM`, () => {
       expect(
-        typeof document.getElementById(secondAppId as string) !== null
+        typeof document.getElementById(secondEntryId as string) !== null
       ).toBe(true);
     });
 
-    it(`the element with id="${secondAppId}" should be present into the DOM.`, () => {
-      const element = document.getElementById(secondAppId as string) as HTMLElement;
+    it(`the element with id="${secondEntryId}" should be present into the DOM.`, () => {
+      const element = document.getElementById(secondEntryId as string) as HTMLElement;
       expect(typeof element !== null).toBe(true);
     });
 
-    it('the element with class "firstApp" should be present and contains the "INIT_VALUE"', () => {
-      const element = document.querySelector('.firstApp') as HTMLElement;
+    it('the element with class "firstEntry" should be present and contains the "INIT_VALUE"', () => {
+      const element = document.querySelector('.firstEntry') as HTMLElement;
       expect(typeof element !== null).toBe(true);
       expect(element.innerHTML === INIT_VALUE).toBe(true);
     });
 
-    it('the element with class "secontApp" should be present and contains the "passedValue"', () => {
-      const element = document.querySelector('.secondApp') as HTMLElement;
+    it('the element with class "secontEntry" should be present and contains the "passedValue"', () => {
+      const element = document.querySelector('.secondEntry') as HTMLElement;
       expect(typeof element !== null).toBe(true);
       expect(element.innerHTML === 'passedValue').toBe(true);
     });
   });
 
   describe('update', () => {
-    it('the FirstApp should contains the "newFirstAppValue"', () => {
+    it('the FirstEntry should contains the "newFirstEntryValue"', () => {
       update(portals, {
         portalId,
-        appId: firstAppId as string,
-        appData: 'newFirstAppValue'
+        entryId: firstEntryId as string,
+        entryData: 'newFirstEntryValue'
       });
-      const element = document.querySelector('.firstApp') as HTMLElement;
+      const element = document.querySelector('.firstEntry') as HTMLElement;
       expect(typeof element !== null).toBe(true);
-      expect(element.innerHTML).toBe('newFirstAppValue');
+      expect(element.innerHTML).toBe('newFirstEntryValue');
     });
 
-    it('the SecondApp should contains the "newSecondAppValue".', () => {
-      update(portals, { portalId, appId: secondAppId as string, appData: 'newSecondAppValue' });
-      const portalElement = document.getElementById(secondAppId as string) as HTMLElement;
-      const element = document.querySelector('.secondApp') as HTMLElement;
+    it('the SecondEntry should contains the "newSecondEntryValue".', () => {
+      update(portals, { portalId, entryId: secondEntryId as string, entryData: 'newSecondEntryValue' });
+      const portalElement = document.getElementById(secondEntryId as string) as HTMLElement;
+      const element = document.querySelector('.secondEntry') as HTMLElement;
       expect(typeof portalElement !== null).toBe(true);
       expect(typeof element !== null).toBe(true);
-      expect(element.innerHTML).toBe('newSecondAppValue');
+      expect(element.innerHTML).toBe('newSecondEntryValue');
     });
   });
 
   describe('close', () => {
-    it('the firstApp portal element should be not present', () => {
-      close(portals, { portalId, appId: firstAppId as string });
-      expect(document.getElementById(firstAppId as string)).toBe(null);
+    it('the firstEntry portal element should be not present', () => {
+      close(portals, { portalId, entryId: firstEntryId as string });
+      expect(document.getElementById(firstEntryId as string)).toBe(null);
     });
 
-    it('the secondApp portal element should be not present', () => {
-      close(portals, { portalId, appId: secondAppId as string });
-      expect(document.getElementById(secondAppId as string)).toBe(null);
+    it('the secondEntry portal element should be not present', () => {
+      close(portals, { portalId, entryId: secondEntryId as string });
+      expect(document.getElementById(secondEntryId as string)).toBe(null);
     });
   });
 });

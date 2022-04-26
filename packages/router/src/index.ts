@@ -6,19 +6,19 @@ export default class MaiaRouter {
   private routes: Routes;
   private contexts: { [domain: string]: any };
   private currentRoute: string;
-  private instanciedApps: { [domain: string]: any };
-  private mountedApps: { [domain: string]: any };
+  private instanciedEntries: { [domain: string]: any };
+  private mountedEntries: { [domain: string]: any };
   private routerContext: RouterContext;
   private routeKeys: string[];
 
   constructor(config: RouterConfig, context: RouterContext) {
-    this.getAppOptions = this.getAppOptions.bind(this);
+    this.getEntryOptions = this.getEntryOptions.bind(this);
     this.initContexts = this.initContexts.bind(this);
     this.getRoute = this.getRoute.bind(this);
     this.setCurentRoute = this.setCurentRoute.bind(this);
-    this.initApp = this.initApp.bind(this);
-    this.getApp = this.getApp.bind(this);
-    this.renderApps = this.renderApps.bind(this);
+    this.initEntry = this.initEntry.bind(this);
+    this.getEntry = this.getEntry.bind(this);
+    this.renderEntries = this.renderEntries.bind(this);
     this.start = this.start.bind(this);
 
     this.alias = config.alias || {};
@@ -28,8 +28,8 @@ export default class MaiaRouter {
     this.routeKeys = Object.keys(config.routes);
 
     this.contexts = {};
-    this.instanciedApps = {};
-    this.mountedApps = {};
+    this.instanciedEntries = {};
+    this.mountedEntries = {};
     this.currentRoute = '*';
   }
 
@@ -44,11 +44,11 @@ export default class MaiaRouter {
     });
 
     this.initContexts(); 
-    this.renderApps('*');
+    this.renderEntries('*');
     this.setCurentRoute(pathname);
   }
 
-  private getAppOptions(domain: string) {
+  private getEntryOptions(domain: string) {
     const baseRoute = Object.keys(this.routes[this.currentRoute])
       .includes(domain) ?
         (this.currentRoute !== '/' && this.currentRoute !== '*') ?
@@ -73,7 +73,7 @@ export default class MaiaRouter {
       if (context) {
         const { src, name } = context;
         const sm = await window.System.import(src);
-        const options = { maiaRouter: this.getAppOptions(domain) };
+        const options = { maiaRouter: this.getEntryOptions(domain) };
         this.contexts[domain] = sm[name].default(options);
       }
     });
@@ -102,56 +102,56 @@ export default class MaiaRouter {
     
     if (newRoute) {
       this.currentRoute = newRoute;
-      this.renderApps(newRoute);  
+      this.renderEntries(newRoute);  
     }
   }
 
-  private async initApp(domain: string, entry: string) {
+  private async initEntry(domain: string, entryName: string) {
     try {
-      const { name, src } = this.entries[domain][entry];
-      const options = { maiaRouter: this.getAppOptions(domain) };
+      const { name, src } = this.entries[domain][entryName];
+      const options = { maiaRouter: this.getEntryOptions(domain) };
       const sm = await window.System.import(src);
-      const app = sm[name].default;
-      app.mergeOptions(options);
-      this.instanciedApps[domain][entry] = app;
+      const entry = sm[name].default;
+      entry.mergeOptions(options);
+      this.instanciedEntries[domain][entryName] = entry;
     } catch (err) {
       console.error(err);
     }
   }
 
-  public async getApp(domainName: string, entryName: string) {
+  public async getEntry(domainName: string, entryName: string) {
     const domain = this.alias[domainName] ? this.alias[domainName].domain : domainName;
-    const entry = this.alias[domainName] && this.alias[domainName].entries[entryName] || entryName;
+    const _entryName = this.alias[domainName] && this.alias[domainName].entries[entryName] || entryName;
 
-    this.instanciedApps[domain] = this.instanciedApps[domain] || {};
+    this.instanciedEntries[domain] = this.instanciedEntries[domain] || {};
 
-    if (!this.instanciedApps[domain][entry]) {
-      await this.initApp(domain, entry);
+    if (!this.instanciedEntries[domain][_entryName]) {
+      await this.initEntry(domain, _entryName);
     }
 
-    return this.instanciedApps[domain][entry];
+    return this.instanciedEntries[domain][_entryName];
   }
 
-  private renderApps(route: string) {
+  private renderEntries(route: string) {
     if (this.routes[route]) {
       Object.entries(this.routes[route]).forEach(([domain, mount]) => {
-        mount.forEach(async ({ elementId, entry }) => {
-          if (this.entries[domain][entry]) {
+        mount.forEach(async ({ elementId, entryName }) => {
+          if (this.entries[domain][entryName]) {
             const domElement = document.getElementById(elementId);
             
             if (!domElement) {
               throw new Error(`MaiaRouter Error: The element with id: "${domElement}" is not present in the DOM.`);
             }
   
-            const app = await this.getApp(domain, entry);
-            app.mergeOptions({ domElement });
+            const entry = await this.getEntry(domain, entryName);
+            entry.mergeOptions({ domElement });
   
-            if (this.mountedApps[elementId]) {
-              this.mountedApps[elementId].unmount();
+            if (this.mountedEntries[elementId]) {
+              this.mountedEntries[elementId].unmount();
             }
   
-            requestAnimationFrame(() => app.mount());
-            this.mountedApps[elementId] = app;
+            requestAnimationFrame(() => entry.mount());
+            this.mountedEntries[elementId] = entry;
           }
         });
       });

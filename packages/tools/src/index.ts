@@ -1,5 +1,5 @@
-export { App } from './App';
-export type { AppOptions, AppExtension } from './App';
+export { Entry } from './Entry';
+export type { EntryOptions, EntryExtension } from './Entry';
 export { classNames } from './classNames';
 export { debounce } from './debounce';
 export type { DebouceCallback } from './debounce';

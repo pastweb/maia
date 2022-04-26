@@ -1,13 +1,13 @@
-import { App } from './App';
+import { Entry } from './Entry';
 
-export type AppOptions = {
-  AppComponent?: any;
+export type EntryOptions = {
+  EntryComponent?: any;
   domElement?: HTMLElement;
   initData?: { [key: string]: any };
   [key: string]: any;
 };
 
-export type AppExtension = App & {
+export type EntryExtension = Entry & {
   mount: (...args: any[]) => void;
   unmount?: (...args: any[]) => void;
   ssr?: (...args: any[]) => Promise<string>;

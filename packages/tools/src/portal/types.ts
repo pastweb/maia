@@ -1,23 +1,23 @@
-import { AppExtension } from '../App';
+import { EntryExtension } from '../Entry';
 
 export type Portals = {
-  [portalId: string]: { [appId: string]: AppExtension };
+  [portalId: string]: { [entryId: string]: EntryExtension };
 };
 
 export type OpenPortalConfig = {
   portalId: string;
-  app: AppExtension;
+  entry: EntryExtension;
 };
 
 export type UpdatePortalConfig = {
   portalId: string;
-  appId: string;
-  appData: any;
+  entryId: string;
+  entryData: any;
 };
 
 export type ClosePortalConfig = {
   portalId: string;
-  appId: string;
+  entryId: string;
 };
 
 export type Portal = {
@@ -28,11 +28,11 @@ export type Portal = {
 
 export type CreatePortalConfig = {
   portalId: string;
-  app: AppExtension;
+  entry: EntryExtension;
 };
 
 export type CreatedPortal = {
   open: (component: any, initData?: { [key: string]: any }) => string | false;
-  update: (appId: string, appData: any) => boolean;
-  close: (appId: string) => boolean;
+  update: (entryId: string, entryData: any) => boolean;
+  close: (entryId: string) => boolean;
 };

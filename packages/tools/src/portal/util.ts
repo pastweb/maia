@@ -1,5 +1,5 @@
 import { hashID } from '../hashID';
-import { AppExtension } from '../App';
+import { EntryExtension } from '../Entry';
 import {
   Portals,
   OpenPortalConfig,
@@ -7,7 +7,7 @@ import {
   ClosePortalConfig,
 } from './types';
 
-export function open(portals: Portals, { portalId, app }: OpenPortalConfig): string | false {
+export function open(portals: Portals, { portalId, entry }: OpenPortalConfig): string | false {
   const portal = document.getElementById(portalId);
 
   if (!portal) {
@@ -20,55 +20,55 @@ export function open(portals: Portals, { portalId, app }: OpenPortalConfig): str
     portals[portalId] = {};
   }
 
-  const appId = hashID.generateUnique(Object.keys(portals[portalId]));
-  domElement.id = appId;
+  const entryId = hashID.generateUnique(Object.keys(portals[portalId]));
+  domElement.id = entryId;
   portal.appendChild(domElement);
 
-  app.setDomElement(domElement);
-  app.mergeOptions({ domElement, initData: {portalId, appId} });
-  portals[portalId][appId] = app;
-  app.mount();
+  entry.setDomElement(domElement);
+  entry.mergeOptions({ domElement, initData: {portalId, entryId} });
+  portals[portalId][entryId] = entry;
+  entry.mount();
 
-  return appId;
+  return entryId;
 }
 
 export function update(portals: Portals, portalConfig: UpdatePortalConfig): boolean {
-  const { portalId, appId, appData } = portalConfig;
+  const { portalId, entryId, entryData } = portalConfig;
 
-  if (!portals[portalId] || (appId !== '*' && !portals[portalId][appId])) {
+  if (!portals[portalId] || (entryId !== '*' && !portals[portalId][entryId])) {
     return false;
   }
 
-  if (appData) {
-    if (appId === '*') {
-      Object.values(portals[portalId]).forEach((app: AppExtension) => app.update(appData));
+  if (entryData) {
+    if (entryId === '*') {
+      Object.values(portals[portalId]).forEach((entry: EntryExtension) => entry.update(entryData));
     } else {
-      portals[portalId][appId].update(appData);
+      portals[portalId][entryId].update(entryData);
     }
   }
 
   return true;
 }
 
-export function close(portals: Portals,{ portalId, appId }: ClosePortalConfig): boolean {
-  if (!portals[portalId] || (appId !== '*' && !portals[portalId][appId]))
+export function close(portals: Portals,{ portalId, entryId }: ClosePortalConfig): boolean {
+  if (!portals[portalId] || (entryId !== '*' && !portals[portalId][entryId]))
     return false;
 
-  function closeIt({ portalId, appId }: ClosePortalConfig) {
-    (portals[portalId][appId] as any).unmount();
-    delete portals[portalId][appId];
-    const element: HTMLElement | null = document.getElementById(appId);
+  function closeIt({ portalId, entryId }: ClosePortalConfig) {
+    (portals[portalId][entryId] as any).unmount();
+    delete portals[portalId][entryId];
+    const element: HTMLElement | null = document.getElementById(entryId);
     if (element) {
       element.remove();
     }
     return true;
   }
 
-  if (appId === '*') {
-    Object.keys(portals[portalId]).forEach((appId) =>
-      portals[portalId][appId].emit('unmount')
+  if (entryId === '*') {
+    Object.keys(portals[portalId]).forEach((entryId) =>
+      portals[portalId][entryId].emit('unmount')
     );
   }
 
-  return closeIt({ portalId, appId });
+  return closeIt({ portalId, entryId });
 }

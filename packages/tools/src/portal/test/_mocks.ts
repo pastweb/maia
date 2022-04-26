@@ -1,20 +1,20 @@
-import { App, AppOptions } from '../../App';
+import { Entry, EntryOptions } from '../../Entry';
 import { Portals } from '../types';
 
 export const portals: Portals = {};
 
 export const INIT_VALUE = 'INIT_VALUE';
 
-export class FirstApp extends App {
+export class FirstEntry extends Entry {
   node?: HTMLElement;
 
-  constructor(options?: AppOptions) {
+  constructor(options?: EntryOptions) {
     super(options);
   }
 
   mount() {
     const node = document.createElement('div');
-    node.className = 'firstApp';
+    node.className = 'firstEntry';
     node.innerHTML = INIT_VALUE;
     this.node = node;
     if (this.node && this.domElement) {
@@ -35,15 +35,15 @@ export class FirstApp extends App {
   }
 }
 
-export class SecondApp extends App {
+export class SecondEntry extends Entry {
   node?: HTMLElement;
-  constructor(options: AppOptions) {
+  constructor(options: EntryOptions) {
     super(options);
   }
 
   mount() {
     const node = document.createElement('div');
-    node.className = 'secondApp';
+    node.className = 'secondEntry';
     if (this.options) {
       node.innerHTML = (this.options.initData as any).initValue || INIT_VALUE;
     }

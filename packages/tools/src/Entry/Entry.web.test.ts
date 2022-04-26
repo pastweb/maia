@@ -1,5 +1,5 @@
-import { App } from './';
-import { AppOptions } from './types';
+import { Entry } from './';
+import { EntryOptions } from './types';
 
 const INITIAL_VALUE = 'this is the initial value';
 
@@ -7,16 +7,16 @@ const functions = {
   update: jest.fn()
 };
 
-class MyApp extends App {
+class MyEntry extends Entry {
   node?: HTMLElement;
 
-  constructor(options: AppOptions) {
+  constructor(options: EntryOptions) {
     super(options);
   }
 
   mount() {
     const node = document.createElement('div');
-    node.className = 'firstApp';
+    node.className = 'firstEntry';
     node.innerHTML = INITIAL_VALUE;
     this.node = node;
     if (this.node && this.domElement) {
@@ -37,16 +37,16 @@ class MyApp extends App {
   }
 }
 
-class MyApp2 extends App {
+class MyEntry2 extends Entry {
   node?: HTMLElement;
 
-  constructor(options: AppOptions) {
+  constructor(options: EntryOptions) {
     super(options);
   }
 
   mount() {
     const node = document.createElement('div');
-    node.className = 'secondApp';
+    node.className = 'secondEntry';
     node.innerHTML = INITIAL_VALUE;
     this.node = node;
     if (this.node && this.domElement) {
@@ -67,15 +67,15 @@ class MyApp2 extends App {
   }
 }
 
-describe('App', () => {
+describe('Entry', () => {
   const domElement = document.querySelector('body') as HTMLElement;
-  const firstApp = new MyApp({ domElement });
-  const secondApp = new MyApp2({ domElement });
+  const firstEntry = new MyEntry({ domElement });
+  const secondEntry = new MyEntry2({ domElement });
   const { body } = document;
 
   describe('mount', () => {
-    firstApp.mount();
-    const node = document.querySelector('.firstApp') as HTMLElement;
+    firstEntry.mount();
+    const node = document.querySelector('.firstEntry') as HTMLElement;
 
     it('the body element should contains a single node', () => {
       expect(body.childNodes.length).toBeGreaterThanOrEqual(1);
@@ -89,8 +89,8 @@ describe('App', () => {
       expect(node.tagName).toBe('DIV');
     });
 
-    it('the div element must have the class "firstApp"', () => {
-      expect(node.className).toBe('firstApp');
+    it('the div element must have the class "firstEntry"', () => {
+      expect(node.className).toBe('firstEntry');
     });
 
     it('the div element content should be equal to INITIAL_VALUE constant', () => {
@@ -100,12 +100,12 @@ describe('App', () => {
 
   describe('update', () => {
     const spyEvent = jest.spyOn(functions, 'update');
-    const spyMethod = jest.spyOn(secondApp, 'update');
-    secondApp.on('update', functions.update);
+    const spyMethod = jest.spyOn(secondEntry, 'update');
+    secondEntry.on('update', functions.update);
 
-    secondApp.mount();
-    const node = document.querySelector('.secondApp') as HTMLElement;
-    secondApp.emit('update', 'newValue');
+    secondEntry.mount();
+    const node = document.querySelector('.secondEntry') as HTMLElement;
+    secondEntry.emit('update', 'newValue');
 
     it('the html node should be not null', () => {
       expect(node !== null).toBe(true);
@@ -115,8 +115,8 @@ describe('App', () => {
       expect(node.tagName).toBe('DIV');
     });
 
-    it('the div element must have the class "secondApp"', () => {
-      expect(node.className).toBe('secondApp');
+    it('the div element must have the class "secondEntry"', () => {
+      expect(node.className).toBe('secondEntry');
     });
 
     it('the div element content should be equal to "newValue" constant', () => {
@@ -133,10 +133,10 @@ describe('App', () => {
   });
 
   describe('unmount', () => {
-    secondApp.unmount();
-    const node = document.querySelector('.secondApp');
+    secondEntry.unmount();
+    const node = document.querySelector('.secondEntry');
 
-    it('the div element with the class "secondApp" should not exists', () => {
+    it('the div element with the class "secondEntry" should not exists', () => {
       expect(node).toBe(null);
     });
   });

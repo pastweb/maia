@@ -4,7 +4,7 @@ export type RouterContext = {
 
 export type MountInfo = {
   elementId: string;
-  entry: string;
+  entryName: string;
 };
 
 export type Routes = {
