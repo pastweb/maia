@@ -11,7 +11,6 @@ import { isObject } from '@maia/tools';
         if (isObject(value)) {
             return `${acc}${prop} {${stringify(value as CSSObject)}}`;
         }
-        const unEscaped = (value as string).replace(/\\?["']/g, '"');
-        return `${acc}${prop}: ${unEscaped};`;
+        return `${acc}${prop}: ${value};`;
     }, '');
 };

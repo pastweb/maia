@@ -100,7 +100,6 @@ export const styleWithFunctions = css`
 }
 `.setOptions({
   fileName: filename,
-  name: component,
   forward,
 });
 

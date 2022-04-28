@@ -8,33 +8,47 @@ const ruleClean = /\/\*[^]*?\*\/|\s\s+|\n/g;
  * @param {String} rules
  * @returns {Object}
  */
- export function cssToObject (rules: string): CSSObject {
-  const normalized = rules.replace(ruleClean, '');
 
-  const rulesToArray = normalized.match(newRule);
+function findCloseBraket(rules: string[]): number {
+  let counter = 0;
 
-  let jsonString = '{';
-
-  rulesToArray?.forEach((el: string) => {
-    if (el.includes('{')) {
-      const lastChar = jsonString.length && (jsonString.charAt(jsonString.length - 1) === '}') ? ',' :  '';
-      const selector = el.replace(/(\s?|\s+){$/i, '')
-      jsonString =  `${jsonString}${lastChar}"${selector}":{`;
-    } else if (el.includes(':')) {
-      const [prop, value] = el.split(':');
-      const escaped = value.replace(/\\?["']/g, '\\"');
-      jsonString = `${jsonString}"${prop.trim()}":"${escaped.substring(0, escaped.length - 1).trim()}",`;
-    } else {
-      if (jsonString.charAt(jsonString.length - 1) === ',') {
-        jsonString = jsonString.substring(0, jsonString.length - 1);
-      }
-      jsonString = `${jsonString}${el}`;
-    }
-  });
-
-  if (jsonString.charAt(jsonString.length - 1) === ',') {
-    jsonString = jsonString.substring(0, jsonString.length - 1);
+  for(let i=0; i<rules.length; i++) {
+    const el = rules[i];
+    if (el.includes('{')) counter++;
+    if (el.includes('}')) counter--;
+    if (!counter) return i;
   }
 
-  return JSON.parse(`${jsonString}}`);
-};
+  return 0;
+}
+
+function arrayToObject(rules: string[]) : CSSObject {
+  const cssObject: CSSObject = {};
+
+  for (let i=0; i<rules.length; i++){
+    const el = rules[i];
+
+    if (el.includes('{')) {
+      const selector = el.replace('{', '').trim();
+      const endBlock = findCloseBraket(rules.slice(i));
+      const block = rules.splice(i, endBlock);
+      block.shift();
+      cssObject[selector] = arrayToObject(block);
+    } else {
+      const [ prop, value ] = el.split(':').map(el => el.replace(/[;]/g, '').trim());
+      cssObject[prop] = value;
+    }
+  }
+  
+  return cssObject;
+}
+
+export function cssToObject (rules: string): CSSObject {
+  const cssObject: CSSObject = {};
+  const normalized = rules.replace(ruleClean, '');
+  const rulesArray = normalized.match(newRule);
+
+  if (!rulesArray) return cssObject;
+
+  return arrayToObject(rulesArray);
+}
