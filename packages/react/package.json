@@ -1,6 +1,6 @@
 {
   "name": "@maia/react",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Set of tools for react web application development",
   "main": "dist/maia-react.cjs.js",
   "module": "dist/maia-react.es.js",
