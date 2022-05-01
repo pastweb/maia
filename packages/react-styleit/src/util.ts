@@ -1,5 +1,6 @@
+import { Children, ReactElement, cloneElement } from 'react';
 import { isObject } from '@maia/tools';
-import styleIt, { ForwardArgs, ScopedNames, Theme } from '@maia/styleit';
+import styleIt, { ForwardArgs, ScopedNames, Theme, Classes } from '@maia/styleit';
 import { StyleItState } from './types';
 
 export const defaultTheme: Theme = {
@@ -38,4 +39,52 @@ export function updateState(props: any, theme: Theme): StyleItState {
     styleInfo,
     scopedNames, 
   };
+}
+
+export function getClassNames(classes: Classes, className: string) : string {
+  return className.split(' ').map(name => {
+    return classes[name] || name;
+  }).join(' ');
+}
+
+export function assignClassNames(source: any, classes: Classes, target?: any): void {
+  target = target || source;
+
+  const { className } = source;
+
+  if (typeof className === 'string') {
+    target.className = getClassNames(classes, className);
+  }
+}
+
+export function elementTravers(element: HTMLElement, classes:Classes): void {
+  if (element.children) {
+    for (let i = 0; i < element.children.length; i++) {
+      elementTravers(element.children[i] as HTMLElement, classes);
+    }
+  }
+
+  assignClassNames(element, classes);
+}
+
+export function childTraverse(child: ReactElement, classes: Classes, childProps: { [propName: string]: any } = {}): ReactElement {
+  if (child && child.props) {
+    const { props } = child;
+    const newProps: { [propName: string]: any } = { ...childProps };
+
+    if (props.children) {
+      assignClassNames(props, classes, newProps);
+      
+      const children = Children.map(props.children, child => childTraverse(child, classes, childProps));
+      newProps.children = children;
+
+      return cloneElement(child as ReactElement, newProps);
+    }
+
+    assignClassNames(props, classes, newProps);
+    
+    return cloneElement(child as ReactElement, newProps);
+  }
+
+  return child;
 }
