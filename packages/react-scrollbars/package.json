@@ -1,6 +1,6 @@
 {
   "name": "@maia/react-scrollbars",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "implementation of simplebar-react with styleit",
   "main": "dist/maia-react-scrollbars.cjs.js",
   "module": "dist/maia-react-scrollbars.es.js",
