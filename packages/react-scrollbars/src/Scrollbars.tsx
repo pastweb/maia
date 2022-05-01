@@ -1,11 +1,11 @@
 import { useRef, useCallback, useState } from 'react';
 import { StyleIt } from '@maia/react-styleit';
-import { useWillUnmount } from '../useWillUnmount';
+import { useWillUnmount } from '@maia/react';
 import SimpleBar from 'simplebar-react';
 import { ScrollbarsProps } from './types';
 import styles from './styles';
 
-export default function Scrollbars({ children, ...rest }: ScrollbarsProps) {
+export function Scrollbars({ children, ...rest }: ScrollbarsProps) {
 	const parentElement = useRef<null | HTMLElement>(null);
 	const [size, setSize] = useState({});
 
@@ -35,7 +35,7 @@ export default function Scrollbars({ children, ...rest }: ScrollbarsProps) {
 	});
 
 	return (
-		<StyleIt styles={styles} ref={scrollbarsRef} style={size}>
+		<StyleIt styles={styles} ref={scrollbarsRef} style={size} defer={true}>
 			<SimpleBar style={size} {...rest}>
 				{children}
 			</SimpleBar>

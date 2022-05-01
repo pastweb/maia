@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig",
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "declarationDir": "dist/types",
+    "outDir": "dist",
+    "types": ["node", "jest", "react"]
+  },
+}

@@ -2,8 +2,6 @@ export { EntryAdapter } from './EntryAdapter';
 export type { EntryAdapterProps } from './EntryAdapter';
 export { default as AsyncComponent, normalizeDependency } from './AsyncComponent';
 export type { AsyncComponentProps, Dependency, DependencyInfo } from './AsyncComponent';
-export { default as Scrollbars } from './Scrollbars';
-export type { ScrollbarsProps } from './Scrollbars';
 export { UpdateEntry } from './UpdateEntry';
 export type { UpdateEntryProps } from './UpdateEntry';
 export { useDevice } from './useDevice';
