@@ -1,4 +1,7 @@
+import { Classes } from '../../css';
+
 export type ScopedNames = {
-  frameworkId: string;
   classId: string;
+  classes: Classes;
+  frameworkId: string;
 };

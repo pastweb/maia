@@ -16,6 +16,7 @@ export function css(styleStrings: TemplateStringsArray | CSSObject, ...args: any
     [data]: {
       info: {
         classId: '',
+        classes: {},
         frameworkId: '',
         fileName: '',
         frameworkName: '',
@@ -71,7 +72,7 @@ export function css(styleStrings: TemplateStringsArray | CSSObject, ...args: any
       const scss = stringify(cssObject);
       const styleKey = hash(scss);
       
-      let { css, classId } = styles[data].info;
+      let { css, classId, classes } = styles[data].info;
       const _frameworkId = frameworkName && cache.frameworks[frameworkName] ||
         frameworkName && styleKey;
       const frameworkId = useFrameworkClassId ? '' : _frameworkId;
@@ -79,7 +80,8 @@ export function css(styleStrings: TemplateStringsArray | CSSObject, ...args: any
       
       if (styleKey !== styles[data].info.styleKey) {
         const withKey = applyStyleKey(scss, classId);
-        const { fontFamily, keyframes } = withKey; 
+        const { fontFamily, keyframes, classes: _classes } = withKey; 
+        classes = _classes;
         const _css = parse(withKey.scoped, `.${classId}`);
 
         options.forward.theme.fontFamily = { ...options.forward.theme.fontFamily || {}, ...fontFamily };
@@ -89,6 +91,7 @@ export function css(styleStrings: TemplateStringsArray | CSSObject, ...args: any
 
       styles[data].info = {
         classId,
+        classes,
         frameworkId,
         fileName,
         frameworkName,

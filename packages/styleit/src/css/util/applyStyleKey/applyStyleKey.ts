@@ -8,12 +8,23 @@ type Names = {
 export type ScopedNames = {
   fontFamily : Names;
   keyframes: Names;
+  classes: Names;
   scoped: CSSObject;
 };
 
 export function applyStyleKey(scss: string, styleKey:string): ScopedNames {
   const fontFamily: Names = {};
   const keyframes: Names = {};
+  const classes: Names = {};
+
+  const classNames = scss.match(/\.[_a-zA-Z-]+/g);
+  if (classNames) {
+    new Set(classNames).forEach(className => {
+      const newClassName = `${className}${styleKey}`;
+      scss = scss.replace(new RegExp(`\\${className}(?![_a-zA-Z-]+)`, 'g'), newClassName);
+      classes[className.replace('.', '')] = newClassName.replace('.', '');
+    });
+  }
 
   if (scss.includes('@font-face')) {
     const fonts = scss.match(/font-family*.+;/);
@@ -55,6 +66,7 @@ export function applyStyleKey(scss: string, styleKey:string): ScopedNames {
   return {
     fontFamily,
     keyframes,
+    classes,
     scoped: cssToObject(scss),
   };
 }

@@ -2,6 +2,10 @@ export type ForwardArgs = {
   [argName: string]: any;
 };
 
+export type Classes = {
+  [className: string]: string;
+};
+
 export type CSSObject = {
   [propName: string]: string | ((...args: any[]) => string | number) | CSSObject | StyleObject;
 };
@@ -26,6 +30,7 @@ export type StyleOptions = {
 
 export type StyleInfo = {
   classId: string;
+  classes: Classes;
   frameworkId: string;
   fileName: string;
   frameworkName: string;
