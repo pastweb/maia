@@ -2,8 +2,8 @@ const { resolve, join } = require('path');
 const { lstatSync, readdirSync } = require('fs');
 
 const PACKAGES_DIR_NAME = 'packages';
-const WEB_REGEX = `src/.*\\.only\\.web\\.test\\.(j|t)s(x)?$`;
-const NODE_REGEX = `src/.*\\.only\\.node\\.test\\.(j|t)s(x)?$`;
+const WEB_REGEX = `src/.*\\.web\\.test\\.(j|t)s(x)?$`;
+const NODE_REGEX = `src/.*\\.node\\.test\\.(j|t)s(x)?$`;
 
 const packagesPath = resolve(__dirname, `../../${PACKAGES_DIR_NAME}`);
 const packages = readdirSync(packagesPath).filter(name =>
