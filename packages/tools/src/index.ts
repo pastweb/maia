@@ -1,6 +1,7 @@
 export { Entry } from './Entry';
 export type { EntryOptions, EntryExtension } from './Entry';
 export { classNames } from './classNames';
+export type { ClassesConfig } from './classNames';
 export { debounce } from './debounce';
 export type { DebouceCallback } from './debounce';
 export { EventEmitter } from './EventEmitter';

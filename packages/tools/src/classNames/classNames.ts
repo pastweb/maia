@@ -1,5 +1,6 @@
 // inspirated to https://github.com/JedWatson/classnames#readme
 import { getType } from '../getType';
+import { ClassesConfig } from './types';
 
 const types: { [key: string]: any } = {
   Number: (arg: number): string => `${arg}`,
@@ -34,6 +35,6 @@ function fromArray(arr: any[]): string {
   }, '');
 }
 
-export function classNames(...args: any[]): string {
+export function classNames(...args: ClassesConfig[]): string {
   return fromArray(args);
 }
