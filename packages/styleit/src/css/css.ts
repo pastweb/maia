@@ -1,3 +1,4 @@
+import { classNames, ClassesConfig } from '@maia/tools';
 import { StyleObject, StyleOptions, StyleInfo, CSSObject } from './types';
 import { stringify, hash } from './util';
 import { cache } from '../cache';
@@ -16,7 +17,7 @@ export function css(styleStrings: TemplateStringsArray | CSSObject, ...args: any
     [data]: {
       info: {
         classId: '',
-        classes: {},
+        classes: () => '',
         frameworkId: '',
         fileName: '',
         frameworkName: '',
@@ -81,7 +82,12 @@ export function css(styleStrings: TemplateStringsArray | CSSObject, ...args: any
       if (styleKey !== styles[data].info.styleKey) {
         const withKey = applyStyleKey(scss, classId);
         const { fontFamily, keyframes, classes: _classes } = withKey; 
-        classes = _classes;
+
+        classes = (...args: ClassesConfig[]) => {
+          const classesStr = classNames(args);
+          return classesStr.split(' ').map(className => _classes[className] || className).join(' ');
+        };
+
         const _css = parse(withKey.scoped, `.${classId}`);
 
         options.forward.theme.fontFamily = { ...options.forward.theme.fontFamily || {}, ...fontFamily };

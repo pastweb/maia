@@ -1,3 +1,5 @@
+import { ClassesConfig } from '@maia/tools';
+
 export type ForwardArgs = {
   [argName: string]: any;
 };
@@ -28,9 +30,11 @@ export type StyleOptions = {
   validate?: Validate;
 };
 
+export type ClassesFunc = (...args: ClassesConfig[]) => string
+
 export type StyleInfo = {
   classId: string;
-  classes: Classes;
+  classes: ClassesFunc;
   frameworkId: string;
   fileName: string;
   frameworkName: string;

@@ -6,4 +6,5 @@ export type {
   ForwardArgs,
   StyleInfo,
   Classes,
+  ClassesFunc,
 } from './types';
